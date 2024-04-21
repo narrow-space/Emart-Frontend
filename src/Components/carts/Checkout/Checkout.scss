@@ -1,0 +1,52 @@
+.shipping-details{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    
+   
+    p{
+        padding: 10px;
+        font-size: 15px;
+        font-weight: 800;
+        span{
+            font-weight: 400;
+        }
+    }
+   
+}
+.Order-details{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 20px;
+    border-bottom:1px solid rgb(211, 208, 208) ;
+ h1{
+    font-size: 20px;
+    font-weight: 800;
+ }
+    
+p{
+   
+    font-size: 15px;
+    font-weight: 800;
+    span{
+        font-weight: 400;
+    }
+   
+}
+.order_detail{
+    display: flex;
+    flex-direction: row;
+   
+    .order-des{
+      
+       margin-left: 30px;
+    }
+
+    img{
+        width: 150px;
+        height: 120px;
+        border-radius: 15px;
+    }
+}
+}

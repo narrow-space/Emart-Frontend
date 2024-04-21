@@ -1,0 +1,114 @@
+.product-details {
+  //  height:50vh;
+  border-radius: 15px;
+
+  border: 1px solid rgba(128, 128, 128, 0.147);
+  position: relative;
+
+  .badgee {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 15px 0 20px 0;
+
+    padding: 9px 20px 10px 20px;
+  }
+
+  .badgee.hot {
+    background: #f74b81 !important;
+  }
+  .badgee.sale {
+    background: #67bcee !important;
+  }
+  .badgee.cool {
+    background: #3bb77e !important;
+  }
+  .badgee.new {
+    background: #f59758 !important;
+  }
+  .badgee.hot {
+    background: #f74b81 !important;
+  }
+
+  .imgwraper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+  .imgwraper img {
+    height: 150px;
+    width:200px;
+    object-fit: fill;
+   
+    transition: all 1s ease-in-out;
+  }
+  .imgwraper .overlay {
+    position: absolute;
+    top: 52px;
+    left: 0px;
+    width: 100%;
+    /* height: 100%; */
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .imgwraper .overlay ul {
+    background: #def9ec;
+    width: 130px;
+    height: 40px;
+    border-radius: 5px;
+  }
+  .imgwraper .overlay ul li {
+    display: block;
+    padding: 10px;
+    color: #00cdb8;
+  }
+  .imgwraper .overlay ul li:nth-child(2) {
+    border-left: 1px solid rgba(0, 139, 139, 0.305);
+  }
+  .imgwraper .overlay ul li:nth-child(3) {
+    border-left: 1px solid rgba(0, 139, 139, 0.305);
+  }
+
+  //  .brand{
+  //   color: #000;
+  //   opacity: 0.8;
+  //   font-size: 14px;
+  //  }
+  .info .oldprice {
+    margin-left: auto;
+  }
+}
+
+.product-details:hover {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border: 1px solid #00cdb95f;
+}
+
+// .info button:hover{
+//    color:white !important;
+//    background: #3BB77E !important;
+
+// }
+// .info button:hover{
+//     position: absolute !important;
+//     bottom:4px !important;
+
+// }
+
+.product-details .imgwraper .overlay ul li:hover {
+  color: rgba(0, 0, 0, 0.445) !important;
+}
+.product-details .imgwraper .overlay:hover {
+  opacity: 1;
+  transform: scale(1);
+}

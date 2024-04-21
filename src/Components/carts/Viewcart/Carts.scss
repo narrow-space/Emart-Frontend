@@ -1,0 +1,17 @@
+.show-cart{
+ position: absolute;
+
+
+ right:0%;
+ min-height:100% ; 
+
+ width: 27%;
+ background-color: white;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+  transition: all 1s;
+}
+.show-cart .active{
+ right:0;
+}
