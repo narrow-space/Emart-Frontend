@@ -47,7 +47,10 @@ const Catslider = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
+          initialSlide: 2,
+          infinite: true,
+          dots:false,
+          arrows:false
         }
       },
       {
@@ -56,7 +59,8 @@ const Catslider = () => {
           slidesToShow: 1,
           slidesToScroll: 1,
           infinite: true,
-          dots:false
+          dots:false,
+          arrows:false
         }
       }
     ]

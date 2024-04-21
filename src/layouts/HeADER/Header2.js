@@ -62,7 +62,7 @@ const Header2 = ({ activeheading }) => {
 
   const navRef = useRef();
   const categoryRef = useRef();
-const navigation=useNavigate()
+  const navigation = useNavigate()
 
   ///get all products from database//
   const dispatch = useDispatch()
@@ -216,11 +216,11 @@ const navigation=useNavigate()
 
   const token = localStorage.getItem('usertoken')
 
-  const handlelogin=()=>{
+  const handlelogin = () => {
     navigation("/login")
     closeMobileNavbar()
   }
-  const handleUserAccount=()=>{
+  const handleUserAccount = () => {
     navigation("/myaccount/dashboard")
     closeMobileNavbar()
   }
@@ -525,21 +525,21 @@ const navigation=useNavigate()
                   </div>
 
                   <div className="mt-4" >
-                      <>
-                    {
-                        token? <div onClick={handleUserAccount} className="flex items-center justify-center cursor-pointer">
-                          <FaRegUserCircle className="" size={26}/>
-                        <p className="ml-3">Hlw..{userLoggedInData[0]?.firstname}</p>
+                    <>
+                      {
+                        token ? <div onClick={handleUserAccount} className="flex items-center justify-center cursor-pointer">
+                          <FaRegUserCircle className="" size={26} />
+                          <p className="ml-3">Hlw..{userLoggedInData[0]?.firstname}</p>
                         </div>
-                        
-                        : <CiUser onClick={handlelogin} className="cursor-pointer" size={26}/>
-                      
-                      }
-                      </>
-                    
-                      
 
-                   
+                          : <CiUser onClick={handlelogin} className="cursor-pointer" size={26} />
+
+                      }
+                    </>
+
+
+
+
                   </div>
 
 
@@ -608,22 +608,22 @@ const navigation=useNavigate()
       <div
 
         className="my-7 md:hidden block w-[92%] m-auto h-[30px] relative"
-      ><div className="relative w-full flex items-center justify-between bg-white rounded-md shadow-md overflow-hidden">
-      <input
-        type="search"
-        placeholder="Search for products..."
-        className="h-full w-full px-4 py-2 text-sm text-gray-700 placeholder-gray-500 focus:outline-none"
-        onChange={handleSearch}
-        value={search}
-      />
-      <button
-        className="bg-[#5C0F8B] text-white px-4 py-2 flex items-center justify-center"
-        onClick={handleSearch}
-      >
-        <IoSearchOutline size={20} />
-      </button>
-    </div>
-    
+      ><div className="relative w-full flex items-center justify-between bg-white  shadow-md overflow-hidden">
+          <input
+            type="search"
+            placeholder="Search for products..."
+            className="h-full w-full px-4 py-2 text-md text-gray-700 placeholder-gray-500 focus:outline-none overflow-x-hidden"
+            onChange={handleSearch}
+            value={search}
+          />
+          <button
+            className="bg-[#5C0F8B] text-white px-4 py-2 flex items-center justify-center"
+            onClick={handleSearch}
+          >
+            <IoSearchOutline size={20} />
+          </button>
+        </div>
+
         {search && searchData && searchData.length !== 0 ? (
           <div
             ref={searchRef}
