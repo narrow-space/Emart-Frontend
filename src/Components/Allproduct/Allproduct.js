@@ -36,12 +36,15 @@ const Allproduct = () => {
         <div className="productRow ">
 
           {
-            loading === true ? <Loading /> : <div className="item grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-6 md:gap-6">
+              <div className="item grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-6 md:gap-6">
 
 
               {
                 products && products.map((i, index) => {
                   return (
+                    loading === true ? <Loading />:
+
+
                     <Products
 
                       key={index}

@@ -64,6 +64,12 @@ export const GetAllproductsApi = async (data, header) => {
 
   return await commonrequest("GET", `${BASE_URL}/product/api/getproduct?page=${data.page}`, "", header, "admin")
 }
+// Get similar products Api//
+
+export const getSimilarProductsApi = async (data, header) => {
+
+  return await commonrequest("GET", `${BASE_URL}/product/api/product/${data.productid}/similar`, "", header, "admin")
+}
 
 // search products Api//
 

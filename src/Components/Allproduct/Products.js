@@ -77,7 +77,7 @@ const Products = ({ data, height }) => {
 
       <div
         className={`  product-details  md:w-[full] md:h-[auto]`}>
-        {data.type !== null && data.type !== undefined && (
+        {data?.type !== null && data?.type !== undefined && (
           <div className="badgge"><span className={`badgee z-[5]   ${data.type}`}>{data.type}</span></div>
         )}
 

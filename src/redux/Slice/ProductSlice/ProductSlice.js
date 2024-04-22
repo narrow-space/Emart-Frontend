@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import toast from "react-hot-toast";
-import { AddproductApi, GetAllproductsApi, filterproductsApi, newarivalproductsApi, getSingleProductApi, UpdateproductApi, DeleteImageApi, deleteproductsApi, searchProductApi, addReviewApi, getReviewApi, DeleteReviewApi } from "../../../api/Productapi/Productapi";
+import { AddproductApi, GetAllproductsApi, filterproductsApi, newarivalproductsApi, getSingleProductApi, UpdateproductApi, DeleteImageApi, deleteproductsApi, searchProductApi, addReviewApi, getReviewApi, DeleteReviewApi, getSimilarProductsApi } from "../../../api/Productapi/Productapi";
 
 
-// Admin get Brand slice
+
 
 
 
@@ -249,6 +249,24 @@ export const getSingleProduct = createAsyncThunk("getSingleProduct", async (data
 })
 
 
+////get similar product//
+export const getSimilarProducts = createAsyncThunk("getSimilarProducts", async (data) => {
+    try {
+
+        const response = await getSimilarProductsApi(data)
+        if (response.status == 200) {
+            return response.data
+        }
+        else {
+            toast.error(response.response.data.error)
+        }
+
+    } catch (error) {
+        throw error
+    }
+})
+
+
 ///add review slice///
 export const addReview = createAsyncThunk("addReview", async (data) => {
     try {
@@ -313,6 +331,7 @@ export const ProductSlice = createSlice({
 
         AddProducts: [],
         AllProducts: [],
+        getsimilarproducts:[],
         filterproducts: [],
         newArivalProduct: [],
         searchProductsData: [],
@@ -324,6 +343,7 @@ export const ProductSlice = createSlice({
         getReviewLoading: false,
         DeleteproductReviewData:[],
         DeleteReviewLoading:false,
+        getsimilarproductsLoading:false,
         loading: false,
         productdetaillsLoading:false,
         error: null
@@ -446,6 +466,19 @@ export const ProductSlice = createSlice({
                 state.productdetaillsLoading = false;
                 state.error = action.payload
             })
+
+          ///similar products ///
+    .addCase(getSimilarProducts.pending, (state) => {
+        state.getsimilarproductsLoading = true;
+    })
+    .addCase(getSimilarProducts.fulfilled, (state, action) => {
+        state.getsimilarproductsLoading = false;
+        state.getsimilarproducts = action.payload; // Update state with similar products array
+    })
+    .addCase(getSimilarProducts.rejected, (state, action) => {
+        state.getsimilarproductsLoading = false;
+        state.error = action.payload;
+    })
 
             ///search  products ///
             .addCase(searchProducts.pending, (state) => {

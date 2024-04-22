@@ -20,6 +20,8 @@ import {
   adminGetProducts,
   getReview,
   getSingleProduct,
+  AllProducts,
+  getSimilarProducts
 } from "../../redux/Slice/ProductSlice/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,6 +29,7 @@ import Loading from "../Share/Loading";
 import { userLoggedIn } from "../../redux/Slice/Userauthslice/userAuthSlice";
 import toast from "react-hot-toast";
 import { addtoCart, getCart } from "../../redux/Slice/cartSlice/cartSlice";
+import Products from "../Allproduct/Products";
 const ProductDetails = () => {
   const [currentData, setCurrentData] = useState({});
   const [newimage, setNewImage] = useState("");
@@ -45,11 +48,24 @@ const ProductDetails = () => {
     getReviewLoading,
     DeleteReviewLoading,
     reviewLoading,
+    getsimilarproducts,
+    getsimilarproductsLoading
+
   } = useSelector((state) => state.products);
   const [isLoading, setIsLoading] = useState(false);
   const { userLoggedInData } = useSelector((state) => state.user);
   const { getCartProduct } = useSelector((state) => state.cart);
   const Navigate = useNavigate();
+
+  useEffect(() => {
+    const data = {
+      productid: id,
+    };
+
+    dispatch(getSimilarProducts(data))
+  }, [productDetails])
+
+
 
   ///Get current user///
   const userverify = () => {
@@ -68,6 +84,7 @@ const ProductDetails = () => {
     };
 
     dispatch(getSingleProduct(data));
+
   };
 
   useEffect(() => {
@@ -252,7 +269,6 @@ const ProductDetails = () => {
 
 
 
-
   return (
     <>
       {productdetaillsLoading ? (
@@ -265,37 +281,37 @@ const ProductDetails = () => {
 
 
 
-              <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: "Product Image",
-                    isFluidWidth: true,
-                    src: newimage,
+                <ReactImageMagnify
+                  {...{
+                    smallImage: {
+                      alt: "Product Image",
+                      isFluidWidth: true,
+                      src: newimage,
 
-                  },
-                  largeImage: {
-                    src: newimage,
-                    width: isMobileDevice ? 400 : 550,
-                    height: isMobileDevice ? 1200 : 1800,
+                    },
+                    largeImage: {
+                      src: newimage,
+                      width: isMobileDevice ? 400 : 550,
+                      height: isMobileDevice ? 1200 : 1800,
 
 
-                  },
-                  enlargedImageContainerStyle: {
-                    zIndex: 9999,
-                    width: isMobileDevice ? "100%" : 700 // Set width to 100% on mobile devices
-                  },
-                  isHintEnabled: true,
-                  shouldHideHintAfterFirstActivation: false,
+                    },
+                    enlargedImageContainerStyle: {
+                      zIndex: 9999,
+                      width: isMobileDevice ? "100%" : 700 // Set width to 100% on mobile devices
+                    },
+                    isHintEnabled: true,
+                    shouldHideHintAfterFirstActivation: false,
 
-                  enlargedImagePosition: isMobileDevice ? "over" : "side", // Set position to "over" on mobile devices
+                    enlargedImagePosition: isMobileDevice ? "over" : "side", // Set position to "over" on mobile devices
 
-                  isActivatedOnTouch: false, // Enable inner zoom on touch devices
-                  pressDuration: 200,
-                  pressMoveThreshold: 9,
-                  fadeDurationInMs: 700
+                    isActivatedOnTouch: false, // Enable inner zoom on touch devices
+                    pressDuration: 200,
+                    pressMoveThreshold: 9,
+                    fadeDurationInMs: 700
 
-                }}
-              />
+                  }}
+                />
 
 
 
@@ -360,17 +376,17 @@ const ProductDetails = () => {
               </div>
 
               <span className="bg-red-600 text-white p-[1px] text-sm">Stocks</span><span className="text-black ">:{productDetails?.quantity}</span>
-              
-                    <div className="flex items-center">
-                        <Rating
-                            style={{ maxWidth: 80 }}
-                            value={currentData?.rating?.rate}
-                            readOnly
-                            itemStyles={myStyles}
-                        />
-                        <br /> <br />
-                        <span className="pl-3">{currentData?.rating?.rate}</span>
-                    </div>
+
+              <div className="flex items-center">
+                <Rating
+                  style={{ maxWidth: 80 }}
+                  value={currentData?.rating?.rate}
+                  readOnly
+                  itemStyles={myStyles}
+                />
+                <br /> <br />
+                <span className="pl-3">{currentData?.rating?.rate}</span>
+              </div>
 
               <div className="flex items-center">
                 <h4 className="text-[20px] md:text-[58px] font-[900]">
@@ -421,6 +437,37 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
+
+          <div>
+
+
+
+          </div>
+
+          {/* similar products show */}
+
+          <div className="productrow">
+            <hr />
+            <h1 className="text-2xl font-[700] my-7">Similar products</h1>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-6 md:gap-6">
+
+              {
+                getsimilarproducts.map((pd, index) => {
+                  return getsimilarproductsLoading ?
+                    <Loading />
+                    :
+                    <Products key={index} data={pd} />
+                })
+              }
+            </div>
+          </div>
+
+
+
+
+
+
+
           <div className="w-[100%] mt-5 h-[60%] p-6 border-solid border-2 border-[#8080801c] rounded-2xl">
             <div className="customtabs">
               <ul className="flex items-center ">
