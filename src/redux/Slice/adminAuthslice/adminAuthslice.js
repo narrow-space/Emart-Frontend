@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminLogin ,adminLoggedOut, AdminLoggedInApi } from "../../../api/Adminapi/Adminapi";
+import { adminLogin ,adminLoggedOut, AdminLoggedInApi, adminRegisterApi } from "../../../api/Adminapi/Adminapi";
 import toast from "react-hot-toast";
 
 ////Admin login Slice//
@@ -19,6 +19,48 @@ export  const AdminauthLogin=createAsyncThunk("adminlogin",async(data)=>{
         throw error
     }
 })
+
+///Admin register Slice///
+export const adminRegisterSlice = createAsyncThunk("adminRegisterSlice", async (data) => {
+    try {
+        const {
+            firstname,
+            lastname,
+            password,
+            confirmPassword,
+            email,
+            file,
+            config,
+        } = data;
+
+        const fromData = new FormData();
+        fromData.append("firstname", firstname);
+        fromData.append("lastname", lastname);
+        fromData.append("email", email);
+        fromData.append("password", password);
+        fromData.append("confirmPassword", confirmPassword);
+        fromData.append("file", file);
+       
+        const response = await adminRegisterApi(fromData, config);
+
+        if (response.status == 200) {
+            toast.success("Register sucessfully");
+
+            return response.data;
+        } else if (response.response.status == 400) {
+            toast.error(response.response.data.error);
+            return response;
+        } else {
+            toast.error(response.response.data.error);
+        }
+    } catch (error) {
+        throw error;
+    }
+});
+
+
+
+
 
 
 // Admin LoggedIn Slice
@@ -64,11 +106,26 @@ export const Adminslice=createSlice({
     name:"AdminSlice",
     initialState:{
         adminLogin:[],
+        adminRegisterData: [],
         adminLoggedINData:[],
         adminLoggedOut:[],
         loading:false,
         error:null
     },
+
+    reducers: {
+        clearadminLogInData: (state) => {
+            state.adminLogin = [];
+        },
+        clearadminLoggedINData: (state) => {
+            state.adminLoggedINData = [];
+        }
+    },
+
+
+
+
+
     extraReducers:(builder)=>{
         ///Admin login
         builder.addCase(AdminauthLogin.pending,(state)=>{
@@ -81,6 +138,18 @@ export const Adminslice=createSlice({
         .addCase(AdminauthLogin.rejected,(state,action)=>{
             state.loading=false;
             state.error=action.payload
+        })
+        ////  ///admin Register//
+        .addCase(adminRegisterSlice.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(adminRegisterSlice.fulfilled, (state, action) => {
+            state.loading = false;
+            state.adminRegisterData = action.payload;
+        })
+        .addCase(adminRegisterSlice.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         })
 
         // ///Admin Verify///
@@ -111,4 +180,5 @@ export const Adminslice=createSlice({
         })
     }
 })
+export const { clearadminLogInData,clearadminLoggedINData} = Adminslice.actions;
 export default Adminslice.reducer

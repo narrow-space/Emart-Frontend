@@ -51,6 +51,34 @@ const Dashboard = () => {
   }
 
 
+  ///handle logout function///
+  // const userlogout = () => {
+  //   dispatch(userLogout()).then((res) => {
+  //     if (res.payload.message == "User successfully Logout") {
+
+  //       // navigate("/login")
+  //       dispatch(clearCartData());
+  //       // dispatch(clearuserLogInData());
+  //       dispatch(clearuserLoggedInData());
+  //     }
+
+
+  //   }).catch((err) => {
+  //     dispatch(clearCartData());
+  //     // dispatch(clearuserLogInData());
+  //     dispatch(clearuserLoggedInData());
+  //     // navigate("/login");
+
+  //   })
+  // }
+
+
+
+
+
+
+
+
   useEffect(() => {
     const token = localStorage.getItem('usertoken');
 
@@ -63,8 +91,10 @@ const Dashboard = () => {
 
         if (expirationTime < currentTime) {
           // Token expired, redirect to login page
-          navigate('/login');
+          dispatch(clearuserLoggedInData());
           localStorage.removeItem('usertoken');
+          navigate('/login');
+      
         }
 
         else {
@@ -73,23 +103,17 @@ const Dashboard = () => {
 
           // Set a timer to redirect the user when the token expires
           const expirationTimer = setTimeout(() => {
-            navigate('/login');
+            dispatch(clearuserLoggedInData());
             localStorage.removeItem('usertoken');
+            navigate('/login');
+      
           }, timeUntilExpiration);
 
           // Clean up the timer when the component unmounts or when the token changes
           return () => clearTimeout(expirationTimer);
         }
-      } else {
-        // Invalid token or missing expiration time, redirect to login page
-        navigate('/login');
-        localStorage.removeItem('usertoken');
-      }
-    } else {
-      // No token found, redirect to login page
-      navigate('/login');
-      localStorage.removeItem('usertoken');
-    }
+      } 
+    } 
   }, [navigate, userLoggedInData]);
 
 

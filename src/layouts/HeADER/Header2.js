@@ -348,6 +348,10 @@ const Header2 = ({ activeheading }) => {
           <div className="flex  items-center">
             <Navbar activeheading={activeheading} />
           </div>
+
+
+
+
           {/* compare,addtocart,wishlist user*/}
           <div className=" mr-[5.25rem]">
             <div className=" group flex items-center pl-2">
@@ -434,6 +438,7 @@ const Header2 = ({ activeheading }) => {
           </div>
         </div>
       </div>
+      
 
       {/* Mobile Header... */}
 

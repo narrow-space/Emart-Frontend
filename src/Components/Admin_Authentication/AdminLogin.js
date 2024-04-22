@@ -4,12 +4,14 @@ import { IoMdEyeOff } from "react-icons/io";
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assest/Daco_4162933.png"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AdminauthLogin } from "../../redux/Slice/adminAuthslice/adminAuthslice";
+import Loading from "../Share/Loading";
 const Login = () => {
   const [show, setHide] = useState(true);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { loading } = useSelector((state) => state.Admin)
   const [inputvalue, setInputvalue] = useState({
     email: "",
     password: "",
@@ -119,21 +121,23 @@ const Login = () => {
                 </div>
               </div>
             </div>
-
-            <div>
-              <button
-                onClick={adminlogin}
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </button>
-            </div>
+              {
+                loading ?<Loading/>:    <div>
+                <button
+                  onClick={adminlogin}
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Sign in
+                </button>
+              </div>
+              }
+        
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{" "}
-            <Link to="/register"
+            <Link to="/admin/register"
               href="#"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >

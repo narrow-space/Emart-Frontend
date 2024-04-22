@@ -1,8 +1,44 @@
+
+.product-card {
+
+  overflow: hidden; /* Ensures the button stays within the card */
+}
+
+
+.add-to-cart-button {
+  position: absolute;
+  bottom: -42px; /* Initially position the button below the card */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  transition: bottom 0.4s ease-in-out; /* Add transition for smooth movement */
+}
+
+@media (min-width: 768px) {
+  /* Apply styles only for devices with a minimum width of 768px (desktop) */
+  .product-card:hover .add-to-cart-button {
+    opacity: 0.7;
+    bottom: 0; /* Move the button up to its original position */
+  }
+}
+
+
+
 .product-details {
   //  height:50vh;
-  border-radius: 15px;
 
-  border: 1px solid rgba(128, 128, 128, 0.147);
+  .tooltip {
+    /* Add your desired styles here */
+    color: red; /* Example color */
+    /* Other styles such as background-color, border, etc. */
+  }
+  
+  
   position: relative;
 
   .badgee {
@@ -12,7 +48,7 @@
 
     font-size: 12px;
     line-height: 1;
-    border-radius: 15px 0 20px 0;
+    border-radius: 0 0 20px 0;
 
     padding: 9px 20px 10px 20px;
   }
@@ -62,7 +98,7 @@
   }
 
   .imgwraper .overlay ul {
-    background: #def9ec;
+    background: #000;
     width: 130px;
     height: 40px;
     border-radius: 5px;
@@ -70,7 +106,7 @@
   .imgwraper .overlay ul li {
     display: block;
     padding: 10px;
-    color: #00cdb8;
+    color: white;
   }
   .imgwraper .overlay ul li:nth-child(2) {
     border-left: 1px solid rgba(0, 139, 139, 0.305);
@@ -91,7 +127,7 @@
 
 .product-details:hover {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  border: 1px solid #00cdb95f;
+  
 }
 
 // .info button:hover{
@@ -105,9 +141,7 @@
 
 // }
 
-.product-details .imgwraper .overlay ul li:hover {
-  color: rgba(0, 0, 0, 0.445) !important;
-}
+
 .product-details .imgwraper .overlay:hover {
   opacity: 1;
   transform: scale(1);

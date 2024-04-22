@@ -9,6 +9,7 @@ import {
   HeartIcon,
   EyeIcon,
   ArrowPathIcon,
+  ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 // import {HeartIcon} from "@heroicons/react/24/solid";
 
@@ -72,16 +73,16 @@ const Products = ({ data, height }) => {
 
 
   return (
-    <div className="">
-     
+    <div className="product-card relative">
+
 
       <div
         className={`  product-details  md:w-[full] md:h-[auto]`}>
         {data?.type !== null && data?.type !== undefined && (
-          <div className="badgge"><span className={`badgee z-[5]   ${data.type}`}>{data.type}</span></div>
+          <div className="badgge"><span className={`badgee sm:z-[5]   ${data.type}`}>{data.type}</span></div>
         )}
 
-        <div className={`md:h-[280px] h-[350px]`}>
+        <div className={`md:h-[310px] h-[300px]`}>
           <div className={`imgwraper`}>
             <Link
 
@@ -104,34 +105,34 @@ const Products = ({ data, height }) => {
                   {click ? (
                     <>
                       <div
-                        className=" tooltip tooltip-accent "
+                        className=" tooltip  "
                         data-tip="Remove Wishlist"
                       >
                         <FaHeart
                           size={19}
                           onClick={() => setClcik(!click)}
                           className="w-5 "
-                          color={click ? "#00D7C0" : "#00d7c0"}
+                          color={click ? "white" : "#00d7c0"}
                         />
                       </div>
                     </>
                   ) : (
                     <div
-                      className=" tooltip tooltip-accent "
+                      className=" tooltip  "
                       data-tip="Add Wishlist"
                     >
                       <FaRegHeart
                         size={19}
                         onClick={() => setClcik(!click)}
                         className="w-5 "
-                        color={click ? "#00D7C0" : "#00d7c0"}
+                        color={click ? "#00D7C0" : "white"}
                       />
                     </div>
                   )}
                 </li>
 
-                <div className="tooltip tooltip-accent" data-tip="View">
-                  <li className="">
+                <div className="tooltip " data-tip="View">
+                  <li className="cursor-pointer">
                     <EyeIcon
                       onClick={() => setModalOpen(!modalOpen)}
                       className="w-5"
@@ -139,7 +140,7 @@ const Products = ({ data, height }) => {
                   </li>
                 </div>
 
-                <div className="tooltip tooltip-accent " data-tip="Compare">
+                <div className="tooltip  " data-tip="Compare">
                   <li className="">
                     <ArrowPathIcon className="w-5 " />
                   </li>
@@ -167,7 +168,7 @@ const Products = ({ data, height }) => {
                 className="title text-sm"
               >
                 {
-                  data.productName}
+                  data.productName.length > 20 ? data.productName.substring(0, 50) : data.productName}
               </h4>
             </Link>
             {/* <div className="flex items-center">
@@ -183,22 +184,23 @@ const Products = ({ data, height }) => {
               // onClick={() => sessionStorage.setItem("title", `${product_name}`)} 
 
               to={`/allproduct/${data._id}`}>
-              <div className="flex items-center justify-between">
-
-                <h4 className="text-sm font-[900]">
-                  <span className="text-xl">$</span>
+              <div className="flex items-center mt-4">
+              <span className="text-xl">$</span>
+                <h4 className="text-sm font-[700]">
+                 
                   {handleDiscount(data?.price)}
                 </h4>
-                <div className="pl-2 flex flex-col items-center">
-                  <p className="text-[white] bg-[#5C0F8B] text-xs p-[2px] ">
-                    {data?.discount}% off
-                  </p>
-                  <span className="line-through text-[gray]">
+
+                <span className="line-through text-xs   text-[gray] mx-5 font-thin">
                     ${data?.price}
 
                   </span>
 
-                </div>
+                <p className=" text-[orange] text-xs  mx-1 ">
+                    {data?.discount}% off
+                  </p>
+                 
+                
               </div>
             </Link>
             {/* <div className="relative mb-6  hover:top-[-3px]  "> */}
@@ -213,7 +215,7 @@ const Products = ({ data, height }) => {
         </div>
         <div
           onClick={() => handleAddtoCart(data._id)}
-          className="w-[100%] h-[47px] bg-[#5C0F8B] flex items-center justify-center rounded-b-lg p-0  cursor-pointer transition ease-in duration-300">
+          className="hidden add-to-cart-button cursor-pointer w-[100%] h-[40px] bg-[#050608e8] sm:flex items-center justify-center  p-0 ">
 
           <h1 className="text-center font-medium text-[white]">
             {data?.quantity < 1 ? <p>Out of Stock</p> : <>
@@ -221,7 +223,26 @@ const Products = ({ data, height }) => {
               {isLoading ? (
                 <span className="loading loading-spinner loading-lg" />
               ) : (
-                <span>ADD TO CART</span>
+                <div className="flex flex-row items-center justify-center">
+                  <div><ShoppingBagIcon className="w-4 mr-1"/></div>
+                  <div className="text-sm">ADD TO CART</div>
+                </div>
+              )}
+            </>}
+          </h1>
+        </div>
+
+        <div
+          onClick={() => handleAddtoCart(data._id)}
+          className="lg:hidden cursor-pointer w-[100%] h-[40px] bg-[#050608e8] flex items-center justify-center  p-0 ">
+
+          <h1 className="text-center font-medium text-[white]">
+            {data?.quantity < 1 ? <p>Out of Stock</p> : <>
+
+              {isLoading ? (
+                <span className="loading loading-spinner loading-lg" />
+              ) : (
+                <span className="text-sm">ADD TO CART</span>
               )}
             </>}
           </h1>

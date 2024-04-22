@@ -8,7 +8,7 @@ import ThemeProvider from "./Contexapi/Themecontex.js";
 import NavProvider from "./Contexapi/NavopenContex.js";
 import Lottie from "lottie-react";
 import animationData from "./Animation - 1702200728330.json";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import ListingProductMain from "./Components/ListingPageMain/ListingProductMain.js";
 import ProductDetails from "./Components/ProductDetails/ProductDetails.js";
 import Notfound from "./Components/Share/Notfound.js";
@@ -27,6 +27,7 @@ import Register from "./Components/user_Authentication/Register.js";
 import Shipping from "./Components/Shipping/Shipping.js";
 
 import AdminLogin from "./Components/Admin_Authentication/AdminLogin.js";
+import AdminRegister from "./Components/Admin_Authentication/AdminRegister.js";
 import AdminAccount from "./Components/Admin_Authentication/AdminAccount.js";
 import Admindashboard from "./Components/Admin_Authentication/Admindashboard.js";
 import AddBannerImages from "./Components/Admin_Authentication/AddBannerImages.js";
@@ -42,35 +43,27 @@ import UpdateProduct from "./Components/Admin_Authentication/UpdateProduct.js";
 import ScroolToTop from "./Components/Share/ScroolToTop.js";
 import UserProtectedRoutes from "./Components/ProtectRoutes/UserProtectedRoutes.js";
 import AdminProtectedRoutes from "./Components/ProtectRoutes/AdminProtectRoutes.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartProvider, { CartopenContex } from "./Contexapi/Cartopencontex.js";
-
+import { jwtDecode } from 'jwt-decode';
+import { clearuserLoggedInData } from "./redux/Slice/Userauthslice/userAuthSlice.js";
+import { clearadminLoggedINData } from "./redux/Slice/adminAuthslice/adminAuthslice.js";
 const App = () => {
-
-  const { addToCartLoading,getCartProduct} = useSelector((state) => state.cart);
-  const { cartopen, setCartopen } = useContext(CartopenContex);
-  const cartopenbyclck=()=>{
-    setCartopen(!cartopen)
-  }
-  const location = useLocation();
-  
+const location = useLocation();
+ 
   useEffect(() => {
     if (location.pathname) {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
-
-    // Trigger jerk animation when routes change
-    const cartElement = document.querySelector(".cart-container");
-    cartElement.classList.add("animate-jerk");
-
-    // Remove jerk animation class after a short delay
-    setTimeout(() => {
-      cartElement.classList.remove("animate-jerk");
-    }, 1000); // Adjust the delay as needed
+   
   }, [location]); 
 
-  const [totalPrice, setTotalPrice] = useState(0);
+ 
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+ 
+  const { userLoggedInData } = useSelector((state) => state.user);
 
 
 
@@ -90,50 +83,101 @@ const App = () => {
   //     document.body.removeEventListener('contextmenu', disableRightClick);
   //   };
   // }, []);
- 
- 
-  useEffect(() => {
-    animateTotalPrice();
-  }, [getCartProduct,location]);
-  
-  // Calculate total price whenever getCartProduct changes
-  const calculateTotalPrice = () => {
-    let totalPrice = 0;
-    getCartProduct.forEach((item) => {
-      totalPrice += item.details.price * item.quantity;
-    });
-    return totalPrice;
-  };
 
-  // Animate total price increase
-  const animateTotalPrice = () => {
-    const interval = 50; // Adjust the interval for smoother animation
-    const increment = Math.ceil(calculateTotalPrice() / 20); // Adjust the increment for desired speed
 
-    let currentPrice = 0;
-    const timer = setInterval(() => {
-      currentPrice += increment;
-      setTotalPrice(currentPrice);
-      if (currentPrice >= calculateTotalPrice()) {
-        clearInterval(timer);
-        setTotalPrice(calculateTotalPrice());
+ ////user automatic logout when token expired//
+ useEffect(() => {
+  const token = localStorage.getItem('usertoken');
+
+  if (token) {
+    const decodedToken = jwtDecode(token);
+
+    if (decodedToken && decodedToken.exp) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const expirationTime = decodedToken.exp;
+
+      if (expirationTime < currentTime) {
+        // Token expired, redirect to login page
+        dispatch(clearuserLoggedInData());
+        localStorage.removeItem('usertoken');
+        navigate('/login');
+    
       }
-    }, interval);
-  };
+
+      else {
+        // Calculate time until token expiration
+        const timeUntilExpiration = (expirationTime - currentTime) * 1000;
+
+        // Set a timer to redirect the user when the token expires
+        const expirationTimer = setTimeout(() => {
+          dispatch(clearuserLoggedInData());
+          localStorage.removeItem('usertoken');
+          navigate('/login');
+    
+        }, timeUntilExpiration);
+
+        // Clean up the timer when the component unmounts or when the token changes
+        return () => clearTimeout(expirationTimer);
+      }
+    } 
+  } 
+}, [navigate, userLoggedInData]);
+
+
+
+ ////admin autometic logout when token expired//
+ useEffect(() => {
+  const token = localStorage.getItem('admintoken');
+
+  if (token) {
+    const decodedToken = jwtDecode(token);
+
+    if (decodedToken && decodedToken.exp) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const expirationTime = decodedToken.exp;
+
+      if (expirationTime < currentTime) {
+        // Token expired, redirect to login page
+        dispatch(clearadminLoggedINData());
+        localStorage.removeItem('admintoken');
+        navigate('/');
+    
+      }
+
+      else {
+        // Calculate time until token expiration
+        const timeUntilExpiration = (expirationTime - currentTime) * 1000;
+
+        // Set a timer to redirect the user when the token expires
+        const expirationTimer = setTimeout(() => {
+          dispatch(clearadminLoggedINData());
+          localStorage.removeItem('admintoken');
+          navigate('/');
+    
+        }, timeUntilExpiration);
+
+        // Clean up the timer when the component unmounts or when the token changes
+        return () => clearTimeout(expirationTimer);
+      }
+    } 
+  } 
+}, [navigate, userLoggedInData]);
+
+
+
+
+
+
+
+
+
+ 
+ 
+  
+
+
   return (
     <div className="webkit">
-      <div 
-      onClick={cartopenbyclck}
-      className={`cart-container ${
-       addToCartLoading ? "animate-jerk" : ""
-      } cursor-pointer bg-[black] h-[80px] w-[70px] fixed top-[38%] right-0 z-10 flex flex-col items-center justify-center rounded-tl-xl rounded-b-xl `}>
-        <div className="w-full h-[70%] flex flex-col items-center justify-center  ">
-          <FaBagShopping size={33} color="white" />
-          <small className="text-[white]">{getCartProduct.length} items</small>
-        </div>
-        <div className="bg-[#FF3D71] flex items-center justify-center rounded-bl-xl  w-full h-[30%]">
-        <p className="text-sm text-white">${totalPrice}</p></div>
-      </div>
 
       <ThemeProvider>
        
@@ -143,6 +187,7 @@ const App = () => {
               {/* Admin Router */}
 
               <Route exact={true} path="/admin/login" element={<Layout><AdminLogin /></Layout>} />
+              <Route exact={true} path="/admin/register" element={<Layout><AdminRegister /></Layout>} />
 
               {/*Admin account Nested Route  */}
               <Route path="adminaccount" element={<AdminProtectedRoutes Components={AdminAccount} />}>

@@ -84,13 +84,13 @@ const CategorySidebar = (props) => {
   }, [value]);
 
   const filterByBrand = (keyword) => {
-   
+
     props.filterByBrand(keyword);
     setSelectedBrand(keyword);
   };
 
   const filterBySize = (keyword) => {
-    
+
     props.filterBySize(keyword);
 
     setSelectedSize(keyword)
@@ -251,9 +251,10 @@ const CategorySidebar = (props) => {
 
       <div>
         <div className="md:hidden block">
-          <div className="flex items-center justify-center mt-7 cursor-pointer">
+          <div className="flex items-center justify-items-end mt-7 cursor-pointer">
+            {/* Place Select on the left side */}
             <Select
-              className="  w-64 mx-4"
+              className="w-64 mr-auto z-10"
               placeholder={`sort by`}
               defaultValue={props.selectedOption}
               onChange={props.setSelectedOption}
@@ -261,12 +262,19 @@ const CategorySidebar = (props) => {
               isSearchable={false}
             />
 
-            <CiFilter
-              onClick={() => setFilterOpen(!filteropen)}
-              className="ml-auto "
-              size={30}
-            />
+            {/* Place Filter icon on the right side */}
+            <div 
+            onClick={() => setFilterOpen(!filteropen)}
+            className="flex items-center justify-between ">
+              <CiFilter
+                
+                className=""
+                size={30}
+              />
+              <span>Filters</span>
+            </div>
           </div>
+
 
           <div
             className={`top-0 right-0 fixed z-50  ${filteropen ? "bg-[rgba(0,0,0,.8)] w-full h-screen" : null
@@ -383,28 +391,28 @@ const CategorySidebar = (props) => {
                                 </h5>
                                 <div className="filter_Size">
                                   <div className="flex items-center">
-                                  <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                 
-                    name="radio-buttons-group"
-                    value={selectedSize}
-                    onChange={(e) => filterBySize(e.target.value)}
+                                    <RadioGroup
+                                      aria-labelledby="demo-radio-buttons-group-label"
 
-                  >
-                    {sizes.length !== 0 &&
-                      sizes.map((item, index) => {
-                        return (
-                          <FormControlLabel
-                            value={item}
-                            key={index}
-                            control={
-                              <Radio/>
-                            }
-                            label={item}
-                          />
-                        );
-                      })}
-                  </RadioGroup>
+                                      name="radio-buttons-group"
+                                      value={selectedSize}
+                                      onChange={(e) => filterBySize(e.target.value)}
+
+                                    >
+                                      {sizes.length !== 0 &&
+                                        sizes.map((item, index) => {
+                                          return (
+                                            <FormControlLabel
+                                              value={item}
+                                              key={index}
+                                              control={
+                                                <Radio />
+                                              }
+                                              label={item}
+                                            />
+                                          );
+                                        })}
+                                    </RadioGroup>
                                   </div>
 
                                   <button
