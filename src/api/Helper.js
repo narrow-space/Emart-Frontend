@@ -1,4 +1,4 @@
 // export const BASE_URL="http://localhost:4001"
-// export const BASE_URL="https://emart-backend-21cj.onrender.com"
-export const BASE_URL="https://emart-backend-production.up.railway.app"
+export const BASE_URL="https://emart-backend-21cj.onrender.com"
+// export const BASE_URL="https://emart-backend-production.up.railway.app"
 
