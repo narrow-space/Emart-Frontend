@@ -78,9 +78,9 @@ const Products = ({ data, height }) => {
 
       <div
         className={`  product-details  md:w-[full] md:h-[auto]`}>
-        {data?.type !== null && data?.type !== undefined && (
+        {/* {data?.type !== null && data?.type !== undefined && (
           <div className="badgge"><span className={`badgee sm:z-[5]   ${data.type}`}>{data.type}</span></div>
-        )}
+        )} */}
 
         <div className={`md:h-[310px] h-[300px]`}>
           <div className={`imgwraper`}>
@@ -165,7 +165,7 @@ const Products = ({ data, height }) => {
               </span>
               <h4
                 style={{ color: "" }}
-                className="title text-sm"
+                className="title text-sm h-[40px] my-3"
               >
                 {
                   data.productName.length > 20 ? data.productName.substring(0, 50) : data.productName}
@@ -184,7 +184,7 @@ const Products = ({ data, height }) => {
               // onClick={() => sessionStorage.setItem("title", `${product_name}`)} 
 
               to={`/allproduct/${data._id}`}>
-              <div className="flex items-center mt-4">
+              <div className="flex items-center justify-stretch mt-6">
               <span className="text-xl">$</span>
                 <h4 className="text-sm font-[700]">
                  
@@ -196,8 +196,8 @@ const Products = ({ data, height }) => {
 
                   </span>
 
-                <p className=" text-[orange] text-xs  mx-1 ">
-                    {data?.discount}% off
+                <p className=" text-[orange] text-xs  ">
+                    {data?.discount}%off
                   </p>
                  
                 

@@ -253,14 +253,16 @@ const CategorySidebar = (props) => {
         <div className="md:hidden block">
           <div className="flex items-center justify-items-end mt-7 cursor-pointer">
             {/* Place Select on the left side */}
-            <Select
-              className="w-64 mr-auto z-10"
+           <div className="">
+           <Select
+              className="w-64 mr-auto "
               placeholder={`sort by`}
               defaultValue={props.selectedOption}
               onChange={props.setSelectedOption}
               options={props.options}
               isSearchable={false}
             />
+           </div>
 
             {/* Place Filter icon on the right side */}
             <div 
