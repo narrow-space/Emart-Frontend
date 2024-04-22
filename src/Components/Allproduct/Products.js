@@ -81,7 +81,7 @@ const Products = ({ data, height }) => {
           <div className="badgge"><span className={`badgee z-[5]   ${data.type}`}>{data.type}</span></div>
         )}
 
-        <div className={`md:h-[280px] h-[300px]`}>
+        <div className={`md:h-[280px] h-[350px]`}>
           <div className={`imgwraper`}>
             <Link
 
