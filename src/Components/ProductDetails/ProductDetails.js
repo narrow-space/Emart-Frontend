@@ -30,6 +30,7 @@ import { userLoggedIn } from "../../redux/Slice/Userauthslice/userAuthSlice";
 import toast from "react-hot-toast";
 import { addtoCart, getCart } from "../../redux/Slice/cartSlice/cartSlice";
 import Products from "../Allproduct/Products";
+import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 const ProductDetails = () => {
   const [currentData, setCurrentData] = useState({});
   const [newimage, setNewImage] = useState("");
@@ -55,8 +56,9 @@ const ProductDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { userLoggedInData } = useSelector((state) => state.user);
   const { getCartProduct } = useSelector((state) => state.cart);
+  const [items, setItems] = useState(1);
   const Navigate = useNavigate();
-
+  console.log(review)
   useEffect(() => {
     const data = {
       productid: id,
@@ -263,7 +265,11 @@ const ProductDetails = () => {
     }
   };
 
+  const ratingNumber = () => {
+    const numberofRating = review.map((rw) => rw.rating)
 
+    return numberofRating
+  }
 
 
 
@@ -349,6 +355,36 @@ const ProductDetails = () => {
               <h3 className="text-[20px] md:text-4xl my-5">
                 {productDetails.productName}
               </h3>
+
+              <div className="flex items-center">
+                <Rating
+                  style={{ maxWidth: 80 }}
+                  value={
+                    ratingNumber()}
+                  readOnly
+                  itemStyles={myStyles}
+                />
+                <br /> <br />
+                <span className="pl-3">({review?.length} reviews)</span>
+              </div>
+              <div className="flex items-center">
+                <h4 className="text-xl font-[900]">
+                  ${handleDiscount(productDetails?.price)}
+                </h4>
+                <div className="pl-2 flex flex-col items-center">
+                  <p className="text-[red] text-xl  ">
+                    {productDetails?.discount}% off
+                  </p>
+                  <span className="line-through text-xl   text-[gray]">
+                    ${productDetails?.price}
+
+                  </span>
+
+                </div>
+              </div>
+
+
+
               <p className="text-black text-sm ">{productDetails.description}</p>
               <br />
 
@@ -375,67 +411,70 @@ const ProductDetails = () => {
 
               </div>
 
-              <span className="bg-red-600 text-white p-[1px] text-sm">Stocks</span><span className="text-black ">:{productDetails?.quantity}</span>
+              <span className=" text-black  text-sm ">ABILITY</span><span className="text-black "> :
+                {productDetails?.quantity > 1 ? <span className="bg-green-700 text-sm p-1 rounded-md text-white">
+                  In stock
+                </span> : <span>
+                  Stock Out
+                </span>}
+              </span>
 
-              <div className="flex items-center">
-                <Rating
-                  style={{ maxWidth: 80 }}
-                  value={currentData?.rating?.rate}
-                  readOnly
-                  itemStyles={myStyles}
-                />
-                <br /> <br />
-                <span className="pl-3">{currentData?.rating?.rate}</span>
-              </div>
 
-              <div className="flex items-center">
-                <h4 className="text-[20px] md:text-[58px] font-[900]">
-                  ${handleDiscount(productDetails?.price)}
-                </h4>
-                <div className="pl-2 flex flex-col items-center">
-                  <p className="text-[red] text-[12px] md:text-[20px] ">
-                    {productDetails?.discount}% off
-                  </p>
-                  <span className="line-through text-[20px]  md:text-[38px] font-[500]  text-[gray]">
-                    ${productDetails?.price}
+              <div className=" flex items-center  mt-3 w-[100%]">
+                <div>
+                  {/* inc and dec and button add to cart */}
+                  <div className='flex  h-[40px]  '>
+                    <div
+                      onClick={increase}
+                      className='border  p-[.5rem] cursor-pointer'>+</div>
+                    <div className='border p-[.5rem]'>{count}</div>
+                    <div
+                      onClick={decrease}
+                      className='border p-[.5rem] cursor-pointer'>-</div>
+                  </div>
+                </div>
 
-                  </span>
+                <div className="ml-3">
+
+
+
+
+                  <div
+                    onClick={() => handleAddtoCart(productDetails._id)}
+                    className=" cursor-pointer w-[100%] h-[40px] bg-[#050608e8] flex items-center justify-center  p-3 ">
+
+                    <h1 className="text-center font-medium text-[white]">
+                      {productDetails?.quantity < 1 ? <p>Out of Stock</p> : <>
+
+                        {isLoading ? (
+                          <span className="text-center loading loading-spinner loading-lg" />
+                        ) : (
+                          <div className="flex items-center justify-center">
+
+                            <ShoppingBagIcon className="w-5 h-5 mr-1" />
+                            <span className="text-sm">ADD TO CART</span>
+                          </div>
+                        )}
+                      </>}
+                    </h1>
+                  </div>
+
+
+
+
+
 
                 </div>
+
+
               </div>
 
-              {/* inc and dec and button add to cart */}
-              <div className="inc_dec  flex items-center">
-                {/* <div className="counter">
-                <input value={count} type="number" />
-                <span onClick={() => { increase()}}className="arrow up">
-                  <IoIosArrowUp />
-                </span>
-                <span onClick={decrease} className="arrow down">
-                  <IoIosArrowDown />
-                </span>
-              </div> */}
-                <button onClick={(e) => {
 
-                  handleAddtoCart(productDetails._id);
-                }} className=" btn  bg-[#5C0F8B] text-[white] hover:bg-[#FF3D71]">
-                  {productDetails?.quantity < 1 ? <p>Out of Stock</p> : <>
 
-                    {isLoading ? (
-                      <span className="loading loading-spinner loading-lg" />
-                    ) : (
-                      <>
-
-                        <span>
-                          <BsCart2 size={15} />
-                        </span>
-                        <h2 className="">Add to cart</h2>
-                      </>
-                    )}
-                  </>}
-                </button>
-              </div>
             </div>
+
+
+
           </div>
 
           <div>

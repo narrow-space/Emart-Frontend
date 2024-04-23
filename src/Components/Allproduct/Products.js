@@ -185,22 +185,22 @@ const Products = ({ data, height }) => {
 
               to={`/allproduct/${data._id}`}>
               <div className="flex items-center justify-stretch mt-6">
-              <span className="text-xl">$</span>
+                <span className="text-xl">$</span>
                 <h4 className="text-sm font-[700]">
-                 
+
                   {handleDiscount(data?.price)}
                 </h4>
 
                 <span className="line-through text-xs   text-[gray] mx-5 font-thin">
-                    ${data?.price}
+                  ${data?.price}
 
-                  </span>
+                </span>
 
                 <p className=" text-[orange] text-xs  ">
-                    {data?.discount}%off
-                  </p>
-                 
-                
+                  {data?.discount}%off
+                </p>
+
+
               </div>
             </Link>
             {/* <div className="relative mb-6  hover:top-[-3px]  "> */}
@@ -224,7 +224,7 @@ const Products = ({ data, height }) => {
                 <span className="loading loading-spinner loading-lg" />
               ) : (
                 <div className="flex flex-row items-center justify-center">
-                  <div><ShoppingBagIcon className="w-4 mr-1"/></div>
+                  <div><ShoppingBagIcon className="w-4 mr-1" /></div>
                   <div className="text-sm">ADD TO CART</div>
                 </div>
               )}
@@ -242,7 +242,11 @@ const Products = ({ data, height }) => {
               {isLoading ? (
                 <span className="loading loading-spinner loading-lg" />
               ) : (
+                <div className="flex items-center justify-center">
+                
+                <ShoppingBagIcon className="w-5 h-5 mr-1" />    
                 <span className="text-sm">ADD TO CART</span>
+                </div>
               )}
             </>}
           </h1>

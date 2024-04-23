@@ -1,5 +1,5 @@
 .navbar{
-   border-top: 2px solid rgb(189, 189, 189);
+   border-top: 1px solid rgb(189, 189, 189);
    display: flex;
   
    background-color: white;
@@ -9,9 +9,13 @@
    height: 70px;
    
    justify-content: space-between;
+   small{
+    font-size: 10px;
+    margin-top: 6px;
+   }
    
    div {
-    border-right: 2px solid rgb(189, 189, 189);
+    border-right: 1px solid rgb(189, 189, 189);
      display: flex;
      align-items: center;
      justify-content: center;

@@ -21,8 +21,7 @@ const Home = () => {
   
        
       <Banner/>
-      <ShoppingBag/>
-      <FlotingComponentsMobile/>
+     
     <Catslider/> 
     <Allproduct/>
    

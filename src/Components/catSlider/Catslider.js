@@ -39,7 +39,19 @@ const Catslider = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true
+          dots: false,
+          arrows:false
+        }
+      },
+
+      {
+        breakpoint: 820,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false,
+          arrows:false
         }
       },
       {

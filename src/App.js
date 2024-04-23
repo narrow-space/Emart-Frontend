@@ -48,21 +48,27 @@ import CartProvider, { CartopenContex } from "./Contexapi/Cartopencontex.js";
 import { jwtDecode } from 'jwt-decode';
 import { clearuserLoggedInData } from "./redux/Slice/Userauthslice/userAuthSlice.js";
 import { clearadminLoggedINData } from "./redux/Slice/adminAuthslice/adminAuthslice.js";
+import ShoppingBag from "./Components/Share/ShoppingBag.js";
+import FlotingComponentsMobile from "./Components/Share/FlotingComponentsMobile.js";
 const App = () => {
-const location = useLocation();
- 
-const dispatch = useDispatch();
-const navigate = useNavigate()
+  const location = useLocation();
 
-const { userLoggedInData } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+
+
+
+
+  const { userLoggedInData } = useSelector((state) => state.user);
   useEffect(() => {
     if (location.pathname) {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
-   
-  }, [location]); 
 
- 
+  }, [location]);
+
+
 
 
 
@@ -85,204 +91,213 @@ const { userLoggedInData } = useSelector((state) => state.user);
   // }, []);
 
 
- ////user automatic logout when token expired//
- useEffect(() => {
-  const token = localStorage.getItem('usertoken');
+  ////user automatic logout when token expired//
+  useEffect(() => {
+    const token = localStorage.getItem('usertoken');
 
-  if (token) {
-    const decodedToken = jwtDecode(token);
+    if (token) {
+      const decodedToken = jwtDecode(token);
 
-    if (decodedToken && decodedToken.exp) {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const expirationTime = decodedToken.exp;
+      if (decodedToken && decodedToken.exp) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const expirationTime = decodedToken.exp;
 
-      if (expirationTime < currentTime) {
-        // Token expired, redirect to login page
-        dispatch(clearuserLoggedInData());
-        localStorage.removeItem('usertoken');
-        navigate('/login');
-    
-      }
-
-      else {
-        // Calculate time until token expiration
-        const timeUntilExpiration = (expirationTime - currentTime) * 1000;
-
-        // Set a timer to redirect the user when the token expires
-        const expirationTimer = setTimeout(() => {
+        if (expirationTime < currentTime) {
+          // Token expired, redirect to login page
           dispatch(clearuserLoggedInData());
           localStorage.removeItem('usertoken');
           navigate('/login');
-    
-        }, timeUntilExpiration);
 
-        // Clean up the timer when the component unmounts or when the token changes
-        return () => clearTimeout(expirationTimer);
+        }
+
+        else {
+          // Calculate time until token expiration
+          const timeUntilExpiration = (expirationTime - currentTime) * 1000;
+
+          // Set a timer to redirect the user when the token expires
+          const expirationTimer = setTimeout(() => {
+            dispatch(clearuserLoggedInData());
+            localStorage.removeItem('usertoken');
+            navigate('/login');
+
+          }, timeUntilExpiration);
+
+          // Clean up the timer when the component unmounts or when the token changes
+          return () => clearTimeout(expirationTimer);
+        }
       }
-    } 
-  } 
-}, [navigate, userLoggedInData]);
+    }
+  }, [navigate, userLoggedInData]);
 
 
 
- ////admin autometic logout when token expired//
- useEffect(() => {
-  const token = localStorage.getItem('admintoken');
+  ////admin autometic logout when token expired//
+  useEffect(() => {
+    const token = localStorage.getItem('admintoken');
 
-  if (token) {
-    const decodedToken = jwtDecode(token);
+    if (token) {
+      const decodedToken = jwtDecode(token);
 
-    if (decodedToken && decodedToken.exp) {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const expirationTime = decodedToken.exp;
+      if (decodedToken && decodedToken.exp) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const expirationTime = decodedToken.exp;
 
-      if (expirationTime < currentTime) {
-        // Token expired, redirect to login page
-        dispatch(clearadminLoggedINData());
-        localStorage.removeItem('admintoken');
-        navigate('/');
-    
-      }
-
-      else {
-        // Calculate time until token expiration
-        const timeUntilExpiration = (expirationTime - currentTime) * 1000;
-
-        // Set a timer to redirect the user when the token expires
-        const expirationTimer = setTimeout(() => {
+        if (expirationTime < currentTime) {
+          // Token expired, redirect to login page
           dispatch(clearadminLoggedINData());
           localStorage.removeItem('admintoken');
           navigate('/');
-    
-        }, timeUntilExpiration);
 
-        // Clean up the timer when the component unmounts or when the token changes
-        return () => clearTimeout(expirationTimer);
+        }
+
+        else {
+          // Calculate time until token expiration
+          const timeUntilExpiration = (expirationTime - currentTime) * 1000;
+
+          // Set a timer to redirect the user when the token expires
+          const expirationTimer = setTimeout(() => {
+            dispatch(clearadminLoggedINData());
+            localStorage.removeItem('admintoken');
+            navigate('/');
+
+          }, timeUntilExpiration);
+
+          // Clean up the timer when the component unmounts or when the token changes
+          return () => clearTimeout(expirationTimer);
+        }
       }
-    } 
-  } 
-}, [navigate, userLoggedInData]);
+    }
+  }, [navigate, userLoggedInData]);
+
+
+
+
+
+  const token = localStorage.getItem('admintoken');
 
 
 
 
 
 
-
-
-
- 
- 
-  
 
 
   return (
     <div className="webkit">
 
       <ThemeProvider>
-       
-          <NavProvider>
-            <Routes>
 
-              {/* Admin Router */}
+        <NavProvider>
 
-              <Route exact={true} path="/admin/login" element={<Layout><AdminLogin /></Layout>} />
-              <Route exact={true} path="/admin/register" element={<Layout><AdminRegister /></Layout>} />
+          {
+            token ? null : <>
+              <ShoppingBag />
+              <FlotingComponentsMobile />
+            </>
+          }
 
-              {/*Admin account Nested Route  */}
-              <Route path="adminaccount" element={<AdminProtectedRoutes Components={AdminAccount} />}>
-                <Route
-                  exact={true}
-                  path="dashboard"
-                  element={<Admindashboard />}
-                />
-                <Route
-                  exact={true}
-                  path="bannerimages"
-                  element={<AddBannerImages />}
-                />
-                <Route
-                  exact={true}
-                  path="addproducts"
-                  element={<Addproducts />}
-                />
-                <Route
-                  exact={true}
-                  path="updateproduct/:id"
-                  element={<UpdateProduct />}
-                />
-                <Route
-                  exact={true}
-                  path="addcategories"
-                  element={<Addcategories />}
-                />
-                <Route
-                  exact={true}
-                  path="addbrand"
-                  element={<Addbrand />}
-                />
-                <Route
-                  exact={true}
-                  path="orders"
-                  element={<Orders />}
-                />
-                <Route
-                  exact={true}
-                  path="settings"
-                  element={<Settings />}
-                />
-                <Route
-                  exact={true}
-                  path="products"
-                  element={<Adminproducts />}
-                />
+
+          <Routes>
+
+            {/* Admin Router */}
+
+            <Route exact={true} path="/admin/login" element={<Layout><AdminLogin /></Layout>} />
+            <Route exact={true} path="/admin/register" element={<Layout><AdminRegister /></Layout>} />
+
+            {/*Admin account Nested Route  */}
+            <Route path="adminaccount" element={<AdminProtectedRoutes Components={AdminAccount} />}>
+              <Route
+                exact={true}
+                path="dashboard"
+                element={<Admindashboard />}
+              />
+              <Route
+                exact={true}
+                path="bannerimages"
+                element={<AddBannerImages />}
+              />
+              <Route
+                exact={true}
+                path="addproducts"
+                element={<Addproducts />}
+              />
+              <Route
+                exact={true}
+                path="updateproduct/:id"
+                element={<UpdateProduct />}
+              />
+              <Route
+                exact={true}
+                path="addcategories"
+                element={<Addcategories />}
+              />
+              <Route
+                exact={true}
+                path="addbrand"
+                element={<Addbrand />}
+              />
+              <Route
+                exact={true}
+                path="orders"
+                element={<Orders />}
+              />
+              <Route
+                exact={true}
+                path="settings"
+                element={<Settings />}
+              />
+              <Route
+                exact={true}
+                path="products"
+                element={<Adminproducts />}
+              />
+            </Route>
+
+            {/* User Router */}
+            <Route exact={true} path="/" element={<Layout><Home /></Layout>} />
+
+            <Route
+              exact={true}
+              path="/products-filter"
+              element={<Layout><ListingProductMain /></Layout>}
+            />
+
+            <Route
+              exact={true}
+              path="/allproduct/:id"
+              element={<Layout><ProductDetails /></Layout>}
+            />
+            <Route
+              exact={true}
+              path="/viewcart"
+              element={<Layout><Viewcart /></Layout>}
+            />
+            <Route
+              exact={true}
+              path="/viewcart/checkout"
+              element={<Layout><Checkout /></Layout>}
+            />
+            {/*user account Nested Route  */}
+            <>
+              <Route path="myaccount" element={<UserProtectedRoutes Components={Myaccount} />}>
+                <Route index path="dashboard" element={<Dashboard />}></Route>
+                <Route index path="orderhistory" element={<Orderhistory />}></Route>
+                <Route path="accountdetails" element={<Accountdetails />}></Route>
+                <Route path="editaddress" element={<Editaddress />}></Route>
               </Route>
+            </>
 
-              {/* User Router */}
-              <Route exact={true} path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/login" element={<Layout><Login /></Layout>} />
+            <Route path="/register" element={<Layout><Register /></Layout>} />
+            <Route path="/forgotpassword" element={<Layout><Forgotpassword /></Layout>} />
+            <Route path="/resetpassword/:id/:token" element={<Layout><Resetpassword /></Layout>} />
+            <Route path="/shipping" element={<Layout><Shipping /></Layout>} />
 
-              <Route
-                exact={true}
-                path="/products-filter"
-                element={<Layout><ListingProductMain /></Layout>}
-              />
+            <Route exact={true} path="*" element={<Layout><Notfound /></Layout>} />
+          </Routes>
+          <Toaster />
+        </NavProvider>
 
-              <Route
-                exact={true}
-                path="/allproduct/:id"
-                element={<Layout><ProductDetails /></Layout>}
-              />
-              <Route
-                exact={true}
-                path="/viewcart"
-                element={<Layout><Viewcart /></Layout>}
-              />
-              <Route
-                exact={true}
-                path="/viewcart/checkout"
-                element={<Layout><Checkout /></Layout>}
-              />
-              {/*user account Nested Route  */}
-              <>
-                <Route path="myaccount" element={<UserProtectedRoutes Components={Myaccount} />}>
-                  <Route index path="dashboard" element={<Dashboard />}></Route>
-                  <Route index path="orderhistory" element={<Orderhistory />}></Route>
-                  <Route path="accountdetails" element={<Accountdetails />}></Route>
-                  <Route path="editaddress" element={<Editaddress />}></Route>
-                </Route>
-              </>
-
-              <Route path="/login" element={<Layout><Login /></Layout>} />
-              <Route path="/register" element={<Layout><Register /></Layout>} />
-              <Route path="/forgotpassword" element={<Layout><Forgotpassword /></Layout>} />
-              <Route path="/resetpassword/:id/:token" element={<Layout><Resetpassword /></Layout>} />
-              <Route path="/shipping" element={<Layout><Shipping /></Layout>} />
-
-              <Route exact={true} path="*" element={<Layout><Notfound /></Layout>} />
-            </Routes>
-            <Toaster />
-          </NavProvider>
-       
       </ThemeProvider>
       <ScroolToTop />
     </div >
