@@ -51,6 +51,10 @@ import { clearadminLoggedINData } from "./redux/Slice/adminAuthslice/adminAuthsl
 const App = () => {
 const location = useLocation();
  
+const dispatch = useDispatch();
+const navigate = useNavigate()
+
+const { userLoggedInData } = useSelector((state) => state.user);
   useEffect(() => {
     if (location.pathname) {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -60,10 +64,6 @@ const location = useLocation();
 
  
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
- 
-  const { userLoggedInData } = useSelector((state) => state.user);
 
 
 

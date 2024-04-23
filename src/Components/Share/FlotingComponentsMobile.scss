@@ -1,0 +1,32 @@
+.navbar{
+   border-top: 2px solid rgb(189, 189, 189);
+   display: flex;
+  
+   background-color: white;
+   position: fixed;
+   bottom: 0;
+   z-index:10;
+   height: 70px;
+   
+   justify-content: space-between;
+   
+   div {
+    border-right: 2px solid rgb(189, 189, 189);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+      height: 70px;
+      flex-grow: 1;
+      padding: 3px;
+      cursor: pointer;
+
+    &:last-child {
+      border-right: none;
+      padding-left: 1rem;
+    }
+  }
+
+
+}
+
+
