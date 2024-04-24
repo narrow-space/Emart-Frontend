@@ -612,8 +612,8 @@ const Header2 = ({ activeheading }) => {
       {/* Mobile search bar */}
       <div
 
-        className="my-7 md:hidden block w-[92%] m-auto h-[30px] relative"
-      ><div className="relative w-full flex items-center justify-between bg-white  shadow-md overflow-hidden">
+        className="my-7 md:hidden block w-[92%] m-auto  relative"
+      ><div className="w-full flex items-center justify-between bg-white  shadow-md overflow-hidden ">
           <input
             type="search"
             placeholder="Search for products..."
@@ -622,7 +622,7 @@ const Header2 = ({ activeheading }) => {
             value={search}
           />
           <button
-            className="bg-[#5C0F8B] text-white px-4 py-2 flex items-center justify-center"
+            className="bg-[black] absolute top-0 right-0 h-auto text-white px-4 py-2 flex items-center justify-center"
             onClick={handleSearch}
           >
             <IoSearchOutline size={20} />

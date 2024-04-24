@@ -32,3 +32,6 @@ col{
   .animate-jerk {
     animation: jerk 0.5s infinite;
   }
+  input, button {
+    touch-action: manipulation;
+  }

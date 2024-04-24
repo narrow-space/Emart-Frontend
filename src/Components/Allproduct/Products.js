@@ -203,54 +203,67 @@ const Products = ({ data, height }) => {
 
               </div>
             </Link>
-            {/* <div className="relative mb-6  hover:top-[-3px]  "> */}
-            {/* <button
-              onClick={() => setCartopen(!cartopen)}
-              className="p-1 w-full  btn btn-xs md:btn-sm bg-[#9D44C0] text-[#FFf] hover:bg-[#9D44C0] hover:text-[white]   "
-            >
-              <ShoppingCartIcon className="w-3 " />
-              Add to Cart
-            </button> */}
+          
           </div>
         </div>
-        <div
-          onClick={() => handleAddtoCart(data._id)}
-          className=" add-to-cart-button cursor-pointer w-[100%] h-[40px] bg-[#050608e8] flex items-center justify-center  p-0 ">
+        
 
-          <h1 className="text-center font-medium text-[white]">
-            {data?.quantity < 1 ? <p>Out of Stock</p> : <>
+                 {data?.quantity === 0 ?
+                    <button>
+                 <div className=" sm:hidden add-to-cart-button text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
 
-              {isLoading ? (
-                <span className="loading loading-spinner loading-lg" />
-              ) : (
-                <div className="flex flex-row items-center justify-center">
-                  <div><ShoppingBagIcon className="w-4 mr-1" /></div>
-                  <div className="text-sm">ADD TO CART</div>
-                </div>
-              )}
-            </>}
-          </h1>
-        </div>
+                        out of stock
+                      </div>
 
-        <div
-          onClick={() => handleAddtoCart(data._id)}
-          className="lg:hidden cursor-pointer w-[100%] h-[40px] bg-[#050608e8] flex items-center justify-center  p-0 ">
+                    </button> : <button  onClick={() => handleAddtoCart(data._id)}>
+                   
+                      <div className="text-sm  sm:hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
+                        <>
+                        {
+                          isLoading ?(
+                            <span className="loading loading-spinner loading-sm" />):
 
-          <h1 className="text-center font-medium text-[white]">
-            {data?.quantity < 1 ? <p>Out of Stock</p> : <>
+                            <>
+                               <ShoppingBagIcon className="w-5 h-5 mr-1" /> 
+                               <div>
+                                Add To Cart
+                               </div>
+                            </>
+                   
+                        }
+                        
+                        </>
+                        
+                       
 
-              {isLoading ? (
-                <span className="loading loading-spinner loading-lg" />
-              ) : (
-                <div className="flex items-center justify-center">
-                
-                <ShoppingBagIcon className="w-5 h-5 mr-1" />    
-                <span className="text-sm">ADD TO CART</span>
-                </div>
-              )}
-            </>}
-          </h1>
-        </div>
+                      </div>
+
+                    </button>
+
+                  }
+
+      {
+        data.quantity===0 ?<button className="w-[100%]">
+        <div className=" lg:hidden xl:hidden  text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 sm:flex items-center justify-center ">
+
+               out of stock
+             </div>
+
+           </button> : <button  className="w-[100%]"  onClick={() => handleAddtoCart(data._id)}>
+          
+             <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] w-[100%] h-[40px] p-3 sm:flex items-center justify-center ">
+               {
+                 isLoading && (
+                   <span className="loading loading-spinner loading-sm" />)
+               }
+             <ShoppingBagIcon className="w-5 h-5 mr-1" /> Add to cart
+
+             </div>
+
+           </button>
+      }
+     
+
 
         {/* </div> */}
 
