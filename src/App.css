@@ -2,7 +2,14 @@
 
 body{
     font-family: 'Varela Round', sans-serif;
+   
 }
+
+ input{
+  overflow-x: hidden;
+ }
+
+
 col{
     margin: 0;
     padding: 0;
@@ -32,7 +39,5 @@ col{
   .animate-jerk {
     animation: jerk 0.5s infinite;
   }
-  input {
-    font-size: 16px; /* Set the font size to a specific value */
-    text-size-adjust: 100%; /* Prevent text resizing */
-  }
+   
+  

@@ -203,66 +203,67 @@ const Products = ({ data, height }) => {
 
               </div>
             </Link>
-          
+
           </div>
         </div>
-        
 
-                 {data?.quantity === 0 ?
-                    <button>
-                 <div className=" sm:hidden add-to-cart-button text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
 
-                        out of stock
+        {data?.quantity === 0 ?
+          <button>
+            <div className="hidden add-to-cart-button text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
+
+              out of stock
+            </div>
+
+          </button> : <button onClick={() => handleAddtoCart(data._id)}>
+
+            <div className="text-sm xs:hidden sm:hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
+              <>
+                {
+                  isLoading ? (
+                    <span className="loading loading-spinner loading-sm" />) :
+
+                    <>
+                      <ShoppingBagIcon className="w-5 h-5 mr-1" />
+                      <div>
+                        Add To Cart
                       </div>
+                    </>
 
-                    </button> : <button  onClick={() => handleAddtoCart(data._id)}>
-                   
-                      <div className="text-sm  sm:hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
-                        <>
-                        {
-                          isLoading ?(
-                            <span className="loading loading-spinner loading-sm" />):
+                }
 
-                            <>
-                               <ShoppingBagIcon className="w-5 h-5 mr-1" /> 
-                               <div>
-                                Add To Cart
-                               </div>
-                            </>
-                   
-                        }
-                        
-                        </>
-                        
-                       
+              </>
 
-                      </div>
 
-                    </button>
 
-                  }
+            </div>
 
-      {
-        data.quantity===0 ?<button className="w-[100%]">
-        <div className=" lg:hidden xl:hidden  text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 sm:flex items-center justify-center ">
+          </button>
 
-               out of stock
-             </div>
+        }
 
-           </button> : <button  className="w-[100%]"  onClick={() => handleAddtoCart(data._id)}>
-          
-             <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] w-[100%] h-[40px] p-3 sm:flex items-center justify-center ">
-               {
-                 isLoading && (
-                   <span className="loading loading-spinner loading-sm" />)
-               }
-             <ShoppingBagIcon className="w-5 h-5 mr-1" /> Add to cart
+        {
+          data.quantity === 0 ? <button className="w-[100%]">
+            <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#ff00009d] w-[100%]  p-3 xs:flex items-center justify-center ">
 
-             </div>
+              out of stock
+            </div>
 
-           </button>
-      }
-     
+          </button> : <button className="w-[100%]" onClick={() => handleAddtoCart(data._id)}>
+
+            <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] 
+            w-[100%]  p-3 xs:flex md:flex sm:flex items-center justify-center ">
+              {
+                isLoading && (
+                  <span className="loading loading-spinner loading-sm" />)
+              }
+              <ShoppingBagIcon className="w-5 h-5 mr-1" /> Add to cart
+
+            </div>
+
+          </button>
+        }
+
 
 
         {/* </div> */}

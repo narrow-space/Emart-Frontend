@@ -36,6 +36,9 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 
 import { CiUser } from "react-icons/ci";
+import { Bars3Icon } from "@heroicons/react/24/solid";
+import { FaBars } from "react-icons/fa6";
+import { BsBag } from "react-icons/bs";
 const Header2 = ({ activeheading }) => {
   const { AllProducts: { products } } = useSelector((state) => state.products)
   const { searchLoading } = useSelector((state) => state.products)
@@ -451,28 +454,31 @@ const Header2 = ({ activeheading }) => {
           } w-full bg-[#fff]  h-[70px] shadow-sm md:hidden z-50 top-0 left-0 mb-0 p-3 `}
       >
         <div className="w-full flex items-ccenter justify-between">
-          <div onClick={() => setNavOpen(!navOpen)}>
-            <HiMiniBars3CenterLeft size={40} className="ml-4" />
-          </div>
-          <div>
+          <div className="relative " onClick={() => setNavOpen(!navOpen)}>
+            <FaBars size={20} className="absolute left-1 top-2" />
+            <div className="ml-7">
             <Link to="/">
-              <h2 className="font-[600]  text-[30px]">
+              <h2 className="font-[600]  text-[24px]">
                 E <span className="text-[black]">SHOP</span>
               </h2>
             </Link>
           </div>
+          </div>
+          
           <div>
             <div
               onClick={() => setCartopen(true)}
               className="relative cursor-pointer mr-[15px]"
             >
-              <ShoppingBagIcon
-                color=" rgb(255 255 255 /83%)"
+              <BsBag
+              size={20}
+              color="black"
+               
                 className="
                
-                text-[black] w-[23px] absolute top-2 right-0 "
+                absolute top-2 right-0 "
               />
-              <span className="absolute right-[-9px] top-1 rounded-full bg-[black] w-5 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
+              <span className="absolute right-[-9px] top-1 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
                 {userLoggedInData?.length > 0 ? getCartProduct?.length : "0"}
               </span>
 
@@ -485,7 +491,7 @@ const Header2 = ({ activeheading }) => {
               {/* Sidebar content */}
               <div onClick={() => setDropDown(!dropdown)}>
                 <div className="relative  h-[60px] mt-[10px] mb-[10px] w-[326px] hidden lg:block ">
-                  <Bars4Icon className="text-[black] w-[25px] absolute top-[18px] left-2 " />
+                  <Bars3Icon className="text-[black] w-[25px] absolute top-[18px] left-2 " />
                   <button
                     className={`h-[100%] w-full flex justify-between items-center pl-10 bg-[black] font-sans  text-lg font-[500] select-none rounded-lg`}
                   >
@@ -622,7 +628,7 @@ const Header2 = ({ activeheading }) => {
             value={search}
           />
           <button
-            className="bg-[black] absolute top-0 right-0 h-auto text-white px-4 py-2 flex items-center justify-center"
+            className="bg-[black] absolute top-0 right-0 h-auto text-white px-4 py-[.5rem] flex items-center justify-center"
             onClick={handleSearch}
           >
             <IoSearchOutline size={20} />
