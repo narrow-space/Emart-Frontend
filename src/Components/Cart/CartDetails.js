@@ -66,7 +66,7 @@ const CartDetails = ({ getCartProduct }) => {
                 <br />
                
                 {
-                    token ?
+                    getCartProduct.length>0 ?
                         <div className=" w-full  border-b absolute top-20 bottom-0">
                             {getCartProduct &&
                                 getCartProduct.map((i, index) => {

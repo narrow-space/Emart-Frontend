@@ -215,7 +215,7 @@ const Products = ({ data, height }) => {
         </div>
         <div
           onClick={() => handleAddtoCart(data._id)}
-          className="hidden add-to-cart-button cursor-pointer w-[100%] h-[40px] bg-[#050608e8] sm:flex items-center justify-center  p-0 ">
+          className=" add-to-cart-button cursor-pointer w-[100%] h-[40px] bg-[#050608e8] flex items-center justify-center  p-0 ">
 
           <h1 className="text-center font-medium text-[white]">
             {data?.quantity < 1 ? <p>Out of Stock</p> : <>

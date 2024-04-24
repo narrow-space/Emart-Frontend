@@ -56,9 +56,9 @@ const ProductDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { userLoggedInData } = useSelector((state) => state.user);
   const { getCartProduct } = useSelector((state) => state.cart);
-  const [items, setItems] = useState(1);
+
   const Navigate = useNavigate();
-  console.log(review)
+
   useEffect(() => {
     const data = {
       productid: id,
@@ -91,7 +91,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     productApi();
-  }, [dispatch, id, getCartProduct]);
+  }, [dispatch, id]);
   // Update image when product details change
   useEffect(() => {
     if (productDetails.images && productDetails.images.length > 0) {
@@ -256,7 +256,8 @@ const ProductDetails = () => {
     try {
       setIsLoading(true);
       await dispatch(addtoCart({ productid: id }));
-      // await dispatch(getCart());
+   
+      await dispatch(getCart());
 
     } catch (error) {
       console.log(error);
@@ -412,16 +413,16 @@ const ProductDetails = () => {
               </div>
 
               <span className=" text-black  text-sm ">ABILITY</span><span className="text-black "> :
-                {productDetails?.quantity > 1 ? <span className="bg-green-700 text-sm p-1 rounded-md text-white">
+                {productDetails?.quantity > 0 ? <span className="bg-green-700 text-sm p-1 rounded-md text-white">
                   In stock
-                </span> : <span>
+                </span> : <span className="bg-[#ff00009d] text-sm p-1 rounded-md text-white">
                   Stock Out
                 </span>}
               </span>
 
 
               <div className=" flex items-center  mt-3 w-[100%]">
-                <div>
+                <div className={`${productDetails?.quantity === 0?"hidden":"block"}`}>
                   {/* inc and dec and button add to cart */}
                   <div className='flex  h-[40px]  '>
                     <div
@@ -436,28 +437,27 @@ const ProductDetails = () => {
 
                 <div className="ml-3">
 
+                  {productDetails?.quantity === 0 ?
+                    <button>
+                      <div className="text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 flex items-center justify-center ">
 
+                        out of stock
+                      </div>
 
+                    </button> : <button  onClick={() => handleAddtoCart(productDetails._id)}>
+                   
+                      <div className="text-sm  text-white bg-[black] w-[100%] h-[40px] p-3 flex items-center justify-center ">
+                        {
+                          isLoading && (
+                            <span className="loading loading-spinner loading-sm" />)
+                        }
+                      <ShoppingBagIcon className="w-5 h-5 mr-1" /> Add to cart
 
-                  <div
-                    onClick={() => handleAddtoCart(productDetails._id)}
-                    className=" cursor-pointer w-[100%] h-[40px] bg-[#050608e8] flex items-center justify-center  p-3 ">
+                      </div>
 
-                    <h1 className="text-center font-medium text-[white]">
-                      {productDetails?.quantity < 1 ? <p>Out of Stock</p> : <>
+                    </button>
 
-                        {isLoading ? (
-                          <span className="text-center loading loading-spinner loading-lg" />
-                        ) : (
-                          <div className="flex items-center justify-center">
-
-                            <ShoppingBagIcon className="w-5 h-5 mr-1" />
-                            <span className="text-sm">ADD TO CART</span>
-                          </div>
-                        )}
-                      </>}
-                    </h1>
-                  </div>
+                  }
 
 
 
