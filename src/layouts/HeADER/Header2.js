@@ -619,20 +619,24 @@ const Header2 = ({ activeheading }) => {
       <div
 
         className="my-7 md:hidden block w-[92%] m-auto  relative"
-      ><div className="w-full flex items-center justify-between bg-white  shadow-md overflow-hidden ">
+      >
+
+        <div className="w-full flex items-center justify-between bg-white  shadow-sm overflow-hidden h-[43px] rounded-sm ">
           <input
             type="search"
             placeholder="Search for products..."
-            className="h-full w-full px-4 py-2 text-md text-gray-700 placeholder-gray-500 focus:outline-none overflow-x-hidden"
+            className="h-full w-full px-4 py-2 text-sm text-gray-700 placeholder-gray-500 focus:outline-none overflow-x-hidden rounded-sm border-0"
             onChange={handleSearch}
             value={search}
           />
+
           <button
-            className="bg-[black] absolute top-0 right-0 h-auto text-white px-4 py-2 flex items-center justify-center"
+            className="bg-[black] absolute top-0 right-0 h-full w-[50px] text-white  flex items-center justify-center rounded-br-sm rounded-tr-sm"
             onClick={handleSearch}
           >
-            <IoSearchOutline size={20} />
+            <IoSearchOutline color="white" size={20} />
           </button>
+
         </div>
 
         {search && searchData && searchData.length !== 0 ? (
