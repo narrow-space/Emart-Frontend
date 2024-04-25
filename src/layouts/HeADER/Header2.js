@@ -32,7 +32,7 @@ import CartDetails from "../../Components/Cart/CartDetails.js";
 import { clearCartData, getCart } from "../../redux/Slice/cartSlice/cartSlice.js";
 import { clearuserLoggedInData, userLoggedIn, userLogout } from "../../redux/Slice/Userauthslice/userAuthSlice.js";
 import { FaRegUserCircle } from "react-icons/fa";
-
+import "./Header2.scss"
 import { IoSearchOutline } from "react-icons/io5";
 
 import { CiUser } from "react-icons/ci";
@@ -441,7 +441,7 @@ const Header2 = ({ activeheading }) => {
           </div>
         </div>
       </div>
-      
+
 
       {/* Mobile Header... */}
 
@@ -454,26 +454,26 @@ const Header2 = ({ activeheading }) => {
           } w-full bg-[#fff]  h-[70px] shadow-sm md:hidden z-50 top-0 left-0 mb-0 p-3 `}
       >
         <div className="w-full flex items-ccenter justify-between">
-          <div className="relative " onClick={() => setNavOpen(!navOpen)}>
-            <FaBars size={20} className="absolute left-1 top-2" />
+          <div className="relative ">
+            <FaBars onClick={() => setNavOpen(!navOpen)} size={20} className="absolute left-1 top-2" />
             <div className="ml-7">
-            <Link to="/">
-              <h2 className="font-[600]  text-[24px]">
-                E <span className="text-[black]">SHOP</span>
-              </h2>
-            </Link>
+              <Link to="/">
+                <h2 className="font-[600]  text-[24px]">
+                  E <span className="text-[black]">SHOP</span>
+                </h2>
+              </Link>
+            </div>
           </div>
-          </div>
-          
+
           <div>
             <div
               onClick={() => setCartopen(true)}
               className="relative cursor-pointer mr-[15px]"
             >
               <BsBag
-              size={20}
-              color="black"
-               
+                size={20}
+                color="black"
+
                 className="
                
                 absolute top-2 right-0 "
@@ -689,6 +689,10 @@ const Header2 = ({ activeheading }) => {
 
 
       </div>
+
+
+
+
 
       {/* /////Sidecart animated /// */}
       <div

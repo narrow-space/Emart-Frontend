@@ -12,7 +12,10 @@ module.exports = {
 
       'lg': '1024px',
       'xl': '1280px',
-      'custom': {'min': '', 'max': '1'},
+      'custom': 
+      {'min': '360px', 
+      
+      'max': '800px'},
 
 
     },

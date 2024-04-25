@@ -22,6 +22,7 @@ import OpenCardModal from "./OpenCardModal.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addtoCart } from "../../redux/Slice/cartSlice/cartSlice.js";
 import { adminGetProducts } from "../../redux/Slice/ProductSlice/ProductSlice.js";
+import { BsBag } from "react-icons/bs";
 
 
 const Products = ({ data, height }) => {
@@ -206,7 +207,7 @@ const Products = ({ data, height }) => {
 
           </div>
         </div>
-
+        {/* Add to cart button for Destop */}
 
         {data?.quantity === 0 ?
           <button>
@@ -217,17 +218,17 @@ const Products = ({ data, height }) => {
 
           </button> : <button onClick={() => handleAddtoCart(data._id)}>
 
-            <div className="text-sm xs:hidden sm:hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
+            <div className="text-sm hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3  lg:flex items-center justify-center ">
               <>
                 {
                   isLoading ? (
                     <span className="loading loading-spinner loading-sm" />) :
 
                     <>
-                      <ShoppingBagIcon className="w-5 h-5 mr-1" />
-                      <div>
-                        Add To Cart
+                      <div className="mr-1">
+                        <BsBag size={15} />
                       </div>
+                      <h1 className="mt-1">ADD TO CART</h1>
                     </>
 
                 }
@@ -241,7 +242,7 @@ const Products = ({ data, height }) => {
           </button>
 
         }
-
+        {/* Add to cart button for mobile */}
         {
           data.quantity === 0 ? <button className="w-[100%]">
             <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#ff00009d] w-[100%]  p-3 xs:flex items-center justify-center ">
@@ -249,15 +250,18 @@ const Products = ({ data, height }) => {
               out of stock
             </div>
 
-          </button> : <button className="w-[100%]" onClick={() => handleAddtoCart(data._id)}>
+          </button> : <button className="w-[100%] " onClick={() => handleAddtoCart(data._id)}>
 
             <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] 
-            w-[100%]  p-3 xs:flex md:flex sm:flex items-center justify-center ">
+            w-[100%]  p-2 flex items-center justify-center  ">
               {
                 isLoading && (
                   <span className="loading loading-spinner loading-sm" />)
               }
-              <ShoppingBagIcon className="w-5 h-5 mr-1" /> Add to cart
+              <div className="mr-1">
+                <BsBag size={15} />
+              </div>
+              <h1 className="mt-1">ADD TO CART</h1>
 
             </div>
 
