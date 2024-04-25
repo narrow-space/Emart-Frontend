@@ -628,7 +628,7 @@ const Header2 = ({ activeheading }) => {
             value={search}
           />
           <button
-            className="bg-[black] absolute top-0 right-0 h-auto text-white px-4 py-[.5rem] flex items-center justify-center"
+            className="bg-[black] absolute top-0 right-0 h-auto text-white px-4 py-3 flex items-center justify-center"
             onClick={handleSearch}
           >
             <IoSearchOutline size={20} />
