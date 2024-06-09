@@ -108,7 +108,7 @@ const Catslider = () => {
             {CategoryData.length !== 0 &&
               CategoryData.map((item, index) => {
                 return (
-                  <Link key={index} to={`products-filter?categoryId=${item._id}`}>
+                  <Link key={index} to={`/products-filter?categoryId=${item._id}`}>
                     <div key={index} className="item h-[250px]">
                       <div
                         style={{ backgroundColor: bgColor[index % bgColor.length] }}

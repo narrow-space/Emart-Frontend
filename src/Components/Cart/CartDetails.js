@@ -44,29 +44,29 @@ const CartDetails = ({ getCartProduct }) => {
 
             <div>
 
-              
-            <div className='h-[60px] border-b-1' >
-                        {/* items length */}
-                        <div className="flex border-b justify-center p-6 absolute top-0 bottom-0 ">
 
-                            <ShoppingBagIcon className="w-5 h-5 text-[#5F5F5F]" />
-                            <h5 className="pl-2 text-md ">Shopping Cart</h5>
+                <div className='h-[60px] border-b-1' >
+                    {/* items length */}
+                    <div className="flex border-b justify-center p-6 absolute top-0 bottom-0 ">
 
-                        </div>
-                        <div className="absolute  top-6 right-1">
-                            <XMarkIcon onClick={() => {
-                                setCartopen(false);
-                            }} className="w-5 h-5 cursor-pointer text-[#5F5F5F]" />
+                        <ShoppingBagIcon className="w-5 h-5 text-[#5F5F5F]" />
+                        <h5 className="pl-2 text-md ">Shopping Cart</h5>
 
-                        </div>
                     </div>
-                  <hr />
+                    <div className="absolute  top-6 right-1">
+                        <XMarkIcon onClick={() => {
+                            setCartopen(false);
+                        }} className="w-5 h-5 cursor-pointer text-[#5F5F5F]" />
+
+                    </div>
+                </div>
+                <hr />
 
                 {/*    */}
                 <br />
-               
+
                 {
-                    getCartProduct.length>0 ?
+                    getCartProduct.length > 0 ?
                         <div className=" w-full  border-b absolute top-20 bottom-0">
                             {getCartProduct &&
                                 getCartProduct.map((i, index) => {

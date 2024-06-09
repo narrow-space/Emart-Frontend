@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CartopenContex } from "../../Contexapi/Cartopencontex";
 import { adminGetProducts } from "../../redux/Slice/ProductSlice/ProductSlice";
+import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import toast from "react-hot-toast";
 
 const OpenCardModal = ({ setModalOpen, data }) => {
   const [count, setCount] = useState(1);
@@ -36,7 +38,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
     setActive(i);
     setSize(index);
   };
-
+  
 
   const myStyles = {
     itemShapes: ThinRoundedStar,
@@ -62,7 +64,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
 
   const increase = () => {
     setCount(count + 1);
-    handleAddtoCart(data._id)
+
   };
 
   const decrease = () => {
@@ -84,24 +86,36 @@ const OpenCardModal = ({ setModalOpen, data }) => {
   const Navigate = useNavigate()
   ///add to cart Function///
   const token = localStorage.getItem("usertoken")
-  const handleAddtoCart = async(id) => {
-    if (!token) {
-      Navigate("/login");
-      return;
-    }
 
+  ///add to cart Function///
+
+  const handleAddtoCartforModal = async (id, product, quantity) => {
     try {
-      setIsLoading(true);
-      await dispatch(addtoCart({ productid: id }));
- 
-      await dispatch(getCart()); 
+      if (token == null) {
+        Navigate('/login');
+        return;
+
+      } 
+      else if(size==""){
+        toast.error("please select a size")
+        return;
+      }
+      
+      else {
+
+       
+        // Dispatch action to add product to Redux store
+        dispatch(addtoCart({ productid: id, quantity,size }));
+
+        // Optionally, dispatch action to refresh the cart state from localStorage
+        dispatch(getCart());
+      }
     } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+      console.error(error);
     }
   };
-console.log(isLoading)
+
+  console.log(isLoading)
 
   const handlecount = (id) => {
 
@@ -141,41 +155,41 @@ console.log(isLoading)
                 <div className="">
                   <div className="border-solid border-2 border-[#80808016] rounded-2xl  ">
                     <div className="">
-                    <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: "Product Image",
-                    isFluidWidth: true,
-                    src: newimage,
-                    width: 400,
-                    height: 500,
+                      <ReactImageMagnify
+                        {...{
+                          smallImage: {
+                            alt: "Product Image",
+                            isFluidWidth: true,
+                            src: newimage,
+                            width: 400,
+                            height: 500,
 
-                  },
-                  largeImage: {
-                    src: newimage,
-                    width: isMobileDevice ? 400 : 550,
-                    height: isMobileDevice ? 1200 : 1800,
+                          },
+                          largeImage: {
+                            src: newimage,
+                            width: isMobileDevice ? 400 : 550,
+                            height: isMobileDevice ? 1200 : 1800,
 
 
-                  },
-                  enlargedImageContainerStyle: {
-                    zIndex: 9999,
-                    width: isMobileDevice ? "100%" : 700 // Set width to 100% on mobile devices
-                  },
-                  isHintEnabled: true,
-                  shouldHideHintAfterFirstActivation: false,
+                          },
+                          enlargedImageContainerStyle: {
+                            zIndex: 9999,
+                            width: isMobileDevice ? "100%" : 700 // Set width to 100% on mobile devices
+                          },
+                          isHintEnabled: true,
+                          shouldHideHintAfterFirstActivation: false,
 
-                  enlargedImagePosition: isMobileDevice ? "over" : "side", // Set position to "over" on mobile devices
+                          enlargedImagePosition: isMobileDevice ? "over" : "side", // Set position to "over" on mobile devices
 
-                  isActivatedOnTouch: false, // Enable inner zoom on touch devices
-                  pressDuration: 200,
-                  pressMoveThreshold: 9,
-                  fadeDurationInMs: 700
+                          isActivatedOnTouch: false, // Enable inner zoom on touch devices
+                          pressDuration: 200,
+                          pressMoveThreshold: 9,
+                          fadeDurationInMs: 700
 
-                }}
-              />
-                   
-             
+                        }}
+                      />
+
+
                     </div>
 
                   </div>
@@ -200,7 +214,7 @@ console.log(isLoading)
                 </div>
 
                 <div className="info mt-8 ">
-                  <div className="badge bg-[#fde0e9] text-[#f74b81] ">
+                  <div className="badge bg-[green] text-[white] ">
                     <h2 className=""><span className="mr-2">{data?.type}</span> {data?.discount}%</h2>
                   </div>
                   <h3 className=" text-2xl ">{data.title}</h3>
@@ -221,7 +235,7 @@ console.log(isLoading)
                           return (
                             <li className="list">
                               <a
-                                className={`tag ${active === index ? "active" : ""
+                                className={`tag ${active === index ? "bg-black text-white"  : " bg-white text-black"
                                   }`}
                                 onClick={() => isActive(index, i)}
                               >
@@ -255,41 +269,57 @@ console.log(isLoading)
                   </div>
 
                   {/* inc and dec and button add to cart */}
-                  <div className="inc_dec  flex items-center">
-                    <div className="counter">
-                      <input value={handlecount(data._id)} type="number" />
-                      <span onClick={increase} className="arrow up">
-                        <IoIosArrowUp />
-                      </span>
-                      <span onClick={decrease} className="arrow down">
-                        <IoIosArrowDown />
-                      </span>
+                  <div className=" py-5 border-t border-b my-7" >
+                    <div className="flex items-center  mt-3 w-[100%]">
+                      <div className={`${data?.quantity === 0 ? "hidden" : "block"}`}>
+                        {/* inc and dec and button add to cart */}
+                        <div className='flex  h-[40px]  '>
+
+                          <button
+                            onClick={decrease}
+                            className={` border p-[.5rem] cursor-pointer ${count==1?'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>-</button>
+                          <div className='border p-[.5rem]'>{count}</div>
+                          <button
+                            disabled={count==5}
+                            onClick={increase}
+                            className={`border  p-[.5rem] cursor-pointer ${count==5? 'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>+</button>
+                        </div>
+                      </div>
+
+                      <div className="ml-3">
+
+                        {data?.quantity === 0 ?
+                          <button>
+                            <div className="text-white text-sm bg-[#D02128] w-[100%] h-[40px] p-3 flex items-center justify-center ">
+                              <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                              <h2 className="uppercase font-bold">OUT OF STOCK</h2>
+                            </div>
+
+                          </button> : <button  onClick={() =>handleAddtoCartforModal(data._id, data, count)}>
+
+                            <div className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${size==""?"text-white bg-[#858484] cursor-pointer  ":" text-white bg-[black]  "}`}>
+                              {
+                                isLoading && (
+                                  <span className="loading loading-spinner loading-sm" />)
+                              }
+                              <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                              <h2 className="uppercase font-bold">Add to cart</h2>
+
+                            </div>
+
+                          </button>
+
+                        }
+
+
+
+
+
+
+                      </div>
                     </div>
 
 
-
-
-
-                    <button onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleAddtoCart(data._id);
-                    }} className=" btn ml-4 bg-[#5C0F8B] text-[white] hover:bg-[#FF3D71]">
-                      {data?.quantity < 1 ? <p>Out of Stock</p> : <>
-
-                        {isLoading ? (
-                          <span className="loading loading-spinner loading-lg" />
-                        ) : (
-                          <>
-
-                            <span>
-                              <BsCart2 size={15} />
-                            </span>
-                            <h2 className="">Add to cart</h2>
-                          </>
-                        )}
-                      </>}
-                    </button>
                   </div>
                 </div>
               </div>

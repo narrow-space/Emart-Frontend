@@ -22,7 +22,7 @@ const Home = () => {
        
       <Banner/>
      
-    <Catslider/> 
+      <Catslider/> 
     <Allproduct/>
    
      <Modal/>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { ArrowDownCircleIcon, ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { FaHeart, FaPlus, FaRegHeart } from 'react-icons/fa';
 import { RxCross1, RxCrossCircled } from "react-icons/rx";
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ImCross } from 'react-icons/im';
+import { BsArrowBarRight, BsFillCartXFill } from 'react-icons/bs';
 
 const Viewcart = () => {
 
@@ -41,6 +42,8 @@ const Viewcart = () => {
     return (
       <div className="border-b p-4  webkit">
 
+
+
         <div className="w-full flex items-center">
           <div className='flex flex-grow-1 items-center border'>
             <div
@@ -52,7 +55,7 @@ const Viewcart = () => {
               className='border-r-2 p-[.3rem] cursor-pointer'>-</div>
           </div>
           <img
-            className="w-[50px] h-[50px] ml-2"
+            className="w-[80px] h-[80px] ml-2"
             src={data.details.images[0]}
             alt=""
           />
@@ -70,6 +73,7 @@ const Viewcart = () => {
             <RxCrossCircled size={15} />
           </div>
         </div>
+
       </div>
 
     );
@@ -78,58 +82,64 @@ const Viewcart = () => {
 
 
   return (
-    <div className='container-fluide'>
+    <div className='container-fluide '>
+      {
+        getCartProduct.length > 0 ?
+          <div className='grid  md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1    xl:grid-cols-2'>
 
-      <div className='grid md:grid-cols-6   grid-cols-1 gap-x-10'>
+            <div className=''>
+              <div style={{
+                boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
 
-        <div className=' col-span-4  '>
-          <div style={{
-            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+              }} className='p-6 '>
+                <h2 className='text-2xl'>Shopping Carts({getCartProduct.length})</h2>
 
-          }} className='p-6 md:w-[100vw]'>
-            <h2 className='text-2xl'>Carts({getCartProduct.length})</h2>
+                {getCartProduct &&
+                  getCartProduct.map((i, index) => {
+                    return <Cartsingle key={index} data={i} />;
+                  })}
+              </div>
+             
 
-            {getCartProduct &&
-              getCartProduct.map((i, index) => {
-                return <Cartsingle key={index} data={i} />;
-              })}
+            </div>
+
+            <div style={{
+                  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                }} className='p-6 '>
+                  <p className='text-lg text-center'>CART TOTALS</p>
+                  <div className='flex items-center'>
+                    <p className='text-sm'>Subtotal:</p>
+
+                    <p className='ml-auto text-sm'>$ {price}</p>
+                  </div>
+
+                  <hr className='mt-7' />
+                  <div className='flex items-center'>
+                    <p className='text-sm'>Total ammount (including vat)</p>
+                    <p className='ml-auto text-sm '>$ {price}</p>
+                  </div>
+                  <div className='flex items-center justify-center mt-12'>
+
+                    <div
+                      onClick={() => navigator("/viewcart/checkout")} className='text-white bg-black p-3 text-center text-sm mt-3 uppercase cursor-pointer flex justify-center items-center w-auto'>
+                        <BsArrowBarRight size={25}/>
+                       <span> Procced to Checkout</span>
+                    </div>
+
+
+
+                  </div>
+                </div>
+
+          </div> : <div className=' flex flex-col justify-center items-center mt-9'>
+
+
+            <BsFillCartXFill className='opacity-[0.2]' size={130} />
+            <p className='font-[700]'>No products in the cart</p>
           </div>
-          <div
-
-className=' col-span-2 sm:col-span-3 '>
-<div style={{
-  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-}} className='p-6  sm:w-[100vw] md:w-[100vw] lg:w-[auto]'>
-  <p className='text-lg text-center'>CART TOTALS</p>
-  <div className='flex items-center'>
-    <p className='text-sm'>Subtotal:</p>
-
-    <p className='ml-auto text-sm'>$ {price}</p>
-  </div>
-
-  <hr className='mt-7' />
-  <div className='flex items-center'>
-    <p className='text-sm'>Total ammount (including vat)</p>
-    <p className='ml-auto text-sm '>$ {price}</p>
-  </div>
-  <div className='flex items-center justify-center mt-12'>
-   
-    <div
-      onClick={() => navigator("/viewcart/checkout")}className='text-white bg-black p-3 w-[70%] text-center text-sm mt-3 uppercase cursor-pointer'>
-     Procced to Checkout
-    </div>
+      }
 
 
-
-  </div>
-</div>
-</div>
-
-        </div>
-     
-
-
-      </div>
 
     </div>
   )

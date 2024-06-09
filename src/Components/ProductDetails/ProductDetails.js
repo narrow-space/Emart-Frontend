@@ -15,14 +15,18 @@ import ReactImageMagnify from 'react-image-magnify';
 
 
 import {
-  DeleteReview,
-  addReview,
+
   adminGetProducts,
-  getReview,
+
   getSingleProduct,
   AllProducts,
   getSimilarProducts
 } from "../../redux/Slice/ProductSlice/ProductSlice";
+
+import {
+  getReview, DeleteReview,
+  addReview,
+} from "../../redux/Slice/reviewSlice/ReviewSlice.js"
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Share/Loading";
@@ -31,6 +35,7 @@ import toast from "react-hot-toast";
 import { addtoCart, getCart } from "../../redux/Slice/cartSlice/cartSlice";
 import Products from "../Allproduct/Products";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import Catslider from "../catSlider/Catslider.js";
 const ProductDetails = () => {
   const [currentData, setCurrentData] = useState({});
   const [newimage, setNewImage] = useState("");
@@ -46,16 +51,50 @@ const ProductDetails = () => {
   const {
     productDetails,
     productdetaillsLoading,
-    getReviewLoading,
-    DeleteReviewLoading,
-    reviewLoading,
+
+
     getsimilarproducts,
-    getsimilarproductsLoading
+    getsimilarproductsLoading,
+    loading
 
   } = useSelector((state) => state.products);
+
+  const { getReviewLoading, reviewLoading, DeleteReviewLoading } = useSelector((state) => state.reviews);
+
   const [isLoading, setIsLoading] = useState(false);
   const { userLoggedInData } = useSelector((state) => state.user);
   const { getCartProduct } = useSelector((state) => state.cart);
+  const dispatch = useDispatch()
+  // Fetch product details and reviews 
+  useEffect(() => {
+    const fetchProductDetailsAndReviews = async () => {
+      const data = {
+        productid: id,
+      };
+      try {
+        setIsLoading(true);
+        setReview([]);
+        const [productRes, reviewRes] = await Promise.all([
+          dispatch(getSingleProduct(data)),
+          dispatch(getReview(data)),
+        ]);
+
+        setReview(reviewRes.payload);
+        setNewImage(productRes.payload.images[0]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProductDetailsAndReviews();
+  }, [dispatch, id]);
+
+
+
+
+
 
   const Navigate = useNavigate();
 
@@ -78,20 +117,10 @@ const ProductDetails = () => {
     userverify();
   }, []);
 
-  ///fetch singel product from database///
-  const dispatch = useDispatch();
-  const productApi = () => {
-    const data = {
-      productid: id,
-    };
 
-    dispatch(getSingleProduct(data));
 
-  };
 
-  useEffect(() => {
-    productApi();
-  }, [dispatch, id]);
+
   // Update image when product details change
   useEffect(() => {
     if (productDetails.images && productDetails.images.length > 0) {
@@ -119,48 +148,20 @@ const ProductDetails = () => {
     arrows: true,
     fade: false,
   };
-  const increase = () => {
 
-    setCount(count + 1);
-    handleAddtoCart(productDetails._id);
+  const myStyles = {
+    itemShapes: ThinRoundedStar,
+    activeFillColor: "#FD5B5A",
+    inactiveFillColor: "#686868",
   };
 
-  const decrease = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
   const isActive = (i, index) => {
     setActive(i);
     setSize(index);
   };
 
-  const myStyles = {
-    itemShapes: ThinRoundedStar,
-    activeFillColor: "#ffb700",
-    inactiveFillColor: "#fbf1a9",
-  };
-
-  ///GEt product Review////
 
 
-
-  const fetchReview = () => {
-    const data = {
-      productid: productDetails._id,
-    };
-    dispatch(getReview(data))
-      .then((res) => {
-        setReview(res.payload);
-      })
-      .catch((error) => {
-        console.error("Error fetching reviews:", error);
-      });
-  };
-
-  useEffect(() => {
-    fetchReview();
-  }, [productDetails._id, userLoggedInData[0]?._id]);
 
   ////submit review data///
   const handleSubmit = (e) => {
@@ -186,7 +187,7 @@ const ProductDetails = () => {
       dispatch(addReview(data))
         .then((res) => {
           if (res.payload) {
-            fetchReview();
+            setReview((prevReviews) => [...prevReviews, res.payload]);
             setDiscription("");
             setRating(0);
           }
@@ -223,7 +224,7 @@ const ProductDetails = () => {
     dispatch(DeleteReview(data))
       .then((res) => {
         if (res.payload) {
-          fetchReview();
+          setReview((prev) => prev.filter((r) => r._id !== id));
         }
       })
       .catch((error) => {
@@ -233,7 +234,7 @@ const ProductDetails = () => {
   const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   useEffect(() => {
-    // Check if the screen width meets the criteria for a "mobile" device
+    // Check if the screen width meets the criteria for a mobile device
     const isMobileScreen = window.matchMedia("(max-width: 660px)").matches;
     setIsMobileDevice(isMobileScreen);
   }, []);
@@ -246,25 +247,49 @@ const ProductDetails = () => {
   }
 
   ///add to cart Function///
-  const token = localStorage.getItem("usertoken")
-  const handleAddtoCart = async (id) => {
-    if (!token) {
-      Navigate("/login");
-      return;
-    }
 
-    try {
-      setIsLoading(true);
-      await dispatch(addtoCart({ productid: id }));
+
+  const increase = () => {
+
+    setCount(count + 1);
    
-      await dispatch(getCart());
+  };
 
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+  const decrease = () => {
+    if (count > 1) {
+      setCount(count - 1);
     }
   };
+
+
+
+
+  const token = localStorage.getItem("usertoken")
+  const handleAddtoCart = async (id, product, quantity) => {
+    try {
+      if (token == null) {
+        Navigate('/login');
+        return;
+      } 
+   else if(size==""){
+        toast.error("please select a size");
+        return;
+      }
+      
+      else {
+
+
+        // Dispatch action to add product to Redux store
+        dispatch(addtoCart({ productid: id, size, quantity }));
+
+        // Optionally, dispatch action to refresh the cart state from localStorage
+        dispatch(getCart());
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   const ratingNumber = () => {
     const numberofRating = review.map((rw) => rw.rating)
@@ -272,12 +297,29 @@ const ProductDetails = () => {
     return numberofRating
   }
 
+  const reviewSectionRef = useRef(null);
 
+  // Reset rating state when product details change
+  useEffect(() => {
+    setRating(0);
+  }, [productDetails]);
+
+
+  // Scroll to the review section
+  const scrollToReviews = () => {
+    reviewSectionRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
 
 
   return (
     <>
+
+
+
+      <Catslider />
+
+
       {productdetaillsLoading ? (
         <Loading />
       ) : (
@@ -353,9 +395,11 @@ const ProductDetails = () => {
               <div className="badge bg-[#fde0e9] text-[#f74b81] p-[18px]">
                 <h2 className="uppercase"><span className="mr-2">{productDetails?.type}</span>{productDetails?.discount}%</h2>
               </div>
-              <h3 className="text-[20px] md:text-4xl my-5">
+              <h3 className="text-[20px] font-bold md:text-xl my-5">
                 {productDetails.productName}
               </h3>
+
+
 
               <div className="flex items-center">
                 <Rating
@@ -366,8 +410,31 @@ const ProductDetails = () => {
                   itemStyles={myStyles}
                 />
                 <br /> <br />
-                <span className="pl-3">({review?.length} reviews)</span>
+
+
+                {review?.length ? (
+                  <span onClick={scrollToReviews} className="pl-3 text-sm cursor-pointer text-gray-500">
+                    ({review.length} reviews)
+                  </span>
+                ) : (
+                  <span className="pl-3 text-sm text-gray-500">
+                    There are no reviews yet.
+                  </span>
+                )}
+
+
+
+
+
               </div>
+
+
+
+
+
+
+
+
               <div className="flex items-center">
                 <h4 className="text-xl font-[900]">
                   ${handleDiscount(productDetails?.price)}
@@ -391,7 +458,8 @@ const ProductDetails = () => {
 
               {/* size/weight chart */}
 
-              <div className="product_size flex  items-center my-5">
+
+              <div className="product_size flex  items-center mb-6">
                 <span>Size / Weight:</span>
                 <ul className="list-items flex items-center pl-4">
                   {productDetails.sizes &&
@@ -399,7 +467,7 @@ const ProductDetails = () => {
                       return (
                         <li className="list">
                           <a
-                            className={`tag ${active === index ? "active" : ""
+                            className={`tag ${active === index ? "bg-black text-white" : " bg-white text-black"
                               }`}
                             onClick={() => isActive(index, i)}
                           >
@@ -412,58 +480,88 @@ const ProductDetails = () => {
 
               </div>
 
-              <span className=" text-black  text-sm ">ABILITY</span><span className="text-black "> :
-                {productDetails?.quantity > 0 ? <span className="bg-green-700 text-sm p-1 rounded-md text-white">
+              {productDetails?.quantity > 0 ? <span className=" text-black  text-sm ">AVAILABILITY  :</span> : null}
+
+              <span className="text-black ">
+                {productDetails?.quantity > 0 ? <span className="bg-[#218838] border-0 text-sm px-7 py-2 rounded-full text-white ml-2 uppercase">
                   In stock
-                </span> : <span className="bg-[#ff00009d] text-sm p-1 rounded-md text-white">
-                  Stock Out
-                </span>}
+                </span> : null
+
+
+                }
               </span>
 
 
-              <div className=" flex items-center  mt-3 w-[100%]">
-                <div className={`${productDetails?.quantity === 0?"hidden":"block"}`}>
-                  {/* inc and dec and button add to cart */}
-                  <div className='flex  h-[40px]  '>
-                    <div
-                      onClick={increase}
-                      className='border  p-[.5rem] cursor-pointer'>+</div>
-                    <div className='border p-[.5rem]'>{count}</div>
-                    <div
-                      onClick={decrease}
-                      className='border p-[.5rem] cursor-pointer'>-</div>
+              <div className=" py-5 border-t border-b my-7" >
+                <div className="flex items-center  mt-3 w-[100%]">
+                  <div className={`${productDetails?.quantity === 0 ? "hidden" : "block"}`}>
+                    {/* inc and dec and button add to cart */}
+                    <div className='flex  h-[40px]  '>
+
+                          <button
+                            onClick={decrease}
+                            className={` border p-[.5rem] cursor-pointer ${count==1?'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>-</button>
+                          <div className='border p-[.5rem]'>{count}</div>
+                          <button
+                            disabled={count==5}
+                            onClick={increase}
+                            className={`border  p-[.5rem] cursor-pointer ${count==5? 'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>+</button>
+                        </div>
                   </div>
-                </div>
 
-                <div className="ml-3">
+                  <div className="ml-3">
 
-                  {productDetails?.quantity === 0 ?
-                    <button>
-                      <div className="text-white text-sm bg-[#ff00009d] w-[100%] h-[40px] p-3 flex items-center justify-center ">
+                    {productDetails?.quantity === 0 ?
+                      <button>
+                        <div className="text-white text-sm bg-[#D02128] w-[100%] h-[40px] p-3 flex items-center justify-center ">
+                          <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                          <h2 className="uppercase font-bold">OUT OF STOCK</h2>
+                        </div>
 
-                        out of stock
-                      </div>
+                      </button> : <button >
 
-                    </button> : <button  onClick={() => handleAddtoCart(productDetails._id)}>
-                   
-                      <div className="text-sm  text-white bg-[black] w-[100%] h-[40px] p-3 flex items-center justify-center ">
-                        {
-                          isLoading && (
-                            <span className="loading loading-spinner loading-sm" />)
-                        }
-                      <ShoppingBagIcon className="w-5 h-5 mr-1" /> Add to cart
+                        <div className="ml-3">
 
-                      </div>
+                          {productDetails?.quantity === 0 ?
+                            <button>
+                              <div className="text-white text-sm bg-[#D02128] w-[100%] h-[40px] p-3 flex items-center justify-center ">
+                                <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                                <h2 className="uppercase font-bold">OUT OF STOCK</h2>
+                              </div>
 
-                    </button>
+                            </button> : <button onClick={() => handleAddtoCart(productDetails._id, productDetails, count)}>
 
-                  }
+                              <div className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${size == "" ? "text-white bg-[#858484] cursor-pointer  " : " text-white bg-[black]  "}`}>
+                                {
+                                  isLoading && (
+                                    <span className="loading loading-spinner loading-sm" />)
+                                }
+                                <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                                <h2 className="uppercase font-bold">Add to cart</h2>
+
+                              </div>
+
+                            </button>
+
+                          }
 
 
 
 
 
 
+                        </div>
+
+                      </button>
+
+                    }
+
+
+
+
+
+
+                  </div>
                 </div>
 
 
@@ -507,7 +605,7 @@ const ProductDetails = () => {
 
 
 
-          <div className="w-[100%] mt-5 h-[60%] p-6 border-solid border-2 border-[#8080801c] rounded-2xl">
+          <div ref={reviewSectionRef} className="w-[100%] mt-5 h-[60%] p-6 border-solid border-2 border-[#8080801c] rounded-2xl">
             <div className="customtabs">
               <ul className="flex items-center ">
                 <li>

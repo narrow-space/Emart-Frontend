@@ -35,15 +35,15 @@ const Dashboard = () => {
       if (res.payload.message == "User successfully Logout") {
 
         navigate("/login")
-        // dispatch(clearCartData());
-        // dispatch(clearuserLogInData());
+        dispatch(clearCartData());
+        dispatch(clearuserLogInData());
         dispatch(clearuserLoggedInData());
       }
 
 
     }).catch((err) => {
-      // dispatch(clearCartData());
-      // dispatch(clearuserLogInData());
+      dispatch(clearCartData());
+      dispatch(clearuserLogInData());
       dispatch(clearuserLoggedInData());
       navigate("/login");
 

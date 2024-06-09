@@ -6,6 +6,8 @@ import brandSlice from "../Slice/brandSlice/brandSlice"
 import BannerSlice from "../Slice/bannerSlice/bannerSlice"
 import userAuthSlice from "../Slice/Userauthslice/userAuthSlice"
 import cartSlice from "../Slice/cartSlice/cartSlice"
+import ReviewSlice from "../Slice/reviewSlice/ReviewSlice"
+import wishListSlice from "../Slice/wishListSlice/wishListSlice"
 
 
 
@@ -19,6 +21,8 @@ export const store = configureStore({
         brand: brandSlice,
         banner: BannerSlice,
         user: userAuthSlice,
-        cart: cartSlice
+        cart: cartSlice,
+        wishlist: wishListSlice,
+        reviews: ReviewSlice,
     }
 })
