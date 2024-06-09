@@ -274,11 +274,11 @@ const Products = ({ data, height }) => {
 
           </div>
         </div>
-        {/* Add to cart button for Destop */}
+        {/* Add to cart button for Desktop */}
 
         {data?.quantity === 0 ?
           <button>
-            <div className="hidden add-to-cart-button text-white text-sm bg-[#D02128] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
+            <div className="hidden add-to-cart-button text-white text-sm bg-[#D64147] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
 
              OUT OF STOCK
             </div>
@@ -312,7 +312,7 @@ const Products = ({ data, height }) => {
         {/* Add to cart button for mobile */}
         {
           data.quantity === 0 ? <button className="w-[100%]">
-            <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#D02128] w-[100%]  p-3 xs:flex items-center justify-center ">
+            <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#D64147] w-[100%]  p-2 xs:flex items-center justify-center ">
 
             OUT OF STOCK
             </div>
