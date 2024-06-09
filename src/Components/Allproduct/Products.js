@@ -312,7 +312,7 @@ const Products = ({ data, height }) => {
         {/* Add to cart button for mobile */}
         {
           data.quantity === 0 ? <button className="w-[100%]">
-            <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#D64147] w-[100%]  p-2 xs:flex items-center justify-center ">
+            <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#D64147] w-[100%] h-[42px]  p-2 xs:flex items-center justify-center ">
 
             OUT OF STOCK
             </div>
@@ -320,7 +320,7 @@ const Products = ({ data, height }) => {
           </button> : <button className="w-[100%] " onClick={() => handleAddtoCart(data._id,1)}>
 
             <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] 
-            w-[100%]  p-2 flex items-center justify-center  ">
+            w-[100%] h-[42px]  p-2 flex items-center justify-center  ">
               {
                 isLoading ? (
                   <span className="loading loading-spinner loading-sm" />) : (<>
