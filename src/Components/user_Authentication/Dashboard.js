@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { clearuserLogInData, clearuserLoggedInData, userLoggedIn, userLogout } from '../../redux/Slice/Userauthslice/userAuthSlice';
 import { jwtDecode } from 'jwt-decode';
 import { clearCartData, getCart } from '../../redux/Slice/cartSlice/cartSlice';
+import { clearWishListData } from '../../redux/Slice/wishListSlice/wishListSlice';
 
 
 const Dashboard = () => {
@@ -30,21 +31,28 @@ const Dashboard = () => {
     userverify();
   }, []);
 
+
   const userlogout = () => {
     dispatch(userLogout()).then((res) => {
       if (res.payload.message == "User successfully Logout") {
-
+         // Remove product ID from local storage
+     
+       
+         localStorage.removeItem("wishlist");
         navigate("/login")
         dispatch(clearCartData());
         dispatch(clearuserLogInData());
         dispatch(clearuserLoggedInData());
+        dispatch(clearWishListData());
       }
 
 
     }).catch((err) => {
+      localStorage.removeItem("wishlist");
       dispatch(clearCartData());
       dispatch(clearuserLogInData());
       dispatch(clearuserLoggedInData());
+      dispatch(clearWishListData());
       navigate("/login");
 
     })

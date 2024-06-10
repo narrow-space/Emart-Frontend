@@ -34,13 +34,14 @@ const Products = ({ data, height }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isWishListLoading, setIsWishListLoading] = useState(false);
   const [deleteWishListLoading, seDeleteWishListLoading] = useState(false);
+  const [localWishlist, setLocalWishlist] = useState([]);
   const dispatch = useDispatch()
   const Navigate = useNavigate()
 
 
   ///add to cart Function///
   const token = localStorage.getItem("usertoken")
-  const handleAddtoCart = (id,quantity) => {
+  const handleAddtoCart = (id, quantity) => {
     if (!token) {
       Navigate("/login")
     }
@@ -72,63 +73,69 @@ const Products = ({ data, height }) => {
     const actualPrice = productPrice - (productPrice * discount / 100)
     return actualPrice
   }
-  const [wishlist, setWishlist] = useState(() => {
-    // Fetch wishlist data from local storage when component mounts
-    const storedWishlist = localStorage.getItem("wishlist");
-    return storedWishlist ? JSON.parse(storedWishlist) : [];
-  });
 
-  // Function to save wishlist to local storage
-  const saveWishlistToLocalStorage = (wishlistData) => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlistData));
-  };
 
-  // Function to check if a product is in the wishlist
+
+
+   // Fetch wishlist data when the component mounts
+   useEffect(() => {
+    dispatch(getWishList());
+  }, [dispatch]);
+
+  // Get wishlist data from Redux store
+  const { getWishListProduct } = useSelector((state) => state.wishlist);
+
+  // Sync local state with Redux state
+  useEffect(() => {
+    setLocalWishlist(getWishListProduct.map(product => product.details._id));
+  }, [getWishListProduct]);
+
+  // Function to check if the productId exists in the local wishlist state
   const isInWishlist = (productId) => {
-    return wishlist.some(item => item.productid === productId);
+    return localWishlist.includes(productId);
   };
 
   // Function to add a product to the wishlist
   const addToWishlistHandler = (id) => {
-    setIsWishListLoading(true)
-    const data = { productid: id };
-    dispatch(addtoWishList(data))
-      .then(() => {
-        setWishlist([...wishlist, data]); // Add product to local state
-        saveWishlistToLocalStorage([...wishlist, data]); // Save updated wishlist to local storage
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setIsWishListLoading(false)
-      });
+    if (token == null) {
+      Navigate('/login');
+    } else {
+   
+      setIsWishListLoading(true);
+      setLocalWishlist(prevState => [...prevState, id]); 
+      const data = { productid: id };
+      dispatch(addtoWishList(data))
+        .then(() => {
+          dispatch(getWishList()); // Fetch updated wishlist
+        })
+        .catch((error) => {
+          console.log(error);
+          setLocalWishlist(prevState => prevState.filter(item => item !== id)); 
+        })
+        .finally(() => {
+          setIsWishListLoading(false);
+        });
+    }
   };
 
   // Function to remove a product from the wishlist
   const removeFromWishlistHandler = (id) => {
-    seDeleteWishListLoading(true)
+    setClick(!click);
+    seDeleteWishListLoading(true);
+    setLocalWishlist(prevState => prevState.filter(item => item !== id)); // Optimistic update
     const data = { productid: id };
     dispatch(deleteWishList(data))
       .then(() => {
-        const updatedWishlist = wishlist.filter(item => item.productid !== id); // Remove product from local state
-        setWishlist(updatedWishlist);
-        saveWishlistToLocalStorage(updatedWishlist); // Save updated wishlist to local storage
+        dispatch(getWishList()); // Fetch updated wishlist
       })
       .catch((error) => {
         console.log(error);
+        setLocalWishlist(prevState => [...prevState, id]); 
       })
       .finally(() => {
-        seDeleteWishListLoading(false)
+        seDeleteWishListLoading(false);
       });
   };
-
-
-
- useEffect(() => {
-   dispatch(getWishList()); // Fetch wishlist data when the component mounts
- }, []);
-
 
 
 
@@ -162,39 +169,31 @@ const Products = ({ data, height }) => {
             <div className="overlay transition flex justify-center items-center">
               <ul className="pb-0 flex justify-center  ">
                 <li className="">
-                  { isInWishlist(data._id) ? (
-                    <>
-                      <div
-                        className=" tooltip  "
-                        data-tip="Remove Wishlist"
-                      >
-                        {
-                         deleteWishListLoading?<ReactLoading type="spin" color="white" height={18} width={18} />:<FaHeart
+                {isInWishlist(data._id) ? (
+                    <div className="tooltip" data-tip="Remove Wishlist">
+                      {deleteWishListLoading ? (
+                        <ReactLoading type="spin" color="white" height={18} width={18} />
+                      ) : (
+                        <FaHeart
                           size={19}
                           onClick={() => removeFromWishlistHandler(data._id)}
-                          className="w-5 "
+                          className="w-5 cursor-pointer"
                           color="red"
                         />
-                        }
-                        
-                      </div>
-                    </>
+                      )}
+                    </div>
                   ) : (
-                    <div
-                      className=" tooltip  "
-                      data-tip="Add Wishlist"
-                    >
-                      {
-                        isWishListLoading?<ReactLoading type="spin" color="white" height={18} width={18} />: <FaRegHeart
-                        size={19}
-                       onClick={() => addToWishlistHandler(data._id)}
-                        className="w-5 "
-                        color="white"
-                      />
-                      }
-
-
-                     
+                    <div className="tooltip" data-tip="Add Wishlist">
+                      {isWishListLoading ? (
+                        <ReactLoading type="spin" color="white" height={18} width={18} />
+                      ) : (
+                        <FaRegHeart
+                          size={19}
+                          onClick={() => addToWishlistHandler(data._id)}
+                          className="w-5 cursor-pointer"
+                          color="white"
+                        />
+                      )}
                     </div>
                   )}
                 </li>
@@ -280,10 +279,10 @@ const Products = ({ data, height }) => {
           <button>
             <div className="hidden add-to-cart-button text-white text-sm bg-[#D64147] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
 
-             OUT OF STOCK
+              OUT OF STOCK
             </div>
 
-          </button> : <button onClick={() => handleAddtoCart(data._id,1)}>
+          </button> : <button onClick={() => handleAddtoCart(data._id, 1)}>
 
             <div className="text-sm hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3  lg:flex items-center justify-center ">
               <>
@@ -314,10 +313,10 @@ const Products = ({ data, height }) => {
           data.quantity === 0 ? <button className="w-[100%]">
             <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#D64147] w-[100%] h-[42px]  p-2 xs:flex items-center justify-center ">
 
-            OUT OF STOCK
+              OUT OF STOCK
             </div>
 
-          </button> : <button className="w-[100%] " onClick={() => handleAddtoCart(data._id,1)}>
+          </button> : <button className="w-[100%] " onClick={() => handleAddtoCart(data._id, 1)}>
 
             <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] 
             w-[100%] h-[42px]  p-2 flex items-center justify-center  ">

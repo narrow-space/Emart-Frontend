@@ -371,13 +371,13 @@ const Header2 = ({ activeheading }) => {
                 <div className="relative">
                   <div
                     className="invisible group-hover:visible group-hover:-translate-y-4  duration-200 h-[auto] w-[170px] bg-[rgba(255,255,255,0.99)] absolute top-[70px] left-[-23px]  z-10 shadow-sm ">
-                    <ul className=" divide-gray-500 text-center font-thin cursor-pointer text-sm">
+                    <ul className=" divide-gray-500 text-center font-medium cursor-pointer text-sm">
                       <Link to="/myaccount/dashboard">
                         <li className="my-2"> My Account</li>
                       </Link>
                       <hr />
                       {
-                        token ? <li onClick={userlogout} className="my-2">Logout</li> : <Link to="/login">
+                        token ? <li onClick={userlogout} className="my-2 font-medium ">Logout</li> : <Link to="/login">
                           <li className="my-2">Login/Register</li>
                         </Link>
                       }
@@ -413,12 +413,14 @@ const Header2 = ({ activeheading }) => {
             </div>
             <div className="flex items-center ">
               <div className="relative cursor-pointer mr-[15px]">
+                <Link to="/wishlist">
                 <HeartIcon
                   color=" rgb(255 255 255 /83%)"
                   className="
                 
                   text-[#5F5F5F] w-[30px] absolute top-[27px] left-2 "
                 />
+                </Link>
                 <span className="absolute right-[-40px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
                   0
                 </span>

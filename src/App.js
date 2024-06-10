@@ -50,6 +50,7 @@ import { clearuserLoggedInData } from "./redux/Slice/Userauthslice/userAuthSlice
 import { clearadminLoggedINData } from "./redux/Slice/adminAuthslice/adminAuthslice.js";
 import ShoppingBag from "./Components/Share/ShoppingBag.js";
 import FlotingComponentsMobile from "./Components/Share/FlotingComponentsMobile.js";
+import WishList from "./Components/Wishlist/WishList.js";
 const App = () => {
   const location = useLocation();
 
@@ -276,6 +277,11 @@ const App = () => {
               exact={true}
               path="/viewcart/checkout"
               element={<Layout><Checkout /></Layout>}
+            />
+            <Route
+              exact={true}
+              path="/wishlist"
+              element={<Layout><WishList /></Layout>}
             />
             {/*user account Nested Route  */}
             <>
