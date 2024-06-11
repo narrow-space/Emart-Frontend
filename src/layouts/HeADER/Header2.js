@@ -39,12 +39,14 @@ import { CiUser } from "react-icons/ci";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import { FaBars } from "react-icons/fa6";
 import { BsBag } from "react-icons/bs";
+import { clearWishListData } from "../../redux/Slice/wishListSlice/wishListSlice.js";
 const Header2 = ({ activeheading }) => {
   const { AllProducts: { products } } = useSelector((state) => state.products)
   const { searchLoading } = useSelector((state) => state.products)
   const { searchProductsData: { searchproduct, results } } = useSelector((state) => state.products)
 
   const { userLoggedInData, userLogoutData, userLoginData } = useSelector((state) => state.user);
+  const { getWishListProduct } = useSelector((state) => state.wishlist);
   const { getCartProduct } = useSelector((state) => state.cart)
   const { addtoCart } = useSelector((state) => state.cart)
 
@@ -205,6 +207,7 @@ const Header2 = ({ activeheading }) => {
         dispatch(clearCartData());
         // dispatch(clearuserLogInData());
         dispatch(clearuserLoggedInData());
+        dispatch(clearWishListData());
       }
 
 
@@ -212,6 +215,7 @@ const Header2 = ({ activeheading }) => {
       dispatch(clearCartData());
       // dispatch(clearuserLogInData());
       dispatch(clearuserLoggedInData());
+      dispatch(clearWishListData());
       // navigate("/login");
 
     })
@@ -420,10 +424,10 @@ const Header2 = ({ activeheading }) => {
                 
                   text-[#5F5F5F] w-[30px] absolute top-[27px] left-2 "
                 />
-                </Link>
                 <span className="absolute right-[-40px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
-                  0
+                {userLoggedInData?.length > 0 ? getWishListProduct?.length : "0"}
                 </span>
+                </Link>
               </div>
             </div>
 

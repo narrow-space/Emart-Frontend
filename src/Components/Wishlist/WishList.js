@@ -6,12 +6,15 @@ import { ImCross } from "react-icons/im";
 import { BiHeart } from "react-icons/bi";
 import WishListViewProduct from "./WishListViewProduct";
 
+import ReactLoading from "react-loading";
+
 const WishList = () => {
   const navigate = useNavigate();
-  const { getWishListProduct } = useSelector((state) => state.wishlist);
+  const { getWishListProduct, getWishListLoading } = useSelector((state) => state.wishlist);
   const dispatch = useDispatch();
   const [deleteWishListLoading, seDeleteWishListLoading] = useState(false);
   const [wishListView, setWishListView] = useState({});
+
 
   useEffect(() => {
     dispatch(getWishList());
@@ -40,6 +43,20 @@ const WishList = () => {
     setWishListView(pd);
   };
 
+  if (getWishListLoading) {
+    return <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+    <ReactLoading type="bars" color="black"  />
+    </div>
+
+
+  }
+
   return (
     <>
       <div className="bg-[#F4F4F4] w-full h-52 flex justify-center items-center">
@@ -47,12 +64,12 @@ const WishList = () => {
       </div>
 
       <div className="container mx-auto p-4">
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="bg-white   overflow-hidden">
           <h1 className="text-2xl md:text-3xl font-bold my-6 text-center md:text-left">
             My wishlist on MyShop BD Shop
           </h1>
 
-          {getWishListProduct.length ? (
+          { getWishListProduct.length ? (
             <div className="grid grid-cols-1 gap-4 md:hidden">
               {getWishListProduct.map((product) => (
                 <div key={product.details._id} className="border rounded-lg p-4 relative">
@@ -102,11 +119,12 @@ const WishList = () => {
           {getWishListProduct.length ? (
             <table className="min-w-full bg-white hidden md:block">
               <thead className="text-black">
-                <tr>
+                <tr className="text-sm font-light">
                   <th className="px-4 py-2">Product</th>
-                  <th>Name</th>
+                  <th></th>
+                  <th></th>
                   <th className="px-4 py-2">Price</th>
-                  <th className="px-4 py-2">Stock Status</th>
+                  <th className="px-6 py-2">Stock Status</th>
                   <th className="px-4 py-2">Actions</th>
                 </tr>
               </thead>
@@ -129,8 +147,9 @@ const WishList = () => {
                     <td>
                       <h2 className="text-sm font-normal">{product.details.productName}</h2>
                     </td>
+                    <td></td>
                     <td className="px-4 py-2">${product.details.price}</td>
-                    <td className="px-4 py-2">{product.details.quantity >= 1 ? "In Stock" : "Out of Stock"}</td>
+                    <td className="px-6 py-2">{product.details.quantity >= 1 ? "In Stock" : "Out of Stock"}</td>
                     <td className="px-4 py-2">
                       <div className="flex xl:flex-row md:flex-col lg:flex-col xl:space-x-2 xl:space-y-0 md:space-y-2 space-y-2">
                         <button
@@ -173,10 +192,11 @@ const WishList = () => {
 
       {/* Modal Section */}
       <dialog id="my_modal_2" className="modal">
-        <div className="modal-box w-full sm:w-[90%] md:w-3/4 lg:w-3/4 xl:max-w-5xl rounded-none">
-          
-            <WishListViewProduct wishListView={wishListView} />
-          
+        <div className="modal-box w-full sm:w-[100%] md:w-3/4 lg:w-3/4 xl:max-w-5xl
+        md:h-3/4 lg:h-3/4 xl:max-h-5xl   rounded-none">
+
+          <WishListViewProduct wishListView={wishListView} />
+
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

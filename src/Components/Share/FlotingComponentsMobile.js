@@ -16,6 +16,7 @@ const FlotingComponentsMobile = () => {
   const { userLoggedInData, userLogoutData, userLoginData } = useSelector((state) => state.user);
   const { navOpen, setNavOpen } = useContext(NavOpenContex);
   const { getCartProduct } = useSelector((state) => state.cart)
+  const { getWishListProduct } = useSelector((state) => state.wishlist)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(userLoggedIn())
@@ -29,7 +30,9 @@ const FlotingComponentsMobile = () => {
   const gotohome = () => {
     Navigate("/")
   }
-
+  const gotowishlist=()=>{
+    Navigate("/wishlist")
+   }
 
   return (
     <div className='lg:hidden  relative'>
@@ -43,15 +46,15 @@ const FlotingComponentsMobile = () => {
           <HiBars3 size={30} />
           <small className='uppercase'>category</small>
         </div>
-        <div className=' flex flex-col relative'>
+        <div  className=' flex flex-col relative'>
           <IoIosHeartEmpty size={30} />
           <small className='uppercase'>wishlist</small>
 
-          <div className='absolute bottom-4 
+          <div onClick={gotowishlist} className='absolute bottom-4 
               sm:right-[15px]
               md:right-[3.5rem]
               '>
-            <span className='bg-black rounded-full text-white pl-1 pr-1 text-center text-xs'>0</span>
+            <span className='bg-black rounded-full text-white pl-1 pr-1 text-center text-xs'> {userLoggedInData?.length > 0 ? getWishListProduct?.length : "0"}</span>
           </div>
         </div>
         <div>
