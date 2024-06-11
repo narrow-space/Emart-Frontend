@@ -82,7 +82,7 @@ const NewarivalProducts = () => {
   return (
     <div className="container-fluide home-slider flex items-center overflow-hidden">
       <div className="w-[100%]">
-        <h1 className=" text-xl">Best Selling Products</h1>
+        <h1 className=" text-3xl text-center font-semibold">Best Selling Products</h1>
         <Slider {...settings} className="pd_slider_main" >
 
           {

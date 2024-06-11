@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { HiMiniBars3CenterLeft } from "react-icons/hi2";
 import { RxCross1, RxCrossCircled } from "react-icons/rx";
-import './Header.scss'
+import "./Header.scss";
 import Dropdown from "./Dropdown.js";
 import Navbar from "./Navbar.js";
 import { CartopenContex } from "../../Contexapi/Cartopencontex.js";
@@ -24,32 +24,47 @@ import { NavOpenContex } from "../../Contexapi/NavopenContex.js";
 import { Button } from "@mui/material";
 import { FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { adminGetProducts, searchProducts } from "../../redux/Slice/ProductSlice/ProductSlice.js";
+import {
+  adminGetProducts,
+  searchProducts,
+} from "../../redux/Slice/ProductSlice/ProductSlice.js";
 import { adminGetCategory } from "../../redux/Slice/categorySlice/categorySlice.js";
 import Loading from "../../Components/Share/Loading.js";
 import Cartsingle from "../../Components/Cart/Cartsingle.js";
 import CartDetails from "../../Components/Cart/CartDetails.js";
-import { clearCartData, getCart } from "../../redux/Slice/cartSlice/cartSlice.js";
-import { clearuserLoggedInData, userLoggedIn, userLogout } from "../../redux/Slice/Userauthslice/userAuthSlice.js";
+import {
+  clearCartData,
+  getCart,
+} from "../../redux/Slice/cartSlice/cartSlice.js";
+import {
+  clearuserLoggedInData,
+  userLoggedIn,
+  userLogout,
+} from "../../redux/Slice/Userauthslice/userAuthSlice.js";
 import { FaRegUserCircle } from "react-icons/fa";
-import "./Header2.scss"
+import "./Header2.scss";
 import { IoSearchOutline } from "react-icons/io5";
 
 import { CiUser } from "react-icons/ci";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import { FaBars } from "react-icons/fa6";
 import { BsBag } from "react-icons/bs";
-import { clearWishListData } from "../../redux/Slice/wishListSlice/wishListSlice.js";
+import { clearWishListData } from "../../redux/Slice/wishListSlice/wishListSlice";
 const Header2 = ({ activeheading }) => {
-  const { AllProducts: { products } } = useSelector((state) => state.products)
-  const { searchLoading } = useSelector((state) => state.products)
-  const { searchProductsData: { searchproduct, results } } = useSelector((state) => state.products)
+  const {
+    AllProducts: { products },
+  } = useSelector((state) => state.products);
+  const { searchLoading } = useSelector((state) => state.products);
+  const {
+    searchProductsData: { searchproduct, results },
+  } = useSelector((state) => state.products);
 
-  const { userLoggedInData, userLogoutData, userLoginData } = useSelector((state) => state.user);
+  const { userLoggedInData, userLogoutData, userLoginData } = useSelector(
+    (state) => state.user
+  );
   const { getWishListProduct } = useSelector((state) => state.wishlist);
-  const { getCartProduct } = useSelector((state) => state.cart)
-  const { addtoCart } = useSelector((state) => state.cart)
-
+  const { getCartProduct } = useSelector((state) => state.cart);
+  const { addtoCart } = useSelector((state) => state.cart);
 
   const { CategoryData } = useSelector((state) => state.category);
 
@@ -67,37 +82,31 @@ const Header2 = ({ activeheading }) => {
 
   const navRef = useRef();
   const categoryRef = useRef();
-  const navigation = useNavigate()
+  const navigation = useNavigate();
 
   ///get all products from database//
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const productApi = () => {
-
-    dispatch(adminGetProducts())
-  }
+    dispatch(adminGetProducts());
+  };
 
   useEffect(() => {
-    productApi()
-  }, [])
-
+    productApi();
+  }, []);
 
   // Search Product
   const searchproductApi = () => {
     const data = {
-      productName: search
-    }
-    dispatch(searchProducts(data))
-  }
+      productName: search,
+    };
+    dispatch(searchProducts(data));
+  };
 
   useEffect(() => {
-    searchproductApi()
-  }, [search])
-
-
+    searchproductApi();
+  }, [search]);
 
   ///get All category from database//
-
-
 
   useEffect(() => {
     let array = [];
@@ -115,15 +124,8 @@ const Header2 = ({ activeheading }) => {
     dispatch(adminGetCategory());
   }, []);
 
-
-
-
-
-
-
   //Searchbar///
   // /hide search dropdown when Click outSide//
-
 
   // useEffect(() => {
 
@@ -154,7 +156,6 @@ const Header2 = ({ activeheading }) => {
     };
   }, []);
 
-
   window.addEventListener("scroll", () => {
     if (window.scrollY > 70) {
       setActive(true);
@@ -170,80 +171,80 @@ const Header2 = ({ activeheading }) => {
     const filterProduct =
       searchproduct &&
       searchproduct.filter((pd) =>
-        pd.productName
-          .toLowerCase().includes(term.toLowerCase())
+        pd.productName.toLowerCase().includes(term.toLowerCase())
       );
     setSearchData(filterProduct);
   };
-
 
   const closesearbar = () => {
     setSearch("");
   };
 
-
   const closeMobileNavbar = () => {
     setNavOpen(false);
   };
 
-
+  useEffect(() => {
+    dispatch(userLoggedIn());
+  }, [userLoginData]);
 
   useEffect(() => {
-    dispatch(userLoggedIn())
-  }, [userLoginData])
-
-  useEffect(() => {
-    dispatch(getCart())
-  }, [addtoCart, userLoginData])
-
-
+    dispatch(getCart());
+  }, [addtoCart, userLoginData]);
 
   ///handle logout function///
   const userlogout = () => {
-    dispatch(userLogout()).then((res) => {
-      if (res.payload.message == "User successfully Logout") {
-
-        // navigate("/login")
+    dispatch(userLogout())
+      .then((res) => {
+        if (res.payload.message == "User successfully Logout") {
+          // navigate("/login")
+          dispatch(clearCartData());
+          // dispatch(clearuserLogInData());
+          dispatch(clearuserLoggedInData());
+          dispatch(clearWishListData());
+        }
+      })
+      .catch((err) => {
         dispatch(clearCartData());
         // dispatch(clearuserLogInData());
         dispatch(clearuserLoggedInData());
         dispatch(clearWishListData());
-      }
+        // navigate("/login");
+      });
+  };
 
-
-    }).catch((err) => {
-      dispatch(clearCartData());
-      // dispatch(clearuserLogInData());
-      dispatch(clearuserLoggedInData());
-      dispatch(clearWishListData());
-      // navigate("/login");
-
-    })
-  }
-
-  const token = localStorage.getItem('usertoken')
+  const token = localStorage.getItem("usertoken");
 
   const handlelogin = () => {
-    navigation("/login")
-    closeMobileNavbar()
-  }
+    navigation("/login");
+    closeMobileNavbar();
+  };
   const handleUserAccount = () => {
-    navigation("/myaccount/dashboard")
-    closeMobileNavbar()
-  }
-
+    navigation("/myaccount/dashboard");
+    closeMobileNavbar();
+  };
 
   return (
     <>
       <div className="container">
         <div className="hidden  md:h-[50px] md:my-[20px] md:flex items-center justify-between">
+
+            <div className="flex justify-center items-center space-x-3">
+            <FaBars
+              onClick={() => setNavOpen(!navOpen)}
+              size={20}
+              className="lg:hidden xl:hidden block"
+            />
+
           <div>
             <Link to="/">
               <h2 className="font-[600] text-[30px]">
-                E <span className="text-[#4D2DB7]">SHOP</span>
+              Online <span className="text-[#4D2DB7] uppercase">Nest</span>
               </h2>
             </Link>
           </div>
+            </div>
+        
           {/* search Box... */}
           <div className="w-[50%] hidden md:block relative">
             <input
@@ -255,50 +256,52 @@ const Header2 = ({ activeheading }) => {
             />
             <MagnifyingGlassIcon className="text-[gray] w-[30px] absolute right-2 top-[11px] " />
             {search && searchData && searchData.length !== 0 ? (
-
-              <div
-
-                className="absolute overflow-y-auto h-[500px] w-full z-50 bg-slate-50 shadow-sm-2  p-4">
-                {
-                  searchproduct.length > 1 ? <p className="text-center text-sm">total {results} products match</p> : <p className="text-center text-sm">total {results} product match</p>
-                }
+              <div className="absolute overflow-y-auto h-[500px] w-full z-50 bg-slate-50 shadow-sm-2  p-4">
+                {searchproduct.length > 1 ? (
+                  <p className="text-center text-sm">
+                    total {results} products match
+                  </p>
+                ) : (
+                  <p className="text-center text-sm">
+                    total {results} product match
+                  </p>
+                )}
 
                 <>
-                  {
-                    searchLoading === true ? <div className="flex justify-center items-center h-auto">
+                  {searchLoading === true ? (
+                    <div className="flex justify-center items-center h-auto">
                       <Loading />
-
-                    </div> : <> {searchData &&
-                      searchData.map((i, index) => {
-                        const p = i.title;
-                        const product_name = p?.replace(/\s+/g, "-");
-                        return (
-                          <Link
-
-                            onClick={closesearbar} to={`/allproduct/${i._id}`}>
-                            <hr />
-                            <div
-
-                              key={index}
-                              className="w-full flex items-start py-3"
+                    </div>
+                  ) : (
+                    <>
+                      {" "}
+                      {searchData &&
+                        searchData.map((i, index) => {
+                          const p = i.title;
+                          const product_name = p?.replace(/\s+/g, "-");
+                          return (
+                            <Link
+                              onClick={closesearbar}
+                              to={`/allproduct/${i._id}`}
                             >
-                              <img
-                                className="w-[40px] h-[40px] mr-[10px]"
-                                src={i.images[0]}
-                                alt=""
-                              />
-                              <h1>{i.productName
-                              }</h1>
-                            </div>
-                            <hr />
-                          </Link>
-                        );
-                      })}
-
-
+                              <hr />
+                              <div
+                                key={index}
+                                className="w-full flex items-start py-3"
+                              >
+                                <img
+                                  className="w-[40px] h-[40px] mr-[10px]"
+                                  src={i.images[0]}
+                                  alt=""
+                                />
+                                <h1>{i.productName}</h1>
+                              </div>
+                              <hr />
+                            </Link>
+                          );
+                        })}
                     </>
-                  }
-
+                  )}
                 </>
               </div>
             ) : searchData?.productName !== search ? (
@@ -313,21 +316,20 @@ const Header2 = ({ activeheading }) => {
                 <h1 className="font-[600]">sry! no product found</h1>
               </div>
             ) : null}
-
           </div>
         </div>
       </div>
       <div
-        className={`${active === true ? " shadow-2xl fixed top-0 left-0 z-50" : null
-          } transition hidden md:flex items-center justify-between w-full bg-[white] ease-in-out duration-500`}
+        className={`${
+          active === true ? " shadow-2xl fixed top-0 left-0 z-50" : null
+        } transition hidden md:flex items-center justify-between w-full bg-[white] ease-in-out duration-500`}
       >
-        <div className="w-11/12 mx-auto relative flex justify-between">
+        <div className="w-11/12 mx-auto relative flex justify-evenly ">
           {/* catagory */}
-          <div onClick={() => setDropDown(!dropdown)} >
+          <div onClick={() => setDropDown(!dropdown)}>
             <div className="relative  h-[60px] mt-[10px] mb-[10px] w-[326px] hidden lg:block ">
               <Bars4Icon className="text-[black] w-[25px] absolute top-[18px] left-2 " />
               <button
-
                 className={` h-[100%] w-full flex justify-between items-center pl-10 bg-[white] font-sans  text-lg font-[500] select-none rounded-lg `}
               >
                 All Category
@@ -352,15 +354,9 @@ const Header2 = ({ activeheading }) => {
             </div>
           </div>
           {/* navbar items */}
-          <div className="flex  items-center">
-            <Navbar activeheading={activeheading} />
-          </div>
-
-
-
-
-          {/* compare,addtocart,wishlist user*/}
-          <div className=" mr-[5.25rem]">
+           <Navbar activeheading={activeheading} />
+            {/* compare,addtocart,wishlist user*/}
+            <div className=" mr-[5.25rem]">
             <div className=" group flex items-center pl-2">
               <div className=" relative cursor-pointer mr-[15px]">
                 <div className="">
@@ -371,101 +367,109 @@ const Header2 = ({ activeheading }) => {
                   />
                 </div>
 
-
                 <div className="relative">
-                  <div
-                    className="invisible group-hover:visible group-hover:-translate-y-4  duration-200 h-[auto] w-[170px] bg-[rgba(255,255,255,0.99)] absolute top-[70px] left-[-23px]  z-10 shadow-sm ">
+                  <div className="invisible group-hover:visible group-hover:-translate-y-4  duration-200 h-[auto] w-[170px] bg-[rgba(255,255,255,0.99)] absolute top-[70px] left-[-23px]  z-10 shadow-sm ">
                     <ul className=" divide-gray-500 text-center font-medium cursor-pointer text-sm">
                       <Link to="/myaccount/dashboard">
                         <li className="my-2"> My Account</li>
                       </Link>
                       <hr />
-                      {
-                        token ? <li onClick={userlogout} className="my-2 font-medium ">Logout</li> : <Link to="/login">
+                      {token ? (
+                        <li onClick={userlogout} className="my-2 font-medium ">
+                          Logout
+                        </li>
+                      ) : (
+                        <Link to="/login">
                           <li className="my-2">Login/Register</li>
                         </Link>
-                      }
-
-
+                      )}
                     </ul>
-
-
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div className=" relative w-full">
-
-            </div>
-
-            <div className="flex items-center pl-2">
-              <div className="relative cursor-pointer mr-[15px]">
-                <ShoppingBagIcon
-                  onClick={() => setCartopen(true)}
-                  color=" rgb(255 255 255 /83%)"
-                  className="
+              <div className="flex items-center pl-2">
+                <div onClick={() => setCartopen(true)} className="relative cursor-pointer mr-[15px]">
+                  <ShoppingBagIcon
+                    
+                    color=" rgb(255 255 255 /83%)"
+                    className="
                
                   text-[#5F5F5F]  w-[30px] absolute top-[25px] left-[45px] "
-                />
-                {/* {cartopen ? <Carts setCartopen={setCartopen} /> : null} */}
-                <span className="absolute left-[70px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
-                  {userLoggedInData?.length > 0 ? getCartProduct?.length : "0"}
-                </span>
+                  /> 
+                  {/* {cartopen ? <Carts setCartopen={setCartopen} /> : null} */}
+               <span className="absolute left-[70px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
+                    {userLoggedInData?.length > 0
+                      ? getCartProduct?.length
+                      : "0"}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center ">
-              <div className="relative cursor-pointer mr-[15px]">
-                <Link to="/wishlist">
-                <HeartIcon
-                  color=" rgb(255 255 255 /83%)"
-                  className="
+              <div className="flex items-center ">
+                <div className="relative cursor-pointer mr-[15px]">
+                  <Link to="/wishlist">
+                    <HeartIcon
+                      color=" rgb(255 255 255 /83%)"
+                      className="
                 
                   text-[#5F5F5F] w-[30px] absolute top-[27px] left-2 "
-                />
-                <span className="absolute right-[-40px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
-                {userLoggedInData?.length > 0 ? getWishListProduct?.length : "0"}
-                </span>
-                </Link>
+                    />
+                 
+                  <span className="absolute right-[-40px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
+                    {userLoggedInData?.length > 0
+                      ? getWishListProduct?.length
+                      : "0"}
+                  </span>
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            <div className="flex items-center">
-              <div className="relative cursor-pointer mr-[15px]">
-                <ArrowPathIcon
-                  color=" rgb(255 255 255 /83%)"
-                  className="
+              <div className="flex items-center">
+                <div className="relative cursor-pointer mr-[15px]">
+                  <ArrowPathIcon
+                    color=" rgb(255 255 255 /83%)"
+                    className="
            
                   text-[#5F5F5F] w-[30px] absolute top-[27px] right-2 "
-                />
-                <span className="absolute right-[4px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
-                  0
-                </span>
+                  />
+                  <span className="absolute right-[4px] top-6 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
+                    0
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          </div> 
+
+         
+           
+
+       
+
+
+          
         </div>
       </div>
 
-
       {/* Mobile Header... */}
 
-
-
-
-
       <div
-        className={`${active === true ? "shadow-2xl fixed top-0 left-0 z-[10]" : null
-          } w-full bg-[#fff]  h-[70px] shadow-sm md:hidden z-50 top-0 left-0 mb-0 p-3 `}
+        className={`${
+          active === true ? "shadow-2xl fixed top-0 left-0 z-[10]" : null
+        } w-full bg-[#fff]  h-[70px] shadow-sm md:hidden  z-50 top-0 left-0 mb-0 p-3 `}
       >
         <div className="w-full flex items-ccenter justify-between">
           <div className="relative ">
-            <FaBars onClick={() => setNavOpen(!navOpen)} size={20} className="absolute left-1 top-2" />
+            <FaBars
+              onClick={() => setNavOpen(!navOpen)}
+              size={20}
+              className="absolute left-1 top-2"
+            />
             <div className="ml-7">
               <Link to="/">
                 <h2 className="font-[600]  text-[24px]">
-                  E <span className="text-[black]">SHOP</span>
+                Online <span className="text-[#4D2DB7]">NEST</span>
                 </h2>
               </Link>
             </div>
@@ -479,7 +483,6 @@ const Header2 = ({ activeheading }) => {
               <BsBag
                 size={20}
                 color="black"
-
                 className="
                
                 absolute top-2 right-0 "
@@ -487,13 +490,24 @@ const Header2 = ({ activeheading }) => {
               <span className="absolute right-[-9px] top-1 rounded-full bg-[black] w-4 h-4 p-0 m-0 text-[white] font-mono text-[12px] text-center top right leading-tight">
                 {userLoggedInData?.length > 0 ? getCartProduct?.length : "0"}
               </span>
-
             </div>
           </div>
-          {/* hEADER POPUP.. */}
+         
+        </div>
+        </div>
+            {/* hEADER POPUP.. */}
 
-          <div className={`top-0 right-0 fixed z-50  ${navOpen ? 'bg-[rgba(0,0,0,.8)] w-full h-screen' : null}`}>
-            <div className={`${navOpen ? ' translate-x-0' : ' -translate-x-full'} fixed left-0 w-3/4 bg-white z-50 shadow-lg  duration-1000 ease-out`}>
+            <div
+            className={`top-0 right-0 fixed z-50  ${
+              navOpen ? "bg-[rgba(0,0,0,.8)] w-full h-screen" : null
+            }`}
+          >
+
+            <div
+              className={`${
+                navOpen ? " translate-x-0" : " -translate-x-full"
+              } fixed left-0 w-3/4  bg-white z-50 shadow-lg  duration-1000 ease-out`}
+            >
               {/* Sidebar content */}
               <div onClick={() => setDropDown(!dropdown)}>
                 <div className="relative  h-[60px] mt-[10px] mb-[10px] w-[326px] hidden lg:block ">
@@ -509,7 +523,7 @@ const Header2 = ({ activeheading }) => {
                       className="w-[25px] absolute right-2 top-[18px]"
                     />
                   ) : (
-                    <ChevronDoubleUpIcon className="w-[25px] absolute right-2 top-[18px]" />
+                    <ChevronDoubleUpIcon className="w-[25px] absolute right-2 top-[18px]"/>
                   )}
 
                   {dropdown ? (
@@ -528,7 +542,6 @@ const Header2 = ({ activeheading }) => {
                 className="w-[100%] h-screen top-0 left-0 z-10 bg-[#fff]"
               >
                 <div className="w-full flex justify-between pr-3">
-
                   <div className="relative mr-[15px]">
                     <HeartIcon
                       color=" rgb(255 255 255 /83%)"
@@ -541,26 +554,27 @@ const Header2 = ({ activeheading }) => {
                     </span>
                   </div>
 
-                  <div className="mt-4" >
+                  <div className="mt-4">
                     <>
-                      {
-                        token ? <div onClick={handleUserAccount} className="flex items-center justify-center cursor-pointer">
+                      {token ? (
+                        <div
+                          onClick={handleUserAccount}
+                          className="flex items-center justify-center cursor-pointer"
+                        >
                           <FaRegUserCircle className="" size={26} />
-                          <p className="ml-3">Hlw..{userLoggedInData[0]?.firstname}</p>
+                          <p className="ml-3">
+                            Hlw..{userLoggedInData[0]?.firstname}
+                          </p>
                         </div>
-
-                          : <CiUser onClick={handlelogin} className="cursor-pointer" size={26} />
-
-                      }
+                      ) : (
+                        <CiUser
+                          onClick={handlelogin}
+                          className="cursor-pointer"
+                          size={26}
+                        />
+                      )}
                     </>
-
-
-
-
                   </div>
-
-
-
 
                   <RxCross1
                     className="cursor-pointer mt-4 ml-3"
@@ -568,8 +582,6 @@ const Header2 = ({ activeheading }) => {
                     size={30}
                   />
                 </div>
-
-
 
                 {/* Mobile Navigation Starts */}
 
@@ -610,23 +622,8 @@ const Header2 = ({ activeheading }) => {
             </div>
           </div>
 
-
-
-
-        </div>
-
-
-
-
-
-
-      </div>
       {/* Mobile search bar */}
-      <div
-
-        className="my-7 md:hidden block w-[92%] m-auto  relative"
-      >
-
+      <div className="my-7 md:hidden block w-[92%] m-auto  relative">
         <div className="w-full flex items-center justify-between bg-white  shadow-sm overflow-hidden h-[43px] rounded-sm ">
           <input
             type="search"
@@ -642,42 +639,36 @@ const Header2 = ({ activeheading }) => {
           >
             <IoSearchOutline color="white" size={20} />
           </button>
-
         </div>
 
         {search && searchData && searchData.length !== 0 ? (
           <div
             ref={searchRef}
-            className="absolute overflow-y-auto w-[100%] h-[500px] z-50 bg-slate-50 shadow-sm-2  p-4">
-            {
-              searchLoading === true ? <div className="flex justify-center items-center h-auto w-[100%]">
+            className="absolute overflow-y-auto w-[100%] h-[500px] z-50 bg-slate-50 shadow-sm-2  p-4"
+          >
+            {searchLoading === true ? (
+              <div className="flex justify-center items-center h-auto w-[100%]">
                 <Loading />
-
-              </div> :
-                searchData &&
-                searchData.map((i, index) => {
-                  const p = i.title;
-                  const product_name = p?.replace(/\s+/g, "-");
-                  return (
-                    <Link
-                      onClick={closesearbar}
-                      to={`/allproduct/${i._id}`}>
-                      <div
-
-                        key={index}
-                        className="w-full flex items-start py-3"
-                      >
-                        <img
-                          className="w-[40px] h-[40px] mr-[10px]"
-                          src={i.images[0]}
-                          alt=""
-                        />
-                        <h1>{i.productName.slice(0, 50)
-                        }</h1>
-                      </div>
-                    </Link>
-                  );
-                })}
+              </div>
+            ) : (
+              searchData &&
+              searchData.map((i, index) => {
+                const p = i.title;
+                const product_name = p?.replace(/\s+/g, "-");
+                return (
+                  <Link onClick={closesearbar} to={`/allproduct/${i._id}`}>
+                    <div key={index} className="w-full flex items-start py-3">
+                      <img
+                        className="w-[40px] h-[40px] mr-[10px]"
+                        src={i.images[0]}
+                        alt=""
+                      />
+                      <h1>{i.productName.slice(0, 50)}</h1>
+                    </div>
+                  </Link>
+                );
+              })
+            )}
           </div>
         ) : searchData?.title !== search ? (
           <div
@@ -690,31 +681,22 @@ const Header2 = ({ activeheading }) => {
           >
             <h1 className="font-[600]">sry! no product found</h1>
           </div>
-        ) : null
-
-        }
-
-
-
-
-
+        ) : null}
       </div>
-
-
-
-
 
       {/* /////Sidecart animated /// */}
       <div
-        className={` ${cartopen
-          ? "bg-[rgba(0,0,0,.8)] fixed top-0 right-0  w-full h-screen z-50"
-          : null
-          }`}
+        className={` ${
+          cartopen
+            ? "bg-[rgba(0,0,0,.8)] fixed top-0 right-0  w-full h-screen z-50"
+            : null
+        }`}
       >
         <div
           ref={cartRef}
-          className={`${cartopen ? "translate-x-0 hidescrool" : "translate-x-full"
-            } ease-out duration-700 bg-[white] md:w-[25%] min-h-full  w-[78%]  fixed top-0 right-0 z-10 overflow-y-auto`}
+          className={`${
+            cartopen ? "translate-x-0 hidescrool" : "translate-x-full"
+          } ease-out duration-700 bg-[white] md:w-[25%] min-h-full  w-[78%]  fixed top-0 right-0 z-10 overflow-y-auto`}
         >
           <CartDetails getCartProduct={getCartProduct} />
         </div>

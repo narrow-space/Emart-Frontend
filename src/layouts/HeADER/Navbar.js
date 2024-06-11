@@ -33,7 +33,7 @@ const Navbar = () => {
 
 
   return (
-    <div className='md:flex block  md:items-center'>
+    <div className='md:flex block   md:items-center md:justify-center mt-4'>
       <div className='flex flex-col md:flex-row'>
        {
         navdata&&navdata.map((i,index)=>{

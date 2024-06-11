@@ -101,8 +101,8 @@ const Catslider = () => {
     <>
       <div className="catSlideSection">
         <div className="container-fluide">
-          <h1 className=" text-xl ">
-          Categories
+          <h1 className=" text-3xl text-center font-semibold ">
+         Shop By Categories
           </h1>
           <Slider {...settings} className="cat_slider_main ">
             {CategoryData.length !== 0 &&
@@ -119,10 +119,10 @@ const Catslider = () => {
                           src={item.catimage}
                           alt=""
                         />
-                        <h5 className="text-[20px] pt-3">{item.categoryName}</h5>
+                        <h5 className="text-sm pt-3">{item.categoryName}</h5>
                         {
-                          item.products?.length > 1 ? <p className="mx-2"> {item.products.length}<span>items</span></p> : <p >
-                            {item.products?.length}<span >item</span>
+                          item.products?.length > 1 ? <p className="mx-2 text-sm"> {item.products.length}<span>(items)</span></p> : <p className="text-sm" >
+                            {item.products?.length}<span >(item)</span>
                           </p>
 
                         }

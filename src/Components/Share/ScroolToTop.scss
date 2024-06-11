@@ -2,20 +2,21 @@
   .scroll-to-top-btn {
     
     position: fixed;
-    bottom: 150px;
+    bottom:0px;
     right: 6px;
-    background-color: #4D2DB7;
-    color: #fff;
-    border: 1px solid white;
+    background-color:white;
+    color: black;
+    border: 1px solid black;
    
-    padding:10px;
+    padding:13px;
     cursor: pointer;
     font-size: 16px;
     z-index: 999;
-    border-radius:10%;
+ 
   }
 }
 
 .scroll-to-top-btn:hover {
-  background-color: #4D2DB7;
+  background-color: black;
+  color: white;
 }

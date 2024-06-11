@@ -66,7 +66,7 @@ const WishList = () => {
       <div className="container mx-auto p-4">
         <div className="bg-white   overflow-hidden">
           <h1 className="text-2xl md:text-3xl font-bold my-6 text-center md:text-left">
-            My wishlist on MyShop BD Shop
+            My wishlist on OnlineNest  Shop
           </h1>
 
           { getWishListProduct.length ? (

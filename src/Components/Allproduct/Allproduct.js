@@ -27,8 +27,8 @@ const Allproduct = () => {
 
   return (
     <div className="all-products">
-      <h1 className=" text-xl ml-2 mb-4 ">
-        All features Product
+      <h1 className=" text-3xl ml-2 mb-4 text-center ">
+      Recommended For You
       </h1>
       <div className="container-fluide">
 
