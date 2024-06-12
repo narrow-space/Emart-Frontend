@@ -20,10 +20,12 @@ import { RxCross1 } from "react-icons/rx";
 import {
   adminGetBrand,
   filterProducts,
+  resetfilterProducts,
 } from "../../redux/Slice/ProductSlice/ProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { adminGetCategory } from "../../redux/Slice/categorySlice/categorySlice";
 import Select from "react-select";
+
 
 const CategorySidebar = (props) => {
   const [value, setValue] = useState([6, 3000]);
@@ -35,10 +37,28 @@ const CategorySidebar = (props) => {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [sizes, setSizes] = useState([]);
+  const { filterproducts, loading } = useSelector(state => state.products);
+  const [isResetEnabled, setIsResetEnabled] = useState(false);
+ 
+
+
+  useEffect(() => {
+    if (selectedBrand || selectedSize || (value[0] !== 6 && value[1] !== 3000)) {
+      setIsResetEnabled(true);
+    } else {
+      setIsResetEnabled(false);
+    }
+  }, [selectedBrand, selectedSize, value]);
+
+
+
+
+
+
+
   function valuetext(value) {
     return value;
   }
-  console.log(selectedSize)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,8 +70,6 @@ const CategorySidebar = (props) => {
   useEffect(() => {
     dispatch(adminGetCategory());
   }, [dispatch]);
-
-
 
   useEffect(() => {
     if (CategoryData.length > 0 && categoryid) {
@@ -84,40 +102,32 @@ const CategorySidebar = (props) => {
   }, [value]);
 
   const filterByBrand = (keyword) => {
-
     props.filterByBrand(keyword);
     setSelectedBrand(keyword);
   };
 
   const filterBySize = (keyword) => {
-
     props.filterBySize(keyword);
 
-    setSelectedSize(keyword)
+    setSelectedSize(keyword);
   };
-
-
-
 
   const handlereset = () => {
     const data = {
-      selectedCategory: categoryid,
-      price: "",
-      size: "",
-      brand: "",
-      sortBy: "",
+      categoryId: categoryid,
     };
-    dispatch(filterProducts(data));
-    setFilterOpen(false)
-    setValue([6, 3000]);
-    setSelectedBrand("");
-    setSelectedSize("")
-
-
+    setFilterOpen(!filteropen)
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    dispatch(resetfilterProducts(data)).then(() => {
+      setSelectedBrand("");
+      setSelectedSize("");
+      setValue([6, 3000]);
+      props.filterByPrice(6, 3000);
+      props.filterByBrand("");
+      props.filterBySize("");
+    
+    });
   };
-
-
-
 
   ////click outside to close filter menu//
   useEffect(() => {
@@ -217,11 +227,9 @@ const CategorySidebar = (props) => {
                 <div className="flex items-center">
                   <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
-
                     name="radio-buttons-group"
                     value={selectedSize}
                     onChange={(e) => filterBySize(e.target.value)}
-
                   >
                     {sizes.length !== 0 &&
                       sizes.map((item, index) => {
@@ -229,16 +237,15 @@ const CategorySidebar = (props) => {
                           <FormControlLabel
                             value={item}
                             key={index}
-                            control={
-                              <Radio />
-                            }
+                            control={<Radio />}
                             label={item}
                           />
                         );
                       })}
                   </RadioGroup>
                 </div>
-                <button onClick={handlereset} className="btn btn-outline">
+                <button onClick={handlereset}  
+                disabled={!isResetEnabled} className="btn btn-outline rounded-none">
                   Reset All FIlter
                 </button>
               </div>
@@ -253,38 +260,36 @@ const CategorySidebar = (props) => {
         <div className="md:hidden block">
           <div className="flex items-center justify-items-end mt-7 cursor-pointer">
             {/* Place Select on the left side */}
-           <div className="">
-           <Select
-              className="w-64 mr-auto "
-              placeholder={`sort by`}
-              defaultValue={props.selectedOption}
-              onChange={props.setSelectedOption}
-              options={props.options}
-              isSearchable={false}
-            />
-           </div>
+            <div className="">
+              <Select
+                className="w-64 mr-auto "
+                placeholder={`sort by`}
+                defaultValue={props.selectedOption}
+                onChange={props.setSelectedOption}
+                options={props.options}
+                isSearchable={false}
+              />
+            </div>
 
             {/* Place Filter icon on the right side */}
-            <div 
-            onClick={() => setFilterOpen(!filteropen)}
-            className="flex items-center justify-between ">
-              <CiFilter
-                
-                className=""
-                size={30}
-              />
+            <div
+              onClick={() => setFilterOpen(!filteropen)}
+              className="flex items-center justify-between "
+            >
+              <CiFilter className="" size={30} />
               <span>Filters</span>
             </div>
           </div>
 
-
           <div
-            className={`top-0 right-0 fixed z-50  ${filteropen ? "bg-[rgba(0,0,0,.8)] w-full h-screen" : null
-              }`}
+            className={`top-0 right-0 fixed z-50  ${
+              filteropen ? "bg-[rgba(0,0,0,.8)] w-full h-screen" : null
+            }`}
           >
             <div
-              className={`${filteropen ? " translate-x-0" : " translate-x-full"
-                } fixed -right-2 w-3/4 bg-white z-50 h-screen shadow-lg  duration-1000 ease-out`}
+              className={`${
+                filteropen ? " translate-x-0" : " translate-x-full"
+              } fixed -right-2 w-3/4 bg-white z-50 h-screen shadow-lg  duration-1000 ease-out`}
             >
               <div className="md:hidden block">
                 {filteropen ? (
@@ -367,7 +372,9 @@ const CategorySidebar = (props) => {
                                   <RadioGroup
                                     aria-labelledby="demo-radio-buttons-group-label"
                                     value={selectedBrand}
-                                    onChange={(e) => filterByBrand(e.target.value)}
+                                    onChange={(e) =>
+                                      filterByBrand(e.target.value)
+                                    }
                                     name="radio-buttons-group"
                                   >
                                     {brand?.length !== 0 &&
@@ -378,6 +385,7 @@ const CategorySidebar = (props) => {
                                             value={item}
                                             control={<Radio />}
                                             label={item}
+                                            onClick={()=>setFilterOpen(!filteropen)}
                                           />
                                         );
                                       })}
@@ -395,11 +403,12 @@ const CategorySidebar = (props) => {
                                   <div className="flex items-center">
                                     <RadioGroup
                                       aria-labelledby="demo-radio-buttons-group-label"
-
                                       name="radio-buttons-group"
                                       value={selectedSize}
-                                      onChange={(e) => filterBySize(e.target.value)}
-
+                                     
+                                      onChange={(e) =>
+                                        filterBySize(e.target.value)
+                                      }
                                     >
                                       {sizes.length !== 0 &&
                                         sizes.map((item, index) => {
@@ -407,10 +416,9 @@ const CategorySidebar = (props) => {
                                             <FormControlLabel
                                               value={item}
                                               key={index}
-                                              control={
-                                                <Radio />
-                                              }
+                                              control={<Radio />}
                                               label={item}
+                                              onClick={()=>setFilterOpen(!filteropen)}
                                             />
                                           );
                                         })}
@@ -419,7 +427,8 @@ const CategorySidebar = (props) => {
 
                                   <button
                                     onClick={handlereset}
-                                    className="btn btn-outline"
+                                    className="btn btn-outline rounded-none"
+                                    disabled={!isResetEnabled}
                                   >
                                     Reset All FIlter
                                   </button>

@@ -4,12 +4,33 @@ import { useState } from "react";
 import { FaCross, FaMinus, FaPlus } from 'react-icons/fa';
 import { RxCross1, RxCrossCircled } from 'react-icons/rx';
 import { ImCross } from "react-icons/im";
+import { useDispatch } from 'react-redux';
+import { deleteCart,getCart,deletefulquantityCart } from '../../redux/Slice/cartSlice/cartSlice';
+
+
+
+
+
 
 const Cartsingle = ({ data }) => {
+  
     const [items, setItems] = useState(1);
-    const totalprice = data.details.price * data.
-    quantity
-    ;
+     const dispatch=useDispatch()
+
+     const deleteSingleCartHandler=(id)=>{
+          const data={
+            productid:id
+          }
+
+        dispatch(deletefulquantityCart(data))
+        .then((res)=>{
+            console.log(res)
+            dispatch(getCart())
+        })
+     } 
+
+      console.log(data)
+    
 
     return (
         <>
@@ -40,7 +61,7 @@ const Cartsingle = ({ data }) => {
                         </h4>
                     </div>
                     <div className="ml-auto cursor-pointer">
-                        <RxCrossCircled size={15} />
+                        <RxCrossCircled onClick={()=>deleteSingleCartHandler(data.productid)} size={15} />
                     </div>
                 </div>
             </div>

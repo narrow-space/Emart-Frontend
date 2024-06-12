@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import toast from "react-hot-toast";
-import { AddproductApi, GetAllproductsApi, filterproductsApi, newarivalproductsApi, getSingleProductApi, UpdateproductApi, DeleteImageApi, deleteproductsApi, searchProductApi, addReviewApi, getReviewApi, DeleteReviewApi, getSimilarProductsApi } from "../../../api/Productapi/Productapi";
+import { AddproductApi, GetAllproductsApi, filterproductsApi, newarivalproductsApi, getSingleProductApi, UpdateproductApi, DeleteImageApi, deleteproductsApi, searchProductApi, addReviewApi, getReviewApi, DeleteReviewApi, getSimilarProductsApi, resetfilterproductsApi } from "../../../api/Productapi/Productapi";
 
 
 
@@ -213,6 +213,23 @@ export const filterProducts = createAsyncThunk("filterProducts", async (data) =>
     }
 })
 
+
+
+export const resetfilterProducts = createAsyncThunk("resetfilterProducts", async (data) => {
+    try {
+        const response = await resetfilterproductsApi(data);
+        if (response.status === 200) {
+            return response.data;
+        } else {
+
+            throw new Error(response.response.data.error);
+            
+        }
+    } catch (error) {
+        throw error;
+    }
+});
+
 ///newarivals products slice///
 export const newarivalproduct = createAsyncThunk("newarivalproduct", async (data) => {
     try {
@@ -278,19 +295,21 @@ export const ProductSlice = createSlice({
 
         AddProducts: [],
         AllProducts: [],
-        getsimilarproducts:[],
+        getsimilarproducts: [],
         filterproducts: [],
+        resetFilterProductsData: [], // State property for reset filter data
         newArivalProduct: [],
         searchProductsData: [],
-       
+
         productDetails: {},
         searchLoading: false,
-        
-        getsimilarproductsLoading:false,
+
+        getsimilarproductsLoading: false,
         loading: false,
-        productdetaillsLoading:false,
+        productdetaillsLoading: false,
         error: null
     },
+
 
     extraReducers: (builder) => {
 
@@ -383,6 +402,22 @@ export const ProductSlice = createSlice({
                 state.error = action.payload
             })
 
+            ///resetfilters products
+
+            .addCase(resetfilterProducts.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(resetfilterProducts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.resetFilterProductsData = action.payload;
+                state.filterproducts = action.payload; // Reset filter products with the data received
+            })
+            .addCase(resetfilterProducts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+
 
             ///newarivals products
             .addCase(newarivalproduct.pending, (state) => {
@@ -410,18 +445,18 @@ export const ProductSlice = createSlice({
                 state.error = action.payload
             })
 
-          ///similar products ///
-    .addCase(getSimilarProducts.pending, (state) => {
-        state.getsimilarproductsLoading = true;
-    })
-    .addCase(getSimilarProducts.fulfilled, (state, action) => {
-        state.getsimilarproductsLoading = false;
-        state.getsimilarproducts = action.payload; // Update state with similar products array
-    })
-    .addCase(getSimilarProducts.rejected, (state, action) => {
-        state.getsimilarproductsLoading = false;
-        state.error = action.payload;
-    })
+            ///similar products ///
+            .addCase(getSimilarProducts.pending, (state) => {
+                state.getsimilarproductsLoading = true;
+            })
+            .addCase(getSimilarProducts.fulfilled, (state, action) => {
+                state.getsimilarproductsLoading = false;
+                state.getsimilarproducts = action.payload; // Update state with similar products array
+            })
+            .addCase(getSimilarProducts.rejected, (state, action) => {
+                state.getsimilarproductsLoading = false;
+                state.error = action.payload;
+            })
 
             ///search  products ///
             .addCase(searchProducts.pending, (state) => {
@@ -436,6 +471,7 @@ export const ProductSlice = createSlice({
                 state.error = action.payload
             })
 
-        }
+    }
 })
+
 export default ProductSlice.reducer

@@ -89,9 +89,25 @@ export const searchProductApi = async (data, header) => {
 
 export const filterproductsApi = async (data, header) => {
 
+   
 
   return await commonrequest("GET", `${BASE_URL}/product/api/getproduct?categoryId=${data.selectedCategory}&price=${data.price}&sizes=${data.size}&brand=${data.brand}&sortBy=${data.sortBy}&limit=${data.limit}`, "", header, "admin")
 }
+
+
+export const resetfilterproductsApi = async (data, header) => {
+  console.log(data)
+  const url = new URL(`${BASE_URL}/product/api/reset-products`);
+  if (data.categoryId) {
+    url.searchParams.append('categoryId', data.categoryId);
+  }
+  return await commonrequest("GET", url.toString(), "", header, "user");
+};
+
+
+
+
+
 // newarivals products Api//
 
 export const newarivalproductsApi = async (data, header) => {

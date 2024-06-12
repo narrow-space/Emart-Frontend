@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
-const WishListViewSkeleton = () => {
+const WishListViewSkeleton = ({width}) => {
   return (
     <div className="flex flex-col lg:flex-row ">
       {/* Skeleton Product Image */}
@@ -11,9 +11,10 @@ const WishListViewSkeleton = () => {
          
           {/* Skeleton Thumbnail Images */}
           <div className="flex flex-row" >
-          <div className="skeleton rounded-none w-32 mx-2 h-32"></div>
+          <div className={`skeleton rounded-none w-32 mx-2 h-32`}></div>
           <div className="skeleton rounded-none w-32 h-32 mx-2"></div>
           <div className="skeleton rounded-none w-32 h-32 mx-2"></div>
+          
 
           </div>
         </div>
@@ -28,7 +29,7 @@ const WishListViewSkeleton = () => {
         <div className="flex items-center space-x-2">
           <div className="flex space-x-1">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="skeleton rounded-none w-4 h-4"></div>
+              <div key={i} className={`skeleton rounded-none w-4 h-4`}></div>
             ))}
           </div>
           <div className="skeleton rounded-none h-4 w-32"></div>
@@ -54,11 +55,29 @@ const WishListViewSkeleton = () => {
         </div>
 
         {/* Skeleton Social Share and Wishlist */}
-        <div className="flex space-x-4">
+
+        {
+           width?
+           <div className='flex flex-col space-y-2 w-auto '>
+           <div  className="skeleton rounded-none w-full h-2"></div>
+           <div  className="skeleton rounded-none w-full h-2"></div>
+           <div  className="skeleton rounded-none w-full h-2"></div>
+           <div  className="skeleton rounded-none w-full h-2"></div>
+           
+           </div>
+           :
+           <div className="flex space-x-4">
           {[...Array(5)].map((_, i) => (
+
+            
             <div key={i} className="skeleton rounded-none w-6 h-6"></div>
+             
+          
+            
           ))}
         </div>
+        }
+        
       </div>
     </div>
   );

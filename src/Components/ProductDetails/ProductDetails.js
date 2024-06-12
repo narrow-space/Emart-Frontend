@@ -36,6 +36,8 @@ import { addtoCart, getCart } from "../../redux/Slice/cartSlice/cartSlice";
 import Products from "../Allproduct/Products";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import Catslider from "../catSlider/Catslider.js";
+import Skeleton from "../Skeleton/Skeleton.js";
+import WishListViewSkeleton from "../Wishlist/WishListViewSkeleton.js";
 const ProductDetails = () => {
   const [currentData, setCurrentData] = useState({});
   const [newimage, setNewImage] = useState("");
@@ -321,7 +323,7 @@ const ProductDetails = () => {
 
 
       {productdetaillsLoading ? (
-        <Loading />
+        <WishListViewSkeleton width={"25px"} />
       ) : (
         <div className="container-fluide">
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-x-0">
@@ -590,8 +592,8 @@ const ProductDetails = () => {
 
               {
                 getsimilarproducts.map((pd, index) => {
-                  return getsimilarproductsLoading ?
-                    <Loading />
+                  return !getsimilarproductsLoading ?
+                    <Skeleton />
                     :
                     <Products key={index} data={pd} />
                 })

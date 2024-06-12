@@ -25,6 +25,7 @@ import { adminGetProducts } from "../../redux/Slice/ProductSlice/ProductSlice.js
 import { BsBag } from "react-icons/bs";
 import { addtoWishList, deleteWishList, getWishList } from "../../redux/Slice/wishListSlice/wishListSlice.js";
 import ReactLoading from "react-loading";
+import { Skeleton } from "@mui/material";
 
 const Products = ({ data, height }) => {
   const { cartopen, setCartopen } = useContext(CartopenContex);
@@ -37,7 +38,7 @@ const Products = ({ data, height }) => {
   const [localWishlist, setLocalWishlist] = useState([]);
   const dispatch = useDispatch()
   const Navigate = useNavigate()
-
+  
 
   ///add to cart Function///
   const token = localStorage.getItem("usertoken")
@@ -139,10 +140,16 @@ const Products = ({ data, height }) => {
 
 
 
+
+
+
+
+
+
   return (
     <div className="product-card relative">
 
-
+    
       <div
         className={`  product-details  md:w-[full] md:h-[auto]`}>
         {/* {data?.type !== null && data?.type !== undefined && (
@@ -349,6 +356,7 @@ const Products = ({ data, height }) => {
           <OpenCardModal setModalOpen={setModalOpen} data={data} />
         ) : null}
       </div>
+
 
 
     </div>
