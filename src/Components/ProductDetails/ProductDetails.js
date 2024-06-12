@@ -592,7 +592,7 @@ const ProductDetails = () => {
 
               {
                 getsimilarproducts.map((pd, index) => {
-                  return !getsimilarproductsLoading ?
+                  return getsimilarproductsLoading ?
                     <Skeleton />
                     :
                     <Products key={index} data={pd} />
