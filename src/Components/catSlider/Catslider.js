@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { adminGetCategory } from "../../redux/Slice/categorySlice/categorySlice";
 import { adminGetProducts } from "../../redux/Slice/ProductSlice/ProductSlice";
+import Skeleton from "../Skeleton/Skeleton";
 const Catslider = () => {
   const [bgColor, setBgColor] = useState([
     "#F2FCE4",
@@ -83,7 +84,7 @@ const Catslider = () => {
 
 
 
-  const { CategoryData } = useSelector((state) => state.category);
+  const { CategoryData,loading } = useSelector((state) => state.category);
 
   const dispatch = useDispatch()
 
@@ -99,7 +100,7 @@ const Catslider = () => {
 
   return (
     <>
-      <div className="catSlideSection">
+      {loading?null: <div className="catSlideSection">
         <div className="container-fluide">
           <h1 className=" text-3xl text-center font-semibold ">
          Shop By Categories
@@ -134,7 +135,7 @@ const Catslider = () => {
 
           </Slider>
         </div>
-      </div>
+      </div>}
       <br />
 
     </>

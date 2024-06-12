@@ -1,8 +1,21 @@
+ /* Skeleton.css */
+ $skeleton-bg-color: #e0e0e0;
+ $skeleton-border-radius: 8px;
+ $pulse-animation-duration: 1.5s;
+ $pulse-animation-ease: ease-in-out;
+ 
+
+
+
+
+
+
 
 .product-card {
 
   overflow: hidden; /* Ensures the button stays within the card */
 }
+
 
 
 .add-to-cart-button {
@@ -38,7 +51,7 @@
     color: red; /* Example color */
     /* Other styles such as background-color, border, etc. */
   }
-  
+ 
   
   position: relative;
 
@@ -76,6 +89,8 @@
     align-items: center;
     position: relative;
     width: 100%;
+
+    
   }
   .imgwraper img {
     height: 150px;

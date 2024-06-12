@@ -11,22 +11,20 @@ import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import { Avatar, Button, LinearProgress } from "@mui/material";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { MdOutlineDeleteForever } from "react-icons/md";
-import ReactImageMagnify from 'react-image-magnify';
-
+import ReactImageMagnify from "react-image-magnify";
 
 import {
-
   adminGetProducts,
-
   getSingleProduct,
   AllProducts,
-  getSimilarProducts
+  getSimilarProducts,
 } from "../../redux/Slice/ProductSlice/ProductSlice";
 
 import {
-  getReview, DeleteReview,
+  getReview,
+  DeleteReview,
   addReview,
-} from "../../redux/Slice/reviewSlice/ReviewSlice.js"
+} from "../../redux/Slice/reviewSlice/ReviewSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../Share/Loading";
@@ -54,20 +52,20 @@ const ProductDetails = () => {
     productDetails,
     productdetaillsLoading,
 
-
     getsimilarproducts,
     getsimilarproductsLoading,
-    loading
-
+    loading,
   } = useSelector((state) => state.products);
 
-  const { getReviewLoading, reviewLoading, DeleteReviewLoading } = useSelector((state) => state.reviews);
+  const { getReviewLoading, reviewLoading, DeleteReviewLoading } = useSelector(
+    (state) => state.reviews
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const { userLoggedInData } = useSelector((state) => state.user);
   const { getCartProduct } = useSelector((state) => state.cart);
-  const dispatch = useDispatch()
-  // Fetch product details and reviews 
+  const dispatch = useDispatch();
+  // Fetch product details and reviews
   useEffect(() => {
     const fetchProductDetailsAndReviews = async () => {
       const data = {
@@ -93,11 +91,6 @@ const ProductDetails = () => {
     fetchProductDetailsAndReviews();
   }, [dispatch, id]);
 
-
-
-
-
-
   const Navigate = useNavigate();
 
   useEffect(() => {
@@ -105,10 +98,8 @@ const ProductDetails = () => {
       productid: id,
     };
 
-    dispatch(getSimilarProducts(data))
-  }, [productDetails])
-
-
+    dispatch(getSimilarProducts(data));
+  }, [productDetails]);
 
   ///Get current user///
   const userverify = () => {
@@ -118,10 +109,6 @@ const ProductDetails = () => {
   useEffect(() => {
     userverify();
   }, []);
-
-
-
-
 
   // Update image when product details change
   useEffect(() => {
@@ -161,9 +148,6 @@ const ProductDetails = () => {
     setActive(i);
     setSize(index);
   };
-
-
-
 
   ////submit review data///
   const handleSubmit = (e) => {
@@ -244,17 +228,14 @@ const ProductDetails = () => {
   ////Calculate discount//
   const handleDiscount = (productPrice) => {
     const discount = productDetails?.discount;
-    const actualPrice = productPrice - (productPrice * discount / 100)
-    return actualPrice
-  }
+    const actualPrice = productPrice - (productPrice * discount) / 100;
+    return actualPrice;
+  };
 
   ///add to cart Function///
 
-
   const increase = () => {
-
     setCount(count + 1);
-   
   };
 
   const decrease = () => {
@@ -263,24 +244,19 @@ const ProductDetails = () => {
     }
   };
 
+  const token = localStorage.getItem("usertoken");
 
-
-
-  const token = localStorage.getItem("usertoken")
   const handleAddtoCart = async (id, product, quantity) => {
+    // Check if the product has size options
+    const requiresSize = product.sizes && product.sizes.length > 0;
     try {
       if (token == null) {
-        Navigate('/login');
+        Navigate("/login");
         return;
-      } 
-   else if(size==""){
+      } else if (requiresSize && size === "") {
         toast.error("please select a size");
         return;
-      }
-      
-      else {
-
-
+      } else {
         // Dispatch action to add product to Redux store
         dispatch(addtoCart({ productid: id, size, quantity }));
 
@@ -292,12 +268,11 @@ const ProductDetails = () => {
     }
   };
 
-
   const ratingNumber = () => {
-    const numberofRating = review.map((rw) => rw.rating)
+    const numberofRating = review.map((rw) => rw.rating);
 
-    return numberofRating
-  }
+    return numberofRating;
+  };
 
   const reviewSectionRef = useRef(null);
 
@@ -306,21 +281,14 @@ const ProductDetails = () => {
     setRating(0);
   }, [productDetails]);
 
-
   // Scroll to the review section
   const scrollToReviews = () => {
     reviewSectionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-
-
   return (
     <>
-
-
-
       <Catslider />
-
 
       {productdetaillsLoading ? (
         <WishListViewSkeleton width={"25px"} />
@@ -329,27 +297,21 @@ const ProductDetails = () => {
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-x-0">
             <div className="flex flex-col items-center justify-center">
               <div className="w-[400px] h-[auto] ">
-
-
-
                 <ReactImageMagnify
                   {...{
                     smallImage: {
                       alt: "Product Image",
                       isFluidWidth: true,
                       src: newimage,
-
                     },
                     largeImage: {
                       src: newimage,
                       width: isMobileDevice ? 400 : 550,
                       height: isMobileDevice ? 1200 : 1800,
-
-
                     },
                     enlargedImageContainerStyle: {
                       zIndex: 9999,
-                      width: isMobileDevice ? "100%" : 700 // Set width to 100% on mobile devices
+                      width: isMobileDevice ? "100%" : 700, // Set width to 100% on mobile devices
                     },
                     isHintEnabled: true,
                     shouldHideHintAfterFirstActivation: false,
@@ -359,14 +321,9 @@ const ProductDetails = () => {
                     isActivatedOnTouch: false, // Enable inner zoom on touch devices
                     pressDuration: 200,
                     pressMoveThreshold: 9,
-                    fadeDurationInMs: 700
-
+                    fadeDurationInMs: 700,
                   }}
                 />
-
-
-
-
 
                 {/* <InnerImageZoom
                   className="w-full h-full object-cover md:object-contain"
@@ -375,7 +332,6 @@ const ProductDetails = () => {
                   src={newimage}
                 /> */}
               </div>
-
 
               <Slider
                 ref={detailsRef}
@@ -395,27 +351,28 @@ const ProductDetails = () => {
 
             <div className="info p-3">
               <div className="badge bg-[#fde0e9] text-[#f74b81] p-[18px]">
-                <h2 className="uppercase"><span className="mr-2">{productDetails?.type}</span>{productDetails?.discount}%</h2>
+                <h2 className="uppercase">
+                  <span className="mr-2">{productDetails?.type}</span>
+                  {productDetails?.discount}%
+                </h2>
               </div>
               <h3 className="text-[20px] font-bold md:text-xl my-5">
                 {productDetails.productName}
               </h3>
 
-
-
               <div className="flex items-center">
                 <Rating
                   style={{ maxWidth: 80 }}
-                  value={
-                    ratingNumber()}
+                  value={ratingNumber()}
                   readOnly
                   itemStyles={myStyles}
                 />
                 <br /> <br />
-
-
                 {review?.length ? (
-                  <span onClick={scrollToReviews} className="pl-3 text-sm cursor-pointer text-gray-500">
+                  <span
+                    onClick={scrollToReviews}
+                    className="pl-3 text-sm cursor-pointer text-gray-500"
+                  >
                     ({review.length} reviews)
                   </span>
                 ) : (
@@ -423,19 +380,7 @@ const ProductDetails = () => {
                     There are no reviews yet.
                   </span>
                 )}
-
-
-
-
-
               </div>
-
-
-
-
-
-
-
 
               <div className="flex items-center">
                 <h4 className="text-xl font-[900]">
@@ -447,19 +392,16 @@ const ProductDetails = () => {
                   </p>
                   <span className="line-through text-xl   text-[gray]">
                     ${productDetails?.price}
-
                   </span>
-
                 </div>
               </div>
 
-
-
-              <p className="text-black text-sm ">{productDetails.description}</p>
+              <p className="text-black text-sm ">
+                {productDetails.description}
+              </p>
               <br />
 
               {/* size/weight chart */}
-
 
               <div className="product_size flex  items-center mb-6">
                 <span>Size / Weight:</span>
@@ -469,8 +411,11 @@ const ProductDetails = () => {
                       return (
                         <li className="list">
                           <a
-                            className={`tag ${active === index ? "bg-black text-white" : " bg-white text-black"
-                              }`}
+                            className={`tag ${
+                              active === index
+                                ? "bg-black text-white"
+                                : " bg-white text-black"
+                            }`}
                             onClick={() => isActive(index, i)}
                           >
                             {i}
@@ -479,109 +424,114 @@ const ProductDetails = () => {
                       );
                     })}
                 </ul>
-
               </div>
 
-              {productDetails?.quantity > 0 ? <span className=" text-black  text-sm ">AVAILABILITY  :</span> : null}
+              {productDetails?.quantity > 0 ? (
+                <span className=" text-black  text-sm ">AVAILABILITY :</span>
+              ) : null}
 
               <span className="text-black ">
-                {productDetails?.quantity > 0 ? <span className="bg-[#218838] border-0 text-sm px-7 py-2 rounded-full text-white ml-2 uppercase">
-                  In stock
-                </span> : null
-
-
-                }
+                {productDetails?.quantity > 0 ? (
+                  <span className="bg-[#218838] border-0 text-sm px-7 py-2 rounded-full text-white ml-2 uppercase">
+                    In stock
+                  </span>
+                ) : null}
               </span>
 
-
-              <div className=" py-5 border-t border-b my-7" >
+              <div className=" py-5 border-t border-b my-7">
                 <div className="flex items-center  mt-3 w-[100%]">
-                  <div className={`${productDetails?.quantity === 0 ? "hidden" : "block"}`}>
+                  <div
+                    className={`${
+                      productDetails?.quantity === 0 ? "hidden" : "block"
+                    }`}
+                  >
                     {/* inc and dec and button add to cart */}
-                    <div className='flex  h-[40px]  '>
-
-                          <button
-                            onClick={decrease}
-                            className={` border p-[.5rem] cursor-pointer ${count==1?'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>-</button>
-                          <div className='border p-[.5rem]'>{count}</div>
-                          <button
-                            disabled={count==5}
-                            onClick={increase}
-                            className={`border  p-[.5rem] cursor-pointer ${count==5? 'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>+</button>
-                        </div>
+                    <div className="flex  h-[40px]  ">
+                      <button
+                        onClick={decrease}
+                        className={` border p-[.5rem] cursor-pointer ${
+                          count == 1
+                            ? "bg-[#FAFAFA] cursor-not-allowed"
+                            : "bg-[#DADADA]"
+                        }`}
+                      >
+                        -
+                      </button>
+                      <div className="border p-[.5rem]">{count}</div>
+                      <button
+                        disabled={count == 5}
+                        onClick={increase}
+                        className={`border  p-[.5rem] cursor-pointer ${
+                          count == 5
+                            ? "bg-[#FAFAFA] cursor-not-allowed"
+                            : "bg-[#DADADA]"
+                        }`}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
 
                   <div className="ml-3">
-
-                    {productDetails?.quantity === 0 ?
+                    {productDetails?.quantity === 0 ? (
                       <button>
                         <div className="text-white text-sm bg-[#D02128] w-[100%] h-[40px] p-3 flex items-center justify-center ">
                           <ShoppingBagIcon className="w-5 h-5 mr-1 " />
                           <h2 className="uppercase font-bold">OUT OF STOCK</h2>
                         </div>
-
-                      </button> : <button >
-
+                      </button>
+                    ) : (
+                      <button>
                         <div className="ml-3">
-
-                          {productDetails?.quantity === 0 ?
+                          {productDetails?.quantity === 0 ? (
                             <button>
                               <div className="text-white text-sm bg-[#D02128] w-[100%] h-[40px] p-3 flex items-center justify-center ">
                                 <ShoppingBagIcon className="w-5 h-5 mr-1 " />
-                                <h2 className="uppercase font-bold">OUT OF STOCK</h2>
+                                <h2 className="uppercase font-bold">
+                                  OUT OF STOCK
+                                </h2>
                               </div>
-
-                            </button> : <button onClick={() => handleAddtoCart(productDetails._id, productDetails, count)}>
-
-                              <div className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${size == "" ? "text-white bg-[#858484] cursor-pointer  " : " text-white bg-[black]  "}`}>
-                                {
-                                  isLoading && (
-                                    <span className="loading loading-spinner loading-sm" />)
-                                }
-                                <ShoppingBagIcon className="w-5 h-5 mr-1 " />
-                                <h2 className="uppercase font-bold">Add to cart</h2>
-
-                              </div>
-
                             </button>
-
-                          }
-
-
-
-
-
-
+                          ) : (
+                            <button
+                              onClick={() =>
+                                handleAddtoCart(
+                                  productDetails._id,
+                                  productDetails,
+                                  count
+                                )
+                              }
+                            >
+                              <div
+                                className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${
+                                  productDetails.sizes &&
+                                  productDetails.sizes.length > 0
+                                    ? size === ""
+                                      ? "text-white bg-[#858484] cursor-pointer"
+                                      : "text-white bg-[black]"
+                                    : "text-white bg-[black]"
+                                }`}
+                              >
+                                {isLoading && (
+                                  <span className="loading loading-spinner loading-sm" />
+                                )}
+                                <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                                <h2 className="uppercase font-bold">
+                                  Add to cart
+                                </h2>
+                              </div>
+                            </button>
+                          )}
                         </div>
-
                       </button>
-
-                    }
-
-
-
-
-
-
+                    )}
                   </div>
                 </div>
-
-
               </div>
-
-
-
             </div>
-
-
-
           </div>
 
-          <div>
-
-
-
-          </div>
+          <div></div>
 
           {/* similar products show */}
 
@@ -589,25 +539,20 @@ const ProductDetails = () => {
             <hr />
             <h1 className="text-2xl font-[700] my-7">Similar products</h1>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-6 md:gap-6">
-
-              {
-                getsimilarproducts.map((pd, index) => {
-                  return getsimilarproductsLoading ?
-                    <Skeleton />
-                    :
-                    <Products key={index} data={pd} />
-                })
-              }
+              {getsimilarproducts.map((pd, index) => {
+                return getsimilarproductsLoading ? (
+                  <Skeleton />
+                ) : (
+                  <Products key={index} data={pd} />
+                );
+              })}
             </div>
           </div>
 
-
-
-
-
-
-
-          <div ref={reviewSectionRef} className="w-[100%] mt-5 h-[60%] p-6 border-solid border-2 border-[#8080801c] rounded-2xl">
+          <div
+            ref={reviewSectionRef}
+            className="w-[100%] mt-5 h-[60%] p-6 border-solid border-2 border-[#8080801c] rounded-2xl"
+          >
             <div className="customtabs">
               <ul className="flex items-center ">
                 <li>
@@ -622,7 +567,9 @@ const ProductDetails = () => {
             </div>
             {tabActive === 0 ? (
               <div className="w-[100%] ">
-                <p className="line-clamp-7 text-sm p-3">{productDetails.description}</p>
+                <p className="line-clamp-7 text-sm p-3">
+                  {productDetails.description}
+                </p>
               </div>
             ) : null}
             {tabActive === 1 ? (
@@ -671,21 +618,21 @@ const ProductDetails = () => {
                                 </div>
                               </div>
                               <div className="flex items-center justify-end">
-                                <div data-tip="delete review" className="tooltip flex">
-
-                                  {
-                                    localStorage.getItem("usertoken") ? <MdOutlineDeleteForever
-                                      onClick={() => handleDeleteReview(review._id)}
+                                <div
+                                  data-tip="delete review"
+                                  className="tooltip flex"
+                                >
+                                  {localStorage.getItem("usertoken") ? (
+                                    <MdOutlineDeleteForever
+                                      onClick={() =>
+                                        handleDeleteReview(review._id)
+                                      }
                                       className=" cursor-pointer  "
-
                                       size={25}
-                                    /> : null
-                                  }
-
+                                    />
+                                  ) : null}
                                 </div>
                               </div>
-
-
                             </div>
                           );
                         })}
@@ -789,7 +736,6 @@ const ProductDetails = () => {
           </div>
         </div>
       )}
-
     </>
   );
 };

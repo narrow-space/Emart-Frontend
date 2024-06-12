@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Products.scss";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import {
@@ -26,7 +27,10 @@ import { BsBag } from "react-icons/bs";
 import { addtoWishList, deleteWishList, getWishList } from "../../redux/Slice/wishListSlice/wishListSlice.js";
 import ReactLoading from "react-loading";
 import { Skeleton } from "@mui/material";
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import Loading from "../Share/Loading.js";
+import ImgageSkeleton from "./ImageSkeleton.js";
+import ImageSkeleton from "./ImageSkeleton.js";
 const Products = ({ data, height }) => {
   const { cartopen, setCartopen } = useContext(CartopenContex);
   const { theme } = useContext(ThemeContex);
@@ -38,7 +42,8 @@ const Products = ({ data, height }) => {
   const [localWishlist, setLocalWishlist] = useState([]);
   const dispatch = useDispatch()
   const Navigate = useNavigate()
-  
+  const [imageLoaded, setImageLoaded] = useState(false); // State to track if image is loaded
+
 
   ///add to cart Function///
   const token = localStorage.getItem("usertoken")
@@ -78,8 +83,8 @@ const Products = ({ data, height }) => {
 
 
 
-   // Fetch wishlist data when the component mounts
-   useEffect(() => {
+  // Fetch wishlist data when the component mounts
+  useEffect(() => {
     dispatch(getWishList());
   }, [dispatch]);
 
@@ -101,9 +106,9 @@ const Products = ({ data, height }) => {
     if (token == null) {
       Navigate('/login');
     } else {
-   
+
       setIsWishListLoading(true);
-      setLocalWishlist(prevState => [...prevState, id]); 
+      setLocalWishlist(prevState => [...prevState, id]);
       const data = { productid: id };
       dispatch(addtoWishList(data))
         .then(() => {
@@ -111,7 +116,7 @@ const Products = ({ data, height }) => {
         })
         .catch((error) => {
           console.log(error);
-          setLocalWishlist(prevState => prevState.filter(item => item !== id)); 
+          setLocalWishlist(prevState => prevState.filter(item => item !== id));
         })
         .finally(() => {
           setIsWishListLoading(false);
@@ -131,7 +136,7 @@ const Products = ({ data, height }) => {
       })
       .catch((error) => {
         console.log(error);
-        setLocalWishlist(prevState => [...prevState, id]); 
+        setLocalWishlist(prevState => [...prevState, id]);
       })
       .finally(() => {
         seDeleteWishListLoading(false);
@@ -140,8 +145,10 @@ const Products = ({ data, height }) => {
 
 
 
-
-
+  // Handle image load with delay
+  const handleImageLoad = () => {
+    setImageLoaded(true); // Set imageLoaded to true after image loads
+  };
 
 
 
@@ -149,7 +156,7 @@ const Products = ({ data, height }) => {
   return (
     <div className="product-card relative">
 
-    
+
       <div
         className={`  product-details  md:w-[full] md:h-[auto]`}>
         {/* {data?.type !== null && data?.type !== undefined && (
@@ -164,11 +171,15 @@ const Products = ({ data, height }) => {
 
 
               to={`/allproduct/${data._id}`}>
-              <div className="cursor-pointer relative overflow-hidden ">
-                <img
-                  className="w-full transform hover:scale-110 "
+              <div className="cursor-pointer relative overflow-hidden">
+                {!imageLoaded && <ImageSkeleton />} {/* Show skeleton if image not loaded */}
+                <LazyLoadImage
+                  alt={data.productName}
                   src={data.images[0]}
-                  alt=""
+                  effect="blur" // Optional: Add an effect when the image loads
+                  afterLoad={handleImageLoad} // Update state after image loads
+                  visibleByDefault={false} // Initially hide the image until it's in the viewport
+                  className={imageLoaded ? "visible" : "hidden"} // Hide the image until loaded
                 />
               </div>
             </Link>
@@ -176,7 +187,7 @@ const Products = ({ data, height }) => {
             <div className="overlay transition flex justify-center items-center">
               <ul className="pb-0 flex justify-center  ">
                 <li className="">
-                {isInWishlist(data._id) ? (
+                  {isInWishlist(data._id) ? (
                     <div className="tooltip" data-tip="Remove Wishlist">
                       {deleteWishListLoading ? (
                         <ReactLoading type="spin" color="white" height={18} width={18} />

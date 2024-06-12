@@ -14,7 +14,7 @@ import { FaBagShopping } from "react-icons/fa6";
 import ThemeProvider from "./Contexapi/Themecontex.js";
 import NavProvider from "./Contexapi/NavopenContex.js";
 import CartProvider, { CartopenContex } from "./Contexapi/Cartopencontex.js";
-
+import ReactLoading from "react-loading";
 // Shared Components
 import Layout from "./layouts/Layout.js";
 import ScroolToTop from "./Components/Share/ScroolToTop.js";
@@ -151,7 +151,7 @@ const App = () => {
 
                 <Suspense fallback={<div className="flex h-[100vh] items-center justify-center">
 
-                  <Lottie animationData={animationData}  style={{ width: 200, height: 200 }} />
+                  <ReactLoading type="bars" color="black"  />
                 </div>}>
 
             <Routes>

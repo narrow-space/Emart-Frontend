@@ -12,6 +12,8 @@ const Allproduct = () => {
 
   const dispatch = useDispatch()
   const { AllProducts: { products }, loading, error } = useSelector((state) => state.products)
+
+
   const { getCartProduct } = useSelector((state) => state.cart)
   const [skeletonLoading, setSkeletonLoading] = useState(true)
   const productApi = () => {
@@ -42,9 +44,6 @@ const Allproduct = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // if(skeletonLoading){
-  //   return <Skeleton/>
-  //  }
 
 
 
@@ -68,7 +67,7 @@ const Allproduct = () => {
                   return (
 
 
-                    skeletonLoading ? 
+                loading ? 
 
                       <Skeleton />
                    :

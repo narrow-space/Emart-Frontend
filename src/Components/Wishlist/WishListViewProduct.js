@@ -76,11 +76,12 @@ const WishListViewProduct = ({ wishListView }) => {
 
   const token = localStorage.getItem("usertoken");
   const handleAddtoCart = async (id, product, quantity) => {
+    const requiresSize = product.sizes && product.sizes.length > 0;
     try {
       if (token == null) {
         Navigate("/login");
         return;
-      } else if (size == "") {
+      }  else if (requiresSize && size === "") {
         toast.error("please select a size");
         return;
       } else {
@@ -304,12 +305,15 @@ const WishListViewProduct = ({ wishListView }) => {
                             }
                           >
                             <div
-                              className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${
-                                size == ""
-                                  ? "text-white bg-[#858484] cursor-pointer  "
-                                  : " text-white bg-[black]  "
-                              }`}
-                            >
+                                className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${
+                                  wishListView.sizes &&
+                                  wishListView.sizes.length > 0
+                                    ? size === ""
+                                      ? "text-white bg-[#858484] cursor-pointer"
+                                      : "text-white bg-[black]"
+                                    : "text-white bg-[black]"
+                                }`}
+                              >
                               <ShoppingBagIcon className="w-5 h-5 mr-1 " />
                               <h2 className="uppercase font-bold">
                                 Add to cart

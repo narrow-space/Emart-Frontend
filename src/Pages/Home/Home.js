@@ -8,28 +8,43 @@ import Homecontact from '../../Components/Homecontact/Homecontact'
 import Banner from '../../Components/Banner/Banner'
 import ShoppingBag from '../../Components/Share/ShoppingBag'
 import FlotingComponentsMobile from '../../Components/Share/FlotingComponentsMobile'
+import SkeletonLoadingForHome from '../../Components/Share/SkeletonLoadingForHome'
+import Skeleton from '../../Components/Skeleton/Skeleton'
+
 
 
 
 
 
 const Home = () => {
- 
+  const [skeletonLoading, setSkeletonLoading] = useState(true)
+  useEffect(() => {
+
+    setSkeletonLoading(true);
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setSkeletonLoading(false);
+    }, 2000); // Adjust the delay as needed
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
+
+     <Banner />
+
+        <Catslider />
+        <Allproduct />
+
+        <Modal />
+        <NewarivalProducts />
+        <Homecontact />
+      </>
+
+
   
-       
-      <Banner/>
-     
-      <Catslider/> 
-    <Allproduct/>
+
    
-     <Modal/>
-     <NewarivalProducts/>
-    <Homecontact/>
-   
-    </>
   )
 }
 
