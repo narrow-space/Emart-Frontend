@@ -57,7 +57,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                 <div className="flex h-[40px]">
                     <button
                         onClick={() => decrease(data.productid)}
-                        className={`border p-[.5rem] cursor-pointer ${count === 1
+                        className={`border p-[.5rem] cursor-pointer ${data.quantity === 1
                                 ? "bg-[#FAFAFA] cursor-not-allowed"
                                 : "bg-[#DADADA]"
                             }`}
@@ -66,9 +66,9 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                     </button>
                     <div className="border p-[.5rem]">{data.quantity}</div>
                     <button
-                        disabled={count === 5}
+                        disabled={data.quantity === 5}
                         onClick={() => increase(data.productid, 1)}
-                        className={`border p-[.5rem] cursor-pointer ${count === 5
+                        className={`border p-[.5rem] cursor-pointer ${data.quantity === 5
                                 ? "bg-[#FAFAFA] cursor-not-allowed"
                                 : "bg-[#DADADA]"
                             }`}
