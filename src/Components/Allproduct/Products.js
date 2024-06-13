@@ -179,7 +179,7 @@ const handleMouseLeave = () => {
 
             to={`/allproduct/${data._id}`}>
             <div className=" cursor-pointer  flex items-center justify-center ">
-            <LazyLoad once placeholder={<ImageSkeleton />} debounce={500}>
+            <LazyLoad once placeholder={<ImageSkeleton />} debounce={100}>
                 <img className="product-image" src={imageSrc} alt="" />
               </LazyLoad>
 
