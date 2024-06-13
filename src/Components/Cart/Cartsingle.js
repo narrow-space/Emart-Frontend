@@ -83,7 +83,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                         <span className='mr-3'>${data.details.price}</span> <span className='font-[200]'><RxCross1 /></span> <span className='ml-1'>{data.quantity}{" "}</span>
                     </h4>
                     <h4 className="pt-[3px] font-roboto text-[black]">
-                        $USD {data.details.price * count}
+                        $USD {data.details.price * data.quantity}
                     </h4>
                 </div>
                 <div className="ml-auto cursor-pointer">
