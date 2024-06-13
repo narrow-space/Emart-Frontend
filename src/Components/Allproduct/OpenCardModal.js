@@ -98,7 +98,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
         return;
 
       }
-      else if (requiresSize) {
+      else if (requiresSize && size === "") {
         toast.error("please select a size")
         return;
       }
@@ -299,24 +299,23 @@ const OpenCardModal = ({ setModalOpen, data }) => {
 
                           </button> : <button onClick={() => handleAddtoCartforModal(data._id, data, count)}>
 
-                          <div
-                                className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${
-                                  data.sizes &&
+                            <div
+                              className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${data.sizes &&
                                   data.sizes.length > 0
-                                    ? size === ""
-                                      ? "text-white bg-[#858484] cursor-pointer"
-                                      : "text-white bg-[black]"
+                                  ? size === ""
+                                    ? "text-white bg-[#858484] cursor-pointer"
                                     : "text-white bg-[black]"
+                                  : "text-white bg-[black]"
                                 }`}
-                              >
-                                {isLoading && (
-                                  <span className="loading loading-spinner loading-sm" />
-                                )}
-                                <ShoppingBagIcon className="w-5 h-5 mr-1 " />
-                                <h2 className="uppercase font-bold">
-                                  Add to cart
-                                </h2>
-                              </div>
+                            >
+                              {isLoading && (
+                                <span className="loading loading-spinner loading-sm" />
+                              )}
+                              <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                              <h2 className="uppercase font-bold">
+                                Add to cart
+                              </h2>
+                            </div>
 
                           </button>
 
