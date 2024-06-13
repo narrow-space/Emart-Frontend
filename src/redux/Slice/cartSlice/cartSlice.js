@@ -47,12 +47,22 @@ export const deleteCart = createAsyncThunk("deleteCart", async (data) => {
         throw error
     }
 })
+
+
+
+
+
+
+
+
+
+
 ///delete fullquantity cart product///
 export const deletefulquantityCart = createAsyncThunk("deletefulquantityCart", async (data) => {
     try {
         const response = await deleteFullCartApi(data)
         if (response.status == 200) {
-            toast.success(response.data.message)
+            
             return response.data
         } else {
             toast.error(response.response.data.error)

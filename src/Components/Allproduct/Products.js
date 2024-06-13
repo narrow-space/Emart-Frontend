@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Products.scss";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import LazyLoad from 'react-lazyload';
 
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import {
@@ -26,10 +26,6 @@ import { adminGetProducts } from "../../redux/Slice/ProductSlice/ProductSlice.js
 import { BsBag } from "react-icons/bs";
 import { addtoWishList, deleteWishList, getWishList } from "../../redux/Slice/wishListSlice/wishListSlice.js";
 import ReactLoading from "react-loading";
-import { Skeleton } from "@mui/material";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Loading from "../Share/Loading.js";
-import ImgageSkeleton from "./ImageSkeleton.js";
 import ImageSkeleton from "./ImageSkeleton.js";
 const Products = ({ data, height }) => {
   const { cartopen, setCartopen } = useContext(CartopenContex);
@@ -42,7 +38,10 @@ const Products = ({ data, height }) => {
   const [localWishlist, setLocalWishlist] = useState([]);
   const dispatch = useDispatch()
   const Navigate = useNavigate()
-  const [imageLoaded, setImageLoaded] = useState(false); // State to track if image is loaded
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageSrc, setImageSrc] = useState(data.images[0]);
+
+
 
 
   ///add to cart Function///
@@ -142,13 +141,18 @@ const Products = ({ data, height }) => {
         seDeleteWishListLoading(false);
       });
   };
+// Function to handle hover effect with delay
+const handleHover = () => {
+  // Set a timeout to delay the image change
+  setTimeout(() => {
+    setImageSrc(data.images[1]); 
+  }, 200); 
+};
 
-
-
-  // Handle image load with delay
-  const handleImageLoad = () => {
-    setImageLoaded(true); // Set imageLoaded to true after image loads
-  };
+// Reset image source on mouse leave
+const handleMouseLeave = () => {
+  setImageSrc(data.images[0]); // Reset to the original image
+};
 
 
 
@@ -158,105 +162,170 @@ const Products = ({ data, height }) => {
 
 
       <div
-        className={`  product-details  md:w-[full] md:h-[auto]`}>
+        className={`  product-details `}>
         {/* {data?.type !== null && data?.type !== undefined && (
           <div className="badgge"><span className={`badgee sm:z-[5]   ${data.type}`}>{data.type}</span></div>
         )} */}
 
-        <div className={`md:h-[310px] h-[300px]`}>
-          <div className={`imgwraper`}>
-            <Link
 
-              // onClick={() => sessionStorage.setItem("title", `${product_name}`)} 
+        <div className={`imgwraper`}
+           onMouseEnter={handleHover}
+           onMouseLeave={handleMouseLeave}
+        >
+          <Link
+
+            // onClick={() => sessionStorage.setItem("title", `${product_name}`)} 
 
 
-              to={`/allproduct/${data._id}`}>
-              <div className="cursor-pointer relative overflow-hidden">
-                {!imageLoaded && <ImageSkeleton />} {/* Show skeleton if image not loaded */}
-                <LazyLoadImage
-                  alt={data.productName}
-                  src={data.images[0]}
-                  effect="blur" // Optional: Add an effect when the image loads
-                  afterLoad={handleImageLoad} // Update state after image loads
-                  visibleByDefault={false} // Initially hide the image until it's in the viewport
-                  className={imageLoaded ? "visible" : "hidden"} // Hide the image until loaded
-                />
-              </div>
-            </Link>
+            to={`/allproduct/${data._id}`}>
+            <div className=" cursor-pointer  flex items-center justify-center ">
+            <LazyLoad once placeholder={<ImageSkeleton />} debounce={500}>
+                <img className="product-image" src={imageSrc} alt="" />
+              </LazyLoad>
 
-            <div className="overlay transition flex justify-center items-center">
-              <ul className="pb-0 flex justify-center  ">
-                <li className="">
-                  {isInWishlist(data._id) ? (
-                    <div className="tooltip" data-tip="Remove Wishlist">
-                      {deleteWishListLoading ? (
-                        <ReactLoading type="spin" color="white" height={18} width={18} />
-                      ) : (
-                        <FaHeart
-                          size={19}
-                          onClick={() => removeFromWishlistHandler(data._id)}
-                          className="w-5 cursor-pointer"
-                          color="red"
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    <div className="tooltip" data-tip="Add Wishlist">
-                      {isWishListLoading ? (
-                        <ReactLoading type="spin" color="white" height={18} width={18} />
-                      ) : (
-                        <FaRegHeart
-                          size={19}
-                          onClick={() => addToWishlistHandler(data._id)}
-                          className="w-5 cursor-pointer"
-                          color="white"
-                        />
-                      )}
-                    </div>
-                  )}
-                </li>
-
-                <div className="tooltip " data-tip="View">
-                  <li className="cursor-pointer">
-                    <EyeIcon
-                      onClick={() => setModalOpen(!modalOpen)}
-                      className="w-5"
-                    />
-                  </li>
-                </div>
-
-                <div className="tooltip  " data-tip="Compare">
-                  <li className="">
-                    <ArrowPathIcon className="w-5 " />
-                  </li>
-                </div>
-              </ul>
             </div>
+          </Link>
+          {/* Add to cart button for Desktop */}
+
+          <div>
+            {data?.quantity === 0 ?
+              <button>
+                <div className="hidden add-to-cart-button text-white text-sm bg-[#D64147] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
+
+                  OUT OF STOCK
+                </div>
+
+              </button> : <button onClick={() => handleAddtoCart(data._id, 1)}>
+
+                <div className="text-sm hidden add-to-cart-button text-white bg-[black] w-auto p-3  lg:flex items-center justify-center ">
+                  <>
+                    {
+                      isLoading ? (
+                        <span className="loading loading-spinner loading-sm" />) :
+
+                        <>
+                          <div className="mr-1">
+                            <BsBag size={15} />
+                          </div>
+                          <h1 className="mt-1">ADD TO CART</h1>
+                        </>
+
+                    }
+
+                  </>
+
+
+
+                </div>
+
+              </button>
+
+            }
+          </div>
+          {/* Add to cart button for mobile */}
+          <div className="">
+            {
+              data.quantity === 0 ? <button className="w-[100%]">
+                <div className=" lg:hidden add-to-cart-button-mobile  xl:hidden  text-white text-sm bg-[#D64147] w-[100%]   p-2 xs:flex items-center justify-center ">
+
+                  OUT OF STOCK
+                </div>
+
+              </button> : <button className="w-[100%] " onClick={() => handleAddtoCart(data._id, 1)}>
+
+                <div className="text-sm lg:hidden xl:hidden add-to-cart-button-mobile  text-white bg-[black] 
+            w-[100%]   p-2 flex items-center justify-center  ">
+                  {
+                    isLoading ? (
+                      <span className="loading loading-spinner loading-sm" />) : (<>
+
+                        <div className="mr-1">
+                          <BsBag size={15} />
+                        </div>
+                        <h1 className="mt-1">ADD TO CART</h1>
+                      </>)
+                  }
+
+
+                </div>
+
+              </button>
+            }
           </div>
 
-          <div className="info p-3 ">
-            <Link
+          <div className="overlay transition flex justify-center items-center">
+            <ul className="pb-0 flex justify-center  ">
+              <li className="">
+                {isInWishlist(data._id) ? (
+                  <div className="tooltip" data-tip="Remove Wishlist">
+                    {deleteWishListLoading ? (
+                      <ReactLoading type="spin" color="white" height={18} width={18} />
+                    ) : (
+                      <FaHeart
+                        size={19}
+                        onClick={() => removeFromWishlistHandler(data._id)}
+                        className="w-5 cursor-pointer"
+                        color="red"
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <div className="tooltip" data-tip="Add Wishlist">
+                    {isWishListLoading ? (
+                      <ReactLoading type="spin" color="white" height={18} width={18} />
+                    ) : (
+                      <FaRegHeart
+                        size={19}
+                        onClick={() => addToWishlistHandler(data._id)}
+                        className="w-5 cursor-pointer"
+                        color="white"
+                      />
+                    )}
+                  </div>
+                )}
+              </li>
 
-              // onClick={() => sessionStorage.setItem("title", `${product_name}`)}
+              <div className="tooltip " data-tip="View">
+                <li className="cursor-pointer">
+                  <EyeIcon
+                    onClick={() => setModalOpen(!modalOpen)}
+                    className="w-5"
+                  />
+                </li>
+              </div>
+
+              <div className="tooltip  " data-tip="Compare">
+                <li className="">
+                  <ArrowPathIcon className="w-5 " />
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+        <div className="info p-3 ">
+          <Link
+
+            // onClick={() => sessionStorage.setItem("title", `${product_name}`)}
 
 
-              to={`/allproduct/${data._id}`}>
-              <span
-                style={theme == "dark" ? { color: "white" } : { color: "black" }}
-                className="block brand text-xs"
-              >
+            to={`/allproduct/${data._id}`}>
+            <span
+              style={theme == "dark" ? { color: "white" } : { color: "black" }}
+              className="block brand text-xs"
+            >
 
-                Brand:{data.brand}
-              </span>
-              <h4
-                style={{ color: "" }}
-                className="title text-sm h-[40px] my-3"
-              >
-                {
-                  data.productName.length > 20 ? data.productName.substring(0, 50) : data.productName}
-              </h4>
-            </Link>
-            {/* <div className="flex items-center">
+              Brand:{data.brand}
+            </span>
+            <h4
+              style={{ color: "" }}
+              className="title text-sm h-[40px] my-3"
+            >
+              {
+                data.productName.length > 20 ? data.productName.substring(0, 50) : data.productName}
+            </h4>
+          </Link>
+          {/* <div className="flex items-center">
             <Rating
               style={{ maxWidth: 80 }}
               value={data?.rating?.rate}
@@ -265,112 +334,50 @@ const Products = ({ data, height }) => {
             />
             <span className="pl-3">{data?.rating?.rate}</span>
           </div> */}
-            <Link
-              // onClick={() => sessionStorage.setItem("title", `${product_name}`)} 
+          <Link
+            // onClick={() => sessionStorage.setItem("title", `${product_name}`)} 
 
-              to={`/allproduct/${data._id}`}>
-              <div className="flex items-center justify-stretch mt-6">
-                <span className="text-xl">$</span>
-                <h4 className="text-sm font-[700]">
+            to={`/allproduct/${data._id}`}>
+            <div className="flex items-center justify-stretch mt-6">
+              <span className="text-xl">$</span>
+              <h4 className="text-sm font-[700]">
 
-                  {handleDiscount(data?.price)}
-                </h4>
+                {handleDiscount(data?.price)}
+              </h4>
 
-                <span className="line-through text-xs   text-[gray] mx-5 font-thin">
-                  ${data?.price}
+              <span className="line-through text-xs   text-[gray] mx-5 font-thin">
+                ${data?.price}
 
-                </span>
+              </span>
 
-                <p className=" text-[orange] text-xs  ">
-                  {data?.discount}%off
-                </p>
+              <p className=" text-[orange] text-xs  ">
+                {data?.discount}%off
+              </p>
 
 
-              </div>
-            </Link>
+            </div>
+          </Link>
 
-          </div>
         </div>
-        {/* Add to cart button for Desktop */}
-
-        {data?.quantity === 0 ?
-          <button>
-            <div className="hidden add-to-cart-button text-white text-sm bg-[#D64147] w-[100%] h-[40px] p-3 lg:flex items-center justify-center ">
-
-              OUT OF STOCK
-            </div>
-
-          </button> : <button onClick={() => handleAddtoCart(data._id, 1)}>
-
-            <div className="text-sm hidden add-to-cart-button text-white bg-[black] w-[100%] h-[40px] p-3  lg:flex items-center justify-center ">
-              <>
-                {
-                  isLoading ? (
-                    <span className="loading loading-spinner loading-sm" />) :
-
-                    <>
-                      <div className="mr-1">
-                        <BsBag size={15} />
-                      </div>
-                      <h1 className="mt-1">ADD TO CART</h1>
-                    </>
-
-                }
-
-              </>
-
-
-
-            </div>
-
-          </button>
-
-        }
-        {/* Add to cart button for mobile */}
-        {
-          data.quantity === 0 ? <button className="w-[100%]">
-            <div className=" lg:hidden   xl:hidden  text-white text-sm bg-[#D64147] w-[100%] h-[42px]  p-2 xs:flex items-center justify-center ">
-
-              OUT OF STOCK
-            </div>
-
-          </button> : <button className="w-[100%] " onClick={() => handleAddtoCart(data._id, 1)}>
-
-            <div className="text-sm lg:hidden xl:hidden  text-white bg-[black] 
-            w-[100%] h-[42px]  p-2 flex items-center justify-center  ">
-              {
-                isLoading ? (
-                  <span className="loading loading-spinner loading-sm" />) : (<>
-
-                    <div className="mr-1">
-                      <BsBag size={15} />
-                    </div>
-                    <h1 className="mt-1">ADD TO CART</h1>
-                  </>)
-              }
-
-
-            </div>
-
-          </button>
-        }
-
-
-
-        {/* </div> */}
-
-
-
-
-
-        {modalOpen ? (
-          <OpenCardModal setModalOpen={setModalOpen} data={data} />
-        ) : null}
       </div>
 
 
 
+
+      {/* </div> */}
+
+
+
+
+
+      {modalOpen ? (
+        <OpenCardModal setModalOpen={setModalOpen} data={data} />
+      ) : null}
     </div>
+
+
+
+
   );
 };
 

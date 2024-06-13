@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.Skeleton {
+    @apply bg-gray-300 animate-pulse;
+  }
 
 *{
     margin: 0;

@@ -15,6 +15,7 @@ export const getCartAPi = async (data, header) => {
 }
 ///delete singlequantitycart product api
 export const deleteSingleCartApi = async (data, header) => {
+    console.log(data)
     return await commonrequest("DELETE", `${BASE_URL}/carts/api/deleteitemfromcart/${data.productid}`, data, header, "user")
 
 }

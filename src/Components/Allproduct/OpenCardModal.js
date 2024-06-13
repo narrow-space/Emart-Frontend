@@ -24,7 +24,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
 
   const { getCartProduct, addToCartLoading } = useSelector((state) => state.cart)
   const [newimage, setNewImage] = useState(
-    data.images ? data.images[0] : data.image
+    data?.images ? data?.images[0] : data?.image
   );
   const [size, setSize] = useState("");
 
@@ -38,7 +38,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
     setActive(i);
     setSize(index);
   };
-  
+
 
   const myStyles = {
     itemShapes: ThinRoundedStar,
@@ -90,22 +90,24 @@ const OpenCardModal = ({ setModalOpen, data }) => {
   ///add to cart Function///
 
   const handleAddtoCartforModal = async (id, product, quantity) => {
+    // Check if the product has size options
+    const requiresSize = product.sizes && product.sizes.length > 0;
     try {
       if (token == null) {
         Navigate('/login');
         return;
 
-      } 
-      else if(size==""){
+      }
+      else if (requiresSize) {
         toast.error("please select a size")
         return;
       }
-      
+
       else {
 
-       
+
         // Dispatch action to add product to Redux store
-        dispatch(addtoCart({ productid: id, quantity,size }));
+        dispatch(addtoCart({ productid: id, quantity, size }));
 
         // Optionally, dispatch action to refresh the cart state from localStorage
         dispatch(getCart());
@@ -235,7 +237,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
                           return (
                             <li className="list">
                               <a
-                                className={`tag ${active === index ? "bg-black text-white"  : " bg-white text-black"
+                                className={`tag ${active === index ? "bg-black text-white" : " bg-white text-black"
                                   }`}
                                 onClick={() => isActive(index, i)}
                               >
@@ -277,12 +279,12 @@ const OpenCardModal = ({ setModalOpen, data }) => {
 
                           <button
                             onClick={decrease}
-                            className={` border p-[.5rem] cursor-pointer ${count==1?'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>-</button>
+                            className={` border p-[.5rem] cursor-pointer ${count == 1 ? 'bg-[#FAFAFA] cursor-not-allowed' : "bg-[#DADADA]"}`}>-</button>
                           <div className='border p-[.5rem]'>{count}</div>
                           <button
-                            disabled={count==5}
+                            disabled={count == 5}
                             onClick={increase}
-                            className={`border  p-[.5rem] cursor-pointer ${count==5? 'bg-[#FAFAFA] cursor-not-allowed':"bg-[#DADADA]"}`}>+</button>
+                            className={`border  p-[.5rem] cursor-pointer ${count == 5 ? 'bg-[#FAFAFA] cursor-not-allowed' : "bg-[#DADADA]"}`}>+</button>
                         </div>
                       </div>
 
@@ -295,17 +297,26 @@ const OpenCardModal = ({ setModalOpen, data }) => {
                               <h2 className="uppercase font-bold">OUT OF STOCK</h2>
                             </div>
 
-                          </button> : <button  onClick={() =>handleAddtoCartforModal(data._id, data, count)}>
+                          </button> : <button onClick={() => handleAddtoCartforModal(data._id, data, count)}>
 
-                            <div className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${size==""?"text-white bg-[#858484] cursor-pointer  ":" text-white bg-[black]  "}`}>
-                              {
-                                isLoading && (
-                                  <span className="loading loading-spinner loading-sm" />)
-                              }
-                              <ShoppingBagIcon className="w-5 h-5 mr-1 " />
-                              <h2 className="uppercase font-bold">Add to cart</h2>
-
-                            </div>
+                          <div
+                                className={`text-md w-[100%] h-[40px] px-10 py-6 flex items-center justify-center ${
+                                  data.sizes &&
+                                  data.sizes.length > 0
+                                    ? size === ""
+                                      ? "text-white bg-[#858484] cursor-pointer"
+                                      : "text-white bg-[black]"
+                                    : "text-white bg-[black]"
+                                }`}
+                              >
+                                {isLoading && (
+                                  <span className="loading loading-spinner loading-sm" />
+                                )}
+                                <ShoppingBagIcon className="w-5 h-5 mr-1 " />
+                                <h2 className="uppercase font-bold">
+                                  Add to cart
+                                </h2>
+                              </div>
 
                           </button>
 
