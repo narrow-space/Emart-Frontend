@@ -15,7 +15,8 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
         dispatch(addtoCart(requestData))
             .then((res) => {
                 if (res.payload) {
-                    setCount(count + quantity);
+                   
+                    dispatch(getCart())
                 }
             })
             .catch((error) => {
@@ -30,7 +31,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
         dispatch(deleteCart(requestData))
             .then((res) => {
                 if (res.payload) {
-                    setCount(count - 1);
+                    // setCount(count - 1);
                     dispatch(getCart())
                 }
             })
@@ -40,15 +41,11 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
     };
 
     const increase = (id, quantity) => {
-        if (count < 5) {
-            handleAddtoCart(id, quantity);
-        }
+        handleAddtoCart(id, quantity);
     };
 
     const decrease = (id) => {
-        if (count > 1) {
-            handleremovetoCart(id);
-        }
+        handleremovetoCart(id);
     };
 
     return (
