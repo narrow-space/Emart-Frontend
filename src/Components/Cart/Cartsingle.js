@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { RxCross1, RxCrossCircled } from 'react-icons/rx';
-import { useDispatch } from 'react-redux';
-import { addtoCart, deleteCart,getCart } from '../../redux/Slice/cartSlice/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addtoCart, deleteCart, getCart } from '../../redux/Slice/cartSlice/cartSlice';
+import Loading from '../Share/Loading';
 
 const Cartsingle = ({ data, deleteSingleCartHandler }) => {
-    const [count, setCount] = useState(data.quantity);
+ 
+
     const dispatch = useDispatch();
-    console.log(data)
+    (data)
     const handleAddtoCart = (id, quantity) => {
         const requestData = {
             productid: id,
@@ -15,12 +17,12 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
         dispatch(addtoCart(requestData))
             .then((res) => {
                 if (res.payload) {
-                   
+
                     dispatch(getCart())
                 }
             })
             .catch((error) => {
-                console.log(error);
+                (error);
             });
     };
 
@@ -36,7 +38,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                (error);
             });
     };
 
@@ -48,6 +50,11 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
         handleremovetoCart(id);
     };
 
+   
+
+
+
+
     return (
         <div className="border-b-2 p-4">
             <div className="w-full flex items-center">
@@ -55,8 +62,8 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                     <button
                         onClick={() => decrease(data.productid)}
                         className={`border p-[.5rem] cursor-pointer ${data.quantity === 1
-                                ? "bg-[#FAFAFA] cursor-not-allowed"
-                                : "bg-[#DADADA]"
+                            ? "bg-[#FAFAFA] cursor-not-allowed"
+                            : "bg-[#DADADA]"
                             }`}
                     >
                         -
@@ -66,8 +73,8 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                         disabled={data.quantity === 5}
                         onClick={() => increase(data.productid, 1)}
                         className={`border p-[.5rem] cursor-pointer ${data.quantity === 5
-                                ? "bg-[#FAFAFA] cursor-not-allowed"
-                                : "bg-[#DADADA]"
+                            ? "bg-[#FAFAFA] cursor-not-allowed"
+                            : "bg-[#DADADA]"
                             }`}
                     >
                         +

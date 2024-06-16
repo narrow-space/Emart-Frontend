@@ -10,7 +10,7 @@ const Pagination = ({ pageCount, page,setPage, nextPage, prevPage }) => {
                     <div className="join">
                     {
                         Array(pageCount).fill(null).map((el, index) => {
-                            console.log(index)
+                            (index)
                             return (
                                
                                     <button onClick={()=>setPage(index+1)} className={`${page === index + 1 ? "btn-primary" : ""} join-item btn btn-md `}>{index + 1}</button>

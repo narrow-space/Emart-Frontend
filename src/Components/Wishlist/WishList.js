@@ -14,11 +14,16 @@ const WishList = () => {
   const dispatch = useDispatch();
   const [deleteWishListLoading, seDeleteWishListLoading] = useState(false);
   const [wishListView, setWishListView] = useState({});
-
+  const token = localStorage.getItem("usertoken")
 
   useEffect(() => {
+
+   if(token){
+
     dispatch(getWishList());
-  }, [dispatch]);
+   }
+
+  }, [dispatch,token]);
 
   const handleSelectOption = (id) => {
     navigate(`/allproduct/${id}`);
@@ -32,7 +37,7 @@ const WishList = () => {
         dispatch(getWishList());
       })
       .catch((error) => {
-        console.log(error);
+        
       })
       .finally(() => {
         seDeleteWishListLoading(false);
@@ -51,11 +56,13 @@ const WishList = () => {
         alignItems: "center",
       }}
     >
-    <ReactLoading type="bars" color="black"  />
+      <ReactLoading type="bars" color="black" />
     </div>
 
 
   }
+
+
 
   return (
     <>
@@ -69,7 +76,7 @@ const WishList = () => {
             My wishlist on OnlineNest  Shop
           </h1>
 
-          { getWishListProduct.length ? (
+          {token && getWishListProduct.length ? (
             <div className="grid grid-cols-1 gap-4 md:hidden">
               {getWishListProduct.map((product) => (
                 <div key={product.details._id} className="border rounded-lg p-4 relative">
@@ -116,7 +123,7 @@ const WishList = () => {
           ) : null}
 
           {/* Desktop and tablet view */}
-          {getWishListProduct.length ? (
+          {token && getWishListProduct.length ? (
             <table className="min-w-full bg-white hidden md:block">
               <thead className="text-black">
                 <tr className="text-sm font-light">

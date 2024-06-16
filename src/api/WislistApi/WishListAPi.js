@@ -15,7 +15,7 @@ export const getWishListAPi = async (data, header) => {
 }
 ///Delete cart product api
 export const deleteWishListAPi = async (data, header) => {
-    console.log(data)
+    (data)
     return await commonrequest("DELETE", `${BASE_URL}/wishlist/api/deleteitemfromwishlist/${data.productid}`,data, header, "user")
 
 }

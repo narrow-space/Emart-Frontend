@@ -33,7 +33,7 @@ const Addbrand = () => {
 
     }
 
-    console.log(inputvalue)
+    (inputvalue)
 
 
 
@@ -55,7 +55,7 @@ const Addbrand = () => {
 
 
 
-            console.log(formdata)
+            (formdata)
 
             dispatch(adminAddBrand(formdata)).then((res) => {
                 if (res.payload) {
@@ -68,7 +68,7 @@ const Addbrand = () => {
 
                 }
             }).catch((error) => {
-                console.log(error)
+                (error)
             })
 
 

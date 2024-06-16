@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { CartopenContex } from '../../Contexapi/Cartopencontex';
 import { ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { BsFillCartXFill } from "react-icons/bs";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCart, deletefulquantityCart } from '../../redux/Slice/cartSlice/cartSlice';
 import toast from 'react-hot-toast';
+
 
 const CartDetails = ({ getCartProduct }) => {
     const navigation = useNavigate();
@@ -14,7 +15,8 @@ const CartDetails = ({ getCartProduct }) => {
     const dispatch = useDispatch();
     const [price, setPrice] = useState("");
     const [cartProduct, setCartProduct] = useState()
-
+   
+    
 
 
 
@@ -23,7 +25,7 @@ const CartDetails = ({ getCartProduct }) => {
     }, [getCartProduct]);
 
 
-    console.log(cartProduct)
+    (cartProduct)
 
     const viewhandaler = () => {
         window.scrollTo(0, 0);
@@ -59,8 +61,13 @@ const CartDetails = ({ getCartProduct }) => {
             });
     };
 
+   
+
+
+
     return (
-        <div>
+     
+            <div>
             <div className='h-[60px] border-b-2 '>
                 <div className="flex  justify-center p-6 absolute top-0 bottom-0">
                     <ShoppingBagIcon className="w-5 h-5 text-[#5F5F5F]" />
@@ -74,7 +81,9 @@ const CartDetails = ({ getCartProduct }) => {
             <br />
             {cartProduct?.length > 0 ? (
                 <div className="w-full  absolute top-20 bottom-0">
+                    
                     {cartProduct.map((i, index) => (
+                   
                         <Cartsingle key={index} data={i} deleteSingleCartHandler={deleteSingleCartHandler} />
                     ))}
                     <div className='flex justify-center items-center my-7'>
@@ -97,6 +106,7 @@ const CartDetails = ({ getCartProduct }) => {
                 </div>
             )}
         </div>
+        
     );
 };
 

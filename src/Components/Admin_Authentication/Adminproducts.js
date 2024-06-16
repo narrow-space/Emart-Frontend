@@ -27,7 +27,7 @@ const Adminproducts = () => {
         setPageCount(res.payload.Pagination.pageCount)
       }
     }).catch((error) => {
-      console.log(error)
+      (error)
     })
   }
 
@@ -78,7 +78,7 @@ const Adminproducts = () => {
   
   )
   
-      .catch((error) => console.log(error));
+      .catch((error) => (error));
   }
 
 

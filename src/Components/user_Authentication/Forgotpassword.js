@@ -14,7 +14,7 @@ const Forgotpassword = () => {
     email: ""
   })
 
-  console.log(email)
+  (email)
   const dispatch = useDispatch()
 
 
@@ -33,7 +33,7 @@ const Forgotpassword = () => {
         setEmail({ email: "" });
       }
     }).catch((error) => {
-      console.log(error)
+      (error)
     })
 
   }

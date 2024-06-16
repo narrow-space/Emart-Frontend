@@ -198,7 +198,7 @@ const ProductDetails = () => {
 
   const formatCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
-    console.log(date);
+    (date);
     return date.toLocaleString();
   };
 
@@ -214,7 +214,7 @@ const ProductDetails = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        (error);
       });
   };
   const [isMobileDevice, setIsMobileDevice] = useState(false);

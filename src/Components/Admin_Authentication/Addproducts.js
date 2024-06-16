@@ -21,7 +21,7 @@ const Addproducts = () => {
 
   const [categoryId, setCategoryId] = useState("")
   const [brand, setbrand] = useState("")
-  console.log(categoryId)
+  (categoryId)
 
   const [inputvalue, setInputvalue] = useState({
     productName: "",
@@ -131,7 +131,7 @@ const Addproducts = () => {
     const { name, value } = e.target;
 
     setInputvalue({ ...inputvalue, [name]: value });
-    console.log(inputvalue);
+    (inputvalue);
   };
 
   ///get image file////

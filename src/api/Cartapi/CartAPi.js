@@ -4,7 +4,7 @@ import { BASE_URL } from "../Helper"
 
 ///add to cart prodct api///
 export const addToCartAPi = async (data, header) => {
-    console.log(data)
+    (data)
     return await commonrequest("POST", `${BASE_URL}/carts/api/addtocart/${data.productid}`, data, header, "user")
 
 }
@@ -15,7 +15,7 @@ export const getCartAPi = async (data, header) => {
 }
 ///delete singlequantitycart product api
 export const deleteSingleCartApi = async (data, header) => {
-    console.log(data)
+    (data)
     return await commonrequest("DELETE", `${BASE_URL}/carts/api/deleteitemfromcart/${data.productid}`, data, header, "user")
 
 }

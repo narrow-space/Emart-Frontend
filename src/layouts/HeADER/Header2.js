@@ -80,6 +80,7 @@ const Header2 = ({ activeheading }) => {
 
   const searchRef = useRef();
 
+  const token = localStorage.getItem("usertoken");
   const navRef = useRef();
   const categoryRef = useRef();
   const navigation = useNavigate();
@@ -213,7 +214,7 @@ const Header2 = ({ activeheading }) => {
       });
   };
 
-  const token = localStorage.getItem("usertoken");
+
 
   const handlelogin = () => {
     navigation("/login");

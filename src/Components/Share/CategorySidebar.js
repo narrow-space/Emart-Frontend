@@ -82,7 +82,7 @@ const CategorySidebar = (props) => {
       setBrand(uniqueBrandArray);
       setSizes(
         filtercategory?.products?.reduce((acc, curr) => {
-          console.log(acc, curr);
+          (acc, curr);
           curr.sizes.forEach((size) => {
             if (!acc.includes(size)) {
               acc.push(size);

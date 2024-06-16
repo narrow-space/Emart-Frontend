@@ -16,7 +16,7 @@
 //    },[id])
 
    
-// //  console.log(newArray)
+// //  (newArray)
 //   return (
 //     <div>
     

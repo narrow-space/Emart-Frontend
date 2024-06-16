@@ -6,7 +6,7 @@ import { addWishListAPi, deleteWishListAPi, getWishListAPi } from "../../../api/
 
 ///add to wishlist//
 export const addtoWishList = createAsyncThunk("addtoWishList", async (data) => {
-    console.log(data)
+    (data)
     try {
         const response = await addWishListAPi(data)
         if (response.status == 200) {
@@ -37,7 +37,7 @@ export const getWishList = createAsyncThunk("getWishList", async (thunkApi) => {
 
 ///delete from wishlist//
 export const deleteWishList = createAsyncThunk("deleteWishList", async (data) => {
-    console.log(data)
+    (data)
     try {
         const response = await deleteWishListAPi(data)
         if (response.status == 200) {
@@ -68,6 +68,7 @@ export const WishListSlice = createSlice({
     },
     reducers: {
         clearWishListData: (state) => {
+           
             state.getWishListProduct = [];
         }
     },

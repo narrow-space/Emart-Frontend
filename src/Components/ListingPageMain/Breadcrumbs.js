@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 const Breadcrumbs = () => {
     const data=sessionStorage.getItem("title")
-    console.log(data)
+    (data)
     const location = useLocation()
     let currentLink = ''
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== "").map(crumb => {

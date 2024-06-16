@@ -36,14 +36,14 @@ const Dashboard = () => {
     dispatch(userLogout()).then((res) => {
       if (res.payload.message == "User successfully Logout") {
          // Remove product ID from local storage
-     
-       
-         localStorage.removeItem("wishlist");
-        navigate("/login")
+       localStorage.removeItem("wishlist");
+      
         dispatch(clearCartData());
         dispatch(clearuserLogInData());
         dispatch(clearuserLoggedInData());
         dispatch(clearWishListData());
+        navigate("/login")
+       
       }
 
 

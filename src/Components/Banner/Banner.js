@@ -36,9 +36,10 @@ const Banner = () => {
 
    };
    return (
-      <div className="home-slider flex justify-center items-center">
+      <div className="home-slider flex justify-center items-center ">
 
-         <div className="w-[100%] ">
+         <div className="w-[100%]  
+          ">
             <Slider className="slider_main"  {...settings}>
                {
                   images && images.map((image) => {

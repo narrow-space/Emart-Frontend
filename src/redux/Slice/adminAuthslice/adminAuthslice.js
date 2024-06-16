@@ -82,7 +82,7 @@ export const AdminLoggedIn = createAsyncThunk("AdminLoggedIn",async(thunkApi)=>{
 export const adminLoggedout=createAsyncThunk("AdminLoggedOut",async(thunkApi)=>{
     try {
        const response= await adminLoggedOut()
-       // console.log("response",response)
+       // ("response",response)
        if(response.state==200){
            toast.success("Admin Logout Sucessfully")
            localStorage.removeItem("admintoken")

@@ -31,14 +31,14 @@ const Addcategories = () => {
 
 
     setInputvalue({ ...inputvalue, [name]: value })
-    console.log(inputvalue)
+    (inputvalue)
   }
 
 
 
   const handleimgupload = (e) => {
     setFile(e.target.files[0]);
-    console.log(file)
+    (file)
   }
 
 
@@ -84,7 +84,7 @@ const Addcategories = () => {
           setFile("")
         }
       }).catch((error) => {
-        console.log(error)
+        (error)
       })
 
 
