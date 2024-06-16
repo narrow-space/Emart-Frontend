@@ -1,10 +1,9 @@
 import React from 'react'
 
 import Footer from './Footer/Footer'
-import Header2 from './HeADER/Header2'
-import Header from './HeADER/Header'
-import Breadcrumbs from '../Components/ListingPageMain/Breadcrumbs'
-import Navbar2 from './HeADER/Header'
+import Navbar2 from "./HeADER/Navbar2"
+
+
 
 
 
