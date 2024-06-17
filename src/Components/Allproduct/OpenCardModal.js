@@ -117,7 +117,7 @@ const OpenCardModal = ({ setModalOpen, data }) => {
     }
   };
 
-  (isLoading)
+
 
   const handlecount = (id) => {
 

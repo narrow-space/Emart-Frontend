@@ -8,7 +8,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
  
 
     const dispatch = useDispatch();
-    (data)
+    
     const handleAddtoCart = (id, quantity) => {
         const requestData = {
             productid: id,
@@ -22,7 +22,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                 }
             })
             .catch((error) => {
-                (error);
+               
             });
     };
 
@@ -38,7 +38,7 @@ const Cartsingle = ({ data, deleteSingleCartHandler }) => {
                 }
             })
             .catch((error) => {
-                (error);
+               
             });
     };
 

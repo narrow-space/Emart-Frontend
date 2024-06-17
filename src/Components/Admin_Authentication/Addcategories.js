@@ -1,12 +1,7 @@
-
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/outline'
-
-
-
 import Select from 'react-select';
 import { Link } from 'react-router-dom'
 import React, { useRef, useState } from 'react';
-
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { adminAddCategory } from '../../redux/Slice/categorySlice/categorySlice';
@@ -31,14 +26,14 @@ const Addcategories = () => {
 
 
     setInputvalue({ ...inputvalue, [name]: value })
-    (inputvalue)
+   
   }
 
 
 
   const handleimgupload = (e) => {
     setFile(e.target.files[0]);
-    (file)
+   
   }
 
 
@@ -84,7 +79,7 @@ const Addcategories = () => {
           setFile("")
         }
       }).catch((error) => {
-        (error)
+       
       })
 
 

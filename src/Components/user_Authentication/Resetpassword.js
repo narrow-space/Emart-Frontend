@@ -62,7 +62,7 @@ const Resetpassword = () => {
         }
 
       }).catch((error) => {
-        (error)
+      
         if (error) {
           toast.error(error)
           Navigate("/forgotpassword")

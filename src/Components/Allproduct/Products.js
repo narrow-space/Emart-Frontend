@@ -65,7 +65,7 @@ const Products = ({ data, height }) => {
           }
         })
         .catch((error) => {
-          (error);
+         
         })
         .finally(() => {
           setIsLoading(false);

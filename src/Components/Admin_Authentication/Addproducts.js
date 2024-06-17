@@ -1,10 +1,8 @@
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import toast from "react-hot-toast";
 import { adminGetCategory } from "../../redux/Slice/categorySlice/categorySlice";
 import { adminGetBrand } from "../../redux/Slice/brandSlice/brandSlice";
@@ -16,12 +14,11 @@ const Addproducts = () => {
   const [categoryState, setCategoryState] = useState([]);
   const [brandState, setBrandState] = useState([]);
 
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState([]);
   const [type, setType] = useState([]);
 
-  const [categoryId, setCategoryId] = useState("")
-  const [brand, setbrand] = useState("")
-  (categoryId)
+  const [categoryId, setCategoryId] = useState("");
+  const [brand, setbrand] = useState("");
 
   const [inputvalue, setInputvalue] = useState({
     productName: "",
@@ -33,44 +30,69 @@ const Addproducts = () => {
     colors: "",
     sizes: "",
     files: "",
-    type: ""
-
+    type: "",
   });
 
   ///Sizes selection//
-  const sizes = ["S", "M", "L", "XL", "XXL", "3XL", "40", "41", "42", "43", "44", "45", "8GB", "16GB", "256GB", "512GB", "27inche"]
-  const [sizeOption, setSizeOption] = useState([])
+  const sizes = [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL",
+    "3XL",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "8GB",
+    "16GB",
+    "256GB",
+    "512GB",
+    "27inche",
+  ];
+  const [sizeOption, setSizeOption] = useState([]);
 
   const handleSizeChange = (sizes) => {
-    setSizeOption(sizes)
-  }
+    setSizeOption(sizes);
+  };
 
   ///converted sizes///
-  const sizeOptionsCoverted = sizes.map((size => {
+  const sizeOptionsCoverted = sizes.map((size) => {
     return {
       value: size,
-      label: size
-    }
-  }))
-
+      label: size,
+    };
+  });
 
   ///Sizes selection//
-  const colors = ["red", "green", "black", "yellow", "white", "pink", "bottle green", "blue", "orange"]
+  const colors = [
+    "red",
+    "green",
+    "black",
+    "yellow",
+    "white",
+    "pink",
+    "bottle green",
+    "blue",
+    "orange",
+  ];
 
-  const [colorOption, setColorOption] = useState([])
+  const [colorOption, setColorOption] = useState([]);
 
   const handleColorChange = (colors) => {
-    setColorOption(colors)
-  }
+    setColorOption(colors);
+  };
 
   ///converted sizes///
-  const colorOptionsCoverted = colors.map((color => {
+  const colorOptionsCoverted = colors.map((color) => {
     return {
       value: color,
-      label: color
-    }
-  }))
-
+      label: color,
+    };
+  });
 
   ///fetch all category from database//
   const { CategoryData } = useSelector((state) => state.category);
@@ -88,11 +110,10 @@ const Addproducts = () => {
 
   useEffect(() => {
     dispatch(adminGetCategory());
-
   }, []);
 
   ///fetch all brands from database///
-  const { loading, error } = useSelector((state) => state.products)
+  const { loading, error } = useSelector((state) => state.products);
   const { GetallBrand } = useSelector((state) => state.brand);
   useEffect(() => {
     let array = [];
@@ -110,12 +131,6 @@ const Addproducts = () => {
     dispatch(adminGetBrand());
   }, []);
 
-
-
-
-
-
-
   // Type option//
   const typeoption = [
     { value: "hot", label: "hot" },
@@ -124,125 +139,100 @@ const Addproducts = () => {
     { value: "cool", label: "cool" },
   ];
 
-
-
   ///get input value//
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setInputvalue({ ...inputvalue, [name]: value });
-    (inputvalue);
   };
 
   ///get image file////
   const handleimgupload = (e) => {
+    const newfiles = Array.from(e.target.files);
 
-    const newfiles = Array.from(e.target.files)
-
-    setFiles(newfiles)
-
-  }
-
+    setFiles(newfiles);
+  };
 
   const handlesetCategory = (e) => {
-    const { value } = e
-    setCategoryId(value)
-
-  }
+    const { value } = e;
+    setCategoryId(value);
+  };
 
   const handlesetBrand = (e) => {
-    const { label } = e
-    setbrand(label)
-
-  }
-
-
-
+    const { label } = e;
+    setbrand(label);
+  };
 
   const addproduct = (e) => {
     e.preventDefault();
     const { productName, price, discount, quantity, description } = inputvalue;
     if (productName == "") {
-      toast.error("enter a ProductName")
-    }
-
-    else if (categoryId == "") {
-      toast.error("enter product Category")
-    }
-    else if (type == "") {
-      toast.error("enter product type")
-    }
-    else if (colors == "") {
-      toast.error("enter product color")
+      toast.error("enter a ProductName");
+    } else if (categoryId == "") {
+      toast.error("enter product Category");
+    } else if (type == "") {
+      toast.error("enter product type");
+    } else if (colors == "") {
+      toast.error("enter product color");
     }
     // else if (sizeOption == "") {
     //   toast.error("enter product sizes")
     // }
     else if (brand == "") {
-      toast.error("enter product brand")
-    }
-    else if (colorOption == "") {
-      toast.error("enter product brand")
-    }
-    else if (discount == "") {
-      toast.error("enter product discount")
-    }
-    else if (price == "") {
-      toast.error("enter product price")
-    }
-    else if (files == "") {
-      toast.error("enter product images")
-    }
-    else if (quantity == "") {
-      toast.error("enter product quantity")
-    }
-    else if (description == "") {
-      toast.error("enter product description")
-    }
-    else {
-
+      toast.error("enter product brand");
+    } else if (colorOption == "") {
+      toast.error("enter product brand");
+    } else if (discount == "") {
+      toast.error("enter product discount");
+    } else if (price == "") {
+      toast.error("enter product price");
+    } else if (files == "") {
+      toast.error("enter product images");
+    } else if (quantity == "") {
+      toast.error("enter product quantity");
+    } else if (description == "") {
+      toast.error("enter product description");
+    } else {
       const config = {
-        "Content-Type": "multipart/form-data"
-      }
-      dispatch(adminAddproduct({
-        ...inputvalue,
-        files,
-        colors: colorOption?.map((color) => color.value),
-        sizes: sizeOption?.map((size) => size.value),
-        type: type.value,
-        brand,
-        categoryId,
-        config
-      })).then((res) => {
-        if (res.payload) {
-          ///reset from data
-          setInputvalue({
-            productName: "",
-            price: "",
-            discount: "",
-            quantity: "",
-            description: "",
-            brand: "",
-            colors: "",
-            sizes: "",
-            files: "",
-            type: ""
-          })
-          setCategoryId("")
-          // window.location.reload()
-        }
-      }).catch((error) => {
-        toast.error(error.message)
-      })
-
-
+        "Content-Type": "multipart/form-data",
+      };
+      dispatch(
+        adminAddproduct({
+          ...inputvalue,
+          files,
+          colors: colorOption?.map((color) => color.value),
+          sizes: sizeOption?.map((size) => size.value),
+          type: type.value,
+          brand,
+          categoryId,
+          config,
+        })
+      )
+        .then((res) => {
+          if (res.payload) {
+            ///reset from data
+            setInputvalue({
+              productName: "",
+              price: "",
+              discount: "",
+              quantity: "",
+              description: "",
+              brand: "",
+              colors: "",
+              sizes: "",
+              files: "",
+              type: "",
+            });
+            setCategoryId("");
+            // window.location.reload()
+          }
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     }
-
-
-
-
   };
-    return (
+  return (
     <div className="h-[650px] overflow-auto">
       <div className="overflow-x-hidden">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 ">
@@ -290,7 +280,6 @@ const Addproducts = () => {
                 </label>
                 <div className="mt-2">
                   <Select
-
                     onChange={handlesetCategory}
                     isSearchable={false}
                     placeholder="Select a category"
@@ -309,7 +298,6 @@ const Addproducts = () => {
                 </label>
                 <div className="mt-2">
                   <Select
-
                     onChange={handlesetBrand}
                     isSearchable={false}
                     placeholder="---Select a Brand---"
@@ -317,16 +305,6 @@ const Addproducts = () => {
                   />
                 </div>
               </div>
-
-
-
-
-
-
-
-
-
-
 
               {/* Type */}
               <div>
@@ -338,7 +316,6 @@ const Addproducts = () => {
                 </label>
                 <div className="mt-2">
                   <Select
-
                     value={type}
                     onChange={setType}
                     options={typeoption}
@@ -444,7 +421,6 @@ const Addproducts = () => {
                   <label
                     htmlFor="file-upload"
                     type="button"
-
                     className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 cursor-pointer"
                   >
                     Upload
@@ -530,12 +506,13 @@ const Addproducts = () => {
                     defaultValue={""}
                   />
                 </div>
-
               </div>
 
               {/* submit button */}
-              {
-                loading ? <Loading /> : <div>
+              {loading ? (
+                <Loading />
+              ) : (
+                <div>
                   <button
                     onClick={addproduct}
                     type="submit"
@@ -544,8 +521,7 @@ const Addproducts = () => {
                     Add Product
                   </button>
                 </div>
-              }
-
+              )}
             </form>
           </div>
         </div>

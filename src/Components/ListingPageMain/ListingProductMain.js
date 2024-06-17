@@ -66,7 +66,7 @@ const ListingProductMain = () => {
   };
 
   const filterBySize = (keyword) => {
-    (keyword)
+   
     setSize(keyword);
   };
 

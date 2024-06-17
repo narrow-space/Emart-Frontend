@@ -31,7 +31,7 @@ export const userRegister = createAsyncThunk("userRegister", async (data) => {
         fromData.append("password", password);
         fromData.append("confirmPassword", confirmPassword);
         fromData.append("file", file);
-       (fromData)
+      
         const response = await userRegisterApi(fromData, config);
 
         if (response.status == 200) {

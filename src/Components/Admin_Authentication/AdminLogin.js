@@ -37,7 +37,7 @@ const Login = () => {
           navigate("/adminaccount/dashboard");
         }
       }).catch((error) => {
-        (error);
+       
       });
     }
   };

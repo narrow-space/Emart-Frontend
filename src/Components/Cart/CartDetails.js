@@ -25,7 +25,7 @@ const CartDetails = ({ getCartProduct }) => {
     }, [getCartProduct]);
 
 
-    (cartProduct)
+ 
 
     const viewhandaler = () => {
         window.scrollTo(0, 0);

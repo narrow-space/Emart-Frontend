@@ -34,7 +34,7 @@ export const AddproductApi = async (data, categoryId, header,) => {
 
 
 export const UpdateproductApi = async (data, id, categoryId, header,) => {
-  (data)
+ 
 
   return await commonrequest("PUT", `${BASE_URL}/product/api/updateproduct/${id}?categoryid=${categoryId}`, data, header, "admin")
 }
@@ -42,7 +42,7 @@ export const UpdateproductApi = async (data, id, categoryId, header,) => {
 
 
 export const deleteproductsApi = async (data, header) => {
-  (data)
+ 
 
   return await commonrequest("DELETE", `${BASE_URL}/product/api/deleteproducts/${data.url}`, data, header, "admin")
 }
@@ -97,7 +97,7 @@ export const filterproductsApi = async (data, header) => {
 
 
 export const resetfilterproductsApi = async (data, header) => {
-  (data)
+ 
   const url = new URL(`${BASE_URL}/product/api/reset-products`);
   if (data.categoryId) {
     url.searchParams.append('categoryId', data.categoryId);

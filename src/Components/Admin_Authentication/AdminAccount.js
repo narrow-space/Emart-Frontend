@@ -70,9 +70,9 @@ const AdminAccount = () => {
 
     const adminverify = () => {
         dispatch(AdminLoggedIn()).then((res) => {
-            (res)
+          
         }).catch((error) => {
-            (error)
+            
         })
 
     };
