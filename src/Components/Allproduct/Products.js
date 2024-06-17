@@ -114,7 +114,7 @@ const Products = ({ data, height }) => {
           dispatch(getWishList()); // Fetch updated wishlist
         })
         .catch((error) => {
-          (error);
+        
           setLocalWishlist(prevState => prevState.filter(item => item !== id));
         })
         .finally(() => {
@@ -134,7 +134,7 @@ const Products = ({ data, height }) => {
         dispatch(getWishList()); // Fetch updated wishlist
       })
       .catch((error) => {
-        (error);
+      
         setLocalWishlist(prevState => [...prevState, id]);
       })
       .finally(() => {
