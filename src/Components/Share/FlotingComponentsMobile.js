@@ -54,7 +54,7 @@ const FlotingComponentsMobile = () => {
               sm:right-[15px]
               md:right-[3.5rem]
               '>
-            <span className='bg-black rounded-full text-white pl-1 pr-1 text-center text-xs'> {userLoggedInData?.length > 0 ? getWishListProduct?.length : "0"}</span>
+            <span className='bg-red-700 rounded-full text-white pl-1 pr-1 text-center text-xs'> {userLoggedInData?.length > 0 ? getWishListProduct?.length : "0"}</span>
           </div>
         </div>
         <div>
@@ -83,7 +83,7 @@ const FlotingComponentsMobile = () => {
               
               
               '>
-                <span className='bg-black rounded-full text-white pl-1 pr-1 text-center text-xs'>{userLoggedInData?.length > 0 ? getCartProduct?.length : "0"}</span>
+                <span className='bg-red-700 rounded-full text-white  pl-1 pr-1 text-center text-xs'>{userLoggedInData?.length >0 ? getCartProduct?.length :"0"}</span>
               </div>
             </div>
           </Link>

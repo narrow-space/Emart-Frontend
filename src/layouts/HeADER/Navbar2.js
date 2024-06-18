@@ -8,12 +8,13 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
   ShoppingBagIcon,
+  Bars3Icon,
 } from "@heroicons/react/24/outline";
 import { BsInstagram, BsYoutube } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa6";
 import { IoSearchCircleOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../assest/Online_Nest_Logo_Text_Only (2).png";
+import logo from "../../assest/Online_Nest_Logo_Text_Only (2).webp";
 import CartDetails from "../../Components/Cart/CartDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { CartopenContex } from "../../Contexapi/Cartopencontex";
@@ -186,20 +187,7 @@ const Navbar2 = () => {
             onClick={() => setNavOpen(true)}
             className="text-gray-700 hover:text-gray-900 focus:outline-none md:hidden"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d={navOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
-              ></path>
-            </svg>
+            <Bars3Icon className="h-6 w-6 mr-auto "/>
           </button>
           <Link to="/">
             <img
@@ -314,7 +302,7 @@ const Navbar2 = () => {
             <input
               type="text"
               className="w-full text-sm rounded-full mobile-custom-search-input"
-              placeholder="Search with AI and Image (Ex: Facewash for acne)"
+              placeholder="Search products... (Ex: Mackbook pro 2024)"
               onChange={handleSearch}
               value={search}
               onFocus={() => setShowSearchResults(true)}
