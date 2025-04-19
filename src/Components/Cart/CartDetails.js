@@ -17,13 +17,13 @@ import ReactLoading from "react-loading";
 const CartDetails = ({ getCartProduct }) => {
   const navigation = useNavigate();
   const { cartopen, setCartopen } = useContext(CartopenContex);
-  const { addToCartLoading, getCartLoading,deleteCartLoading} = useSelector(
+  const { addToCartLoading, getCartLoading, deleteCartLoading } = useSelector(
     (state) => state.cart
   );
   const [price, setPrice] = useState("");
   const [cartProduct, setCartProduct] = useState();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     setCartProduct(getCartProduct);
   }, [getCartProduct]);
@@ -95,19 +95,18 @@ const CartDetails = ({ getCartProduct }) => {
   };
 
   const decrease = (id) => {
-   
     handleremovetoCart(id);
   };
 
   const Cartsingle = ({ data, deleteSingleCartHandler }) => {
     return (
       <div className="border-b-2 p-4 relative">
-        {addToCartLoading  && (
+        {addToCartLoading && (
           <div className="absolute inset-0 bg-slate-400 bg-opacity-5 flex justify-center items-center z-10">
             <ReactLoading type="spin" color="blck" height={30} width={30} />
           </div>
         )}
-        {deleteCartLoading  && (
+        {deleteCartLoading && (
           <div className="absolute inset-0 bg-black bg-opacity-5 flex justify-center items-center z-10">
             <ReactLoading type="spin" color="black" height={30} width={30} />
           </div>
